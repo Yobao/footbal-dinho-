@@ -65,9 +65,10 @@
 
       <!-- BODY -->
       <!-- ---------------------------------------------------------------------------------------------------------- -->
+
       <div id="body" class="body">
         <div id="body-home" class="body-modal modal-home body-home">
-          <a class="image_instructions"> <img src="Main.png" /> </a>
+          <a> <img class="image_instructions" src="Main.png" /> </a>
         </div>
         <div id="body-table" class="body-modal modal-table body-table hidden">
           <table id="score_table" class="table_table" cellspacing="0">
@@ -100,7 +101,12 @@
       <h1>Prihlásenie</h1>
       <div id="" class="login-name">
         <p>Meno</p>
-        <input id="login-name" class="input_login_name" />
+        <input
+          id="login-name"
+          class="input_login_name"
+          type="text"
+          placeholder="Napíšte Meno"
+        />
       </div>
       <div id="" class="login-password">
         <p>Heslo</p>
@@ -108,7 +114,7 @@
           id="login-password"
           class="input_login_password"
           type="password"
-          value="FakePSW"
+          placeholder="Napíšte Heslo"
         />
       </div>
       <div class="login-show-pwd">

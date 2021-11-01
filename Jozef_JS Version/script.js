@@ -50,7 +50,7 @@ let wrongresetpass = 0;
 
 //Loop through modals to detect which is unhidden.
 const modalsLoop = function () {
-  modals.forEach(modal => {
+  modals.forEach((modal) => {
     if (!modal.classList.contains("hidden")) {
       modal.classList.add("hidden");
     }
@@ -59,18 +59,18 @@ const modalsLoop = function () {
 
 //Loop through BODY modals to detect which is unhidden.
 const bodyModalsLoop = function () {
-  bodyModals.forEach(modal => {
+  bodyModals.forEach((modal) => {
     if (!modal.classList.contains("hidden")) {
       modal.classList.add("hidden");
     }
   });
 };
 
-//This expression resets all input fields values.
+/* //This expression resets all input fields values.
 const inputClear = function () {
   inputLoginName.value = "";
   inputLoginPwd.value = "";
-};
+}; */
 
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
@@ -79,7 +79,7 @@ const openModal = function () {
       `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
     )
     .classList.remove("hidden");
-  inputClear();
+  /*   inputClear(); */
   overlay.classList.remove("hidden");
 };
 
@@ -117,7 +117,7 @@ const getDataTable = async () => {
     let data = response.data.data;
     let i = 1;
 
-    data.forEach(row => {
+    data.forEach((row) => {
       let td1 = document.createElement("td");
       let td2 = document.createElement("td");
       let td3 = document.createElement("td");
@@ -157,7 +157,7 @@ const logIN = () => {
       username: inputLoginName.value,
       password: inputLoginPwd.value,
     })
-    .then(response => {
+    .then((response) => {
       localStorage.dinhotoken = response.data.token;
       console.log(localStorage.dinhotoken);
       statuss = 1;
@@ -248,7 +248,7 @@ getDataTable();
 // Header + buttons
 //////////////////////////////////////////////////////
 //Listener for buttons which controls modals for login and reg..
-btnsHeaderModal.forEach(btn => {
+btnsHeaderModal.forEach((btn) => {
   btn.addEventListener("click", openModal);
 });
 
@@ -274,12 +274,12 @@ document
   });
 
 //Listener for hiding "overlay" & active modal window after clicking on "X" button.
-btnCloseModal.forEach(btn => {
+btnCloseModal.forEach((btn) => {
   btn.addEventListener("click", closeModal);
 });
 
 //Listener for buttons which controls body content.
-btnsHeaderBody.forEach(btn => {
+btnsHeaderBody.forEach((btn) => {
   btn.addEventListener("click", openBodyModal);
 });
 
