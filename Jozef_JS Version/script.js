@@ -2,13 +2,15 @@
 
 const urlTable = "https://www.dinho.eu/api/table";
 const urlLogin = "https://www.dinho.eu/api/account/login";
+const urlAutoLogin = "https://www.dinho.eu/api/account/autologin";
+const urlLogOut = "https://www.dinho.eu/api/account/logout";
 
 //Mass selectors.
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
 const btnsHeaderBody = document.querySelectorAll(".button_header_body");
 const modals = document.querySelectorAll(".modal");
 const btnCloseModal = document.querySelectorAll(".button-close");
-const bodyModals = document.querySelectorAll(".body-modal");
+const bodyPages = document.querySelectorAll(".body-modal");
 
 //The rest.
 const btnLoginLogin = document.getElementById("btn-login-login");
@@ -28,22 +30,25 @@ const btnAccount = document.getElementById("btn-account");
 const accountDropdown = document.querySelector(".account-dropdown");
 const btnBet = document.getElementById("btn-bet");
 
+//Logout
+const btnLogOut = document.getElementById("btn-logout");
+
 //Variables for API
 let username = null;
 let cfc_username = "";
 let password = null;
 let password2 = null;
 let email = null;
-let statuss = 0;
-let wrongpass = 0;
-let registration = 0;
-let wrongreg = 0;
-let passchanged = 0;
-let showforgotpass = 0;
-let wrongemail = 0;
-let passreseted = 0;
-let resetpasscode = 0;
-let wrongresetpass = 0;
+let statuss = false;
+let wrongpass = false;
+let registration = false;
+let wrongreg = false;
+let passchanged = false;
+let showforgotpass = false;
+let wrongemail = false;
+let passreseted = false;
+let resetpasscode = false;
+let wrongresetpass = false;
 
 // FUNCTION EXPRESSION CONSTANTS/VARIABLES
 //----------------------------------------------------------------------------------------------------------------------------
@@ -58,12 +63,21 @@ const modalsLoop = function () {
 };
 
 //Loop through BODY modals to detect which is unhidden.
-const bodyModalsLoop = function () {
-  bodyModals.forEach((modal) => {
+const bodyPagesLoop = function () {
+  bodyPages.forEach((modal) => {
     if (!modal.classList.contains("hidden")) {
       modal.classList.add("hidden");
     }
   });
+};
+
+const test = function () {
+  overlay.classList.add("hidden");
+  modalLogin.classList.add("hidden");
+  btnLogin.classList.add("hidden");
+  btnRegistration.classList.add("hidden");
+  btnBet.classList.remove("hidden");
+  accountDropdown.classList.remove("hidden");
 };
 
 /* //This expression resets all input fields values.
@@ -98,8 +112,8 @@ const closeModal = function () {
 };
 
 //Function expression to show modal and "overlay" div.
-const openBodyModal = function () {
-  bodyModalsLoop();
+const openBodyPage = function () {
+  bodyPagesLoop();
   document
     .querySelector(
       `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
@@ -158,22 +172,41 @@ const logIN = () => {
       password: inputLoginPwd.value,
     })
     .then((response) => {
-      localStorage.dinhotoken = response.data.token;
-      console.log(localStorage.dinhotoken);
-      statuss = 1;
-      wrongpass = 0;
-
-      overlay.classList.add("hidden");
-      modalLogin.classList.add("hidden");
-      btnLogin.classList.add("hidden");
-      btnRegistration.classList.add("hidden");
-      btnBet.classList.remove("hidden");
-      accountDropdown.classList.remove("hidden");
+      localStorage.setItem("dinhotoken", response.data.token);
+      /*       statuss = true;
+      wrongpass = false; */
+      test();
     })
     .catch(() => {
       alert("Nesprávne Meno alebo Heslo. Skúste prosím ešte raz.");
-      wrongpass = 1;
-      password = null;
+      /*       wrongpass = true;
+      password = null; */
+    });
+};
+
+const autoLogIN = () => {
+  axios
+    .post(urlAutoLogin, {
+      token: localStorage.dinhotoken,
+    })
+    .then((response) => {
+      username = response.data.user;
+      test();
+      /*       statuss = true;
+      wrongpass = false; */
+    });
+};
+
+const logOUT = () => {
+  axios
+    .post(urlLogOut, {
+      token: localStorage.dinhotoken,
+    })
+    .then((response) => {
+      localStorage.removeItem("dinhotoken");
+    })
+    .catch((err) => {
+      console.error(err);
     });
 };
 
@@ -241,6 +274,7 @@ getDataTable().then(data => {
 // CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
 getDataTable();
+autoLogIN();
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
@@ -280,11 +314,12 @@ btnCloseModal.forEach((btn) => {
 
 //Listener for buttons which controls body content.
 btnsHeaderBody.forEach((btn) => {
-  btn.addEventListener("click", openBodyModal);
+  btn.addEventListener("click", openBodyPage);
 });
 
 //////////////////////////////////////////////////////
 btnLoginLogin.addEventListener("click", logIN);
+btnLogOut.addEventListener("click", logOUT);
 
 //Listener for checkbox to show password.
 //////////////////////////////////////////////////////
