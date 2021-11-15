@@ -1,37 +1,55 @@
 "use strict";
 
+//URL Links as constants
 const urlTable = "https://www.dinho.eu/api/table";
 const urlLogin = "https://www.dinho.eu/api/account/login";
 const urlAutoLogin = "https://www.dinho.eu/api/account/autologin";
 const urlLogOut = "https://www.dinho.eu/api/account/logout";
+const urlRegistration = "https://www.dinho.eu/api/account/register";
 
-//Mass selectors.
+//HEADERS
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
 const btnsHeaderBody = document.querySelectorAll(".button_header_body");
-const modals = document.querySelectorAll(".modal");
-const btnCloseModal = document.querySelectorAll(".button-close");
-const bodyPages = document.querySelectorAll(".body-modal");
-
-//The rest.
-const btnLoginLogin = document.getElementById("btn-login-login");
-const modalLogin = document.getElementById("modal-login");
-const overlay = document.querySelector(".overlay");
+const accountDropdown = document.querySelector(".account-dropdown");
+const btnAccount = document.getElementById("btn-account");
 const btnHomeImage = document.querySelector(".image_home");
 const btnRegistration = document.getElementById("btn-registration");
 const btnLogin = document.getElementById("btn-login");
+const btnBet = document.getElementById("btn-bet");
 
+//MODALS
+const modals = document.querySelectorAll(".modal");
+//modalLogin & modalRegistration may be obsolete, check "test" function
+const modalLogin = document.getElementById("modal-login");
+const modalRegistration = document.getElementById("modal-registration");
+const btnCloseModal = document.querySelectorAll(".button-close");
+
+//BODY PAGES
+const bodyPages = document.querySelectorAll(".body-modal");
 const tableBody = document.getElementById("table-body");
 
-//Login
-const inputLoginName = document.getElementById("login-name");
-const inputLoginPwd = document.getElementById("login-password");
-const inputShowPwd = document.getElementById("login-show-pwd");
-const btnAccount = document.getElementById("btn-account");
-const accountDropdown = document.querySelector(".account-dropdown");
-const btnBet = document.getElementById("btn-bet");
+//REGISTRATION
+const inputRegName = document.getElementById("reg-name");
+const inputRegPwd = document.getElementById("reg-password");
+const inputRegConfirmPwd = document.getElementById("reg-confirm-password");
+const inputRegEmail = document.getElementById("reg-email");
+const inputRegChelsea = document.getElementById("reg-chelsea-account");
+const btnRegReg = document.getElementById("btn-reg-reg");
 
 //Logout
 const btnLogOut = document.getElementById("btn-logout");
+
+//LOGIN
+const inputLoginName = document.getElementById("login-name");
+const inputLoginPwd = document.getElementById("login-password");
+const inputShowPwd = document.getElementById("login-show-pwd");
+const btnLoginLogin = document.getElementById("btn-login-login");
+
+//The rest.
+const overlay = document.querySelector(".overlay");
+
+//STATUS VARIABLES
+let loginStatus = true;
 
 //Variables for API
 let username = null;
@@ -41,7 +59,7 @@ let password2 = null;
 let email = null;
 let statuss = false;
 let wrongpass = false;
-let registration = false;
+/* let registration = false; */
 let wrongreg = false;
 let passchanged = false;
 let showforgotpass = false;
@@ -71,13 +89,24 @@ const bodyPagesLoop = function () {
   });
 };
 
-const test = function () {
-  overlay.classList.add("hidden");
-  modalLogin.classList.add("hidden");
-  btnLogin.classList.add("hidden");
-  btnRegistration.classList.add("hidden");
-  btnBet.classList.remove("hidden");
-  accountDropdown.classList.remove("hidden");
+const logHider = function () {
+  if (loginStatus) {
+    if (!overlay.classList.contains("hidden")) {
+      overlay.classList.add("hidden");
+      modalsLoop();
+    }
+    btnRegistration.classList.add("hidden");
+    btnLogin.classList.add("hidden");
+    btnBet.classList.remove("hidden");
+    accountDropdown.classList.remove("hidden");
+  } else {
+    if (overlay.classList.contains("hidden")) {
+      btnRegistration.classList.remove("hidden");
+      btnLogin.classList.remove("hidden");
+      btnBet.classList.add("hidden");
+      accountDropdown.classList.add("hidden");
+    }
+  }
 };
 
 /* //This expression resets all input fields values.
@@ -133,6 +162,8 @@ const getDataTable = () => {
     .then((response) => {
       let data = response.data.data;
 
+      data.length;
+
       data.forEach((row) => {
         let td1 = document.createElement("td");
         let td2 = document.createElement("td");
@@ -175,9 +206,8 @@ const logIN = () => {
     })
     .then((response) => {
       localStorage.setItem("dinhotoken", response.data.token);
-      /*       statuss = true;
-      wrongpass = false; */
-      test();
+      loginStatus = true;
+      logHider();
     })
     .catch(() => {
       alert("Nesprávne Meno alebo Heslo. Skúste prosím ešte raz.");
@@ -191,7 +221,8 @@ const autoLogIN = () => {
     })
     .then((response) => {
       username = response.data.user;
-      test();
+      loginStatus = true;
+      logHider();
     });
 };
 
@@ -206,14 +237,30 @@ const logOUT = () => {
     )
     .then(() => {
       localStorage.removeItem("dinhotoken");
-
-      btnLogin.classList.remove("hidden");
-      btnRegistration.classList.remove("hidden");
-      btnBet.classList.add("hidden");
-      accountDropdown.classList.add("hidden");
+      loginStatus = false;
+      logHider();
     })
     .catch((err) => {
       console.error(err);
+    });
+};
+
+const registration = () => {
+  axios
+    .post(urlRegistration, {
+      username: inputRegName.value,
+      password: inputRegPwd.value,
+      password2: inputRegConfirmPwd.value,
+      email: inputRegEmail.value,
+      cfc_acc: inputRegChelsea.value,
+    })
+    .then((response) => {
+      localStorage.setItem("dinhotoken", response.data.token);
+      loginStatus = true;
+      logHider();
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 
@@ -243,6 +290,7 @@ document.addEventListener("keydown", function (btn) {
   }
 });
 
+// PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
 //Listener for enter to log in.
 document
   .getElementById("modal-login")
@@ -265,6 +313,7 @@ btnsHeaderBody.forEach((btn) => {
 
 //////////////////////////////////////////////////////
 btnLoginLogin.addEventListener("click", logIN);
+btnRegReg.addEventListener("click", registration);
 btnLogOut.addEventListener("click", logOUT);
 
 //Listener for checkbox to show password.
