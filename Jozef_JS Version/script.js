@@ -64,9 +64,9 @@ const modalsLoop = function () {
 
 //Loop through BODY modals to detect which is unhidden.
 const bodyPagesLoop = function () {
-  bodyPages.forEach((modal) => {
-    if (!modal.classList.contains("hidden")) {
-      modal.classList.add("hidden");
+  bodyPages.forEach((page) => {
+    if (!page.classList.contains("hidden")) {
+      page.classList.add("hidden");
     }
   });
 };
@@ -125,43 +125,45 @@ const openBodyPage = function () {
 //----------------------------------------------------------------------------------------------------------------------------
 
 //AXIOS REQUEST. Creates table in HTML with scores.
-const getDataTable = async () => {
-  try {
-    let response = await axios.get(urlTable);
-    let data = response.data.data;
-    let i = 1;
+const getDataTable = () => {
+  let i = 1;
 
-    data.forEach((row) => {
-      let td1 = document.createElement("td");
-      let td2 = document.createElement("td");
-      let td3 = document.createElement("td");
-      let td4 = document.createElement("td");
-      let td5 = document.createElement("td");
-      let tr = document.createElement("tr");
-      let position = document.createTextNode(i);
-      let name = document.createTextNode(row.username);
-      let score = document.createTextNode(row.score);
-      let lrTip = document.createTextNode(row.last_round_tip_name);
-      let lrScore = document.createTextNode(row.last_round_score);
+  axios
+    .get(urlTable)
+    .then((response) => {
+      let data = response.data.data;
 
-      tr.appendChild(td1);
-      td1.appendChild(position);
-      tr.appendChild(td2);
-      td2.appendChild(name);
-      tr.appendChild(td3);
-      td3.appendChild(score);
-      tr.appendChild(td4);
-      td4.appendChild(lrTip);
-      tr.appendChild(td5);
-      td5.appendChild(lrScore);
+      data.forEach((row) => {
+        let td1 = document.createElement("td");
+        let td2 = document.createElement("td");
+        let td3 = document.createElement("td");
+        let td4 = document.createElement("td");
+        let td5 = document.createElement("td");
+        let tr = document.createElement("tr");
+        let position = document.createTextNode(i);
+        let name = document.createTextNode(row.username);
+        let score = document.createTextNode(row.score);
+        let lrTip = document.createTextNode(row.last_round_tip_name);
+        let lrScore = document.createTextNode(row.last_round_score);
 
-      tableBody.appendChild(tr);
+        tr.appendChild(td1);
+        td1.appendChild(position);
+        tr.appendChild(td2);
+        td2.appendChild(name);
+        tr.appendChild(td3);
+        td3.appendChild(score);
+        tr.appendChild(td4);
+        td4.appendChild(lrTip);
+        tr.appendChild(td5);
+        td5.appendChild(lrScore);
+        tableBody.appendChild(tr);
 
-      i++;
+        i++;
+      });
+    })
+    .catch((err) => {
+      console.error(err);
     });
-  } catch (err) {
-    console.error(err);
-  }
 };
 
 //AXIOS REQUEST. Makes login works. Post "username" & "password" and returns token for saving login.
@@ -179,8 +181,6 @@ const logIN = () => {
     })
     .catch(() => {
       alert("Nesprávne Meno alebo Heslo. Skúste prosím ešte raz.");
-      /*       wrongpass = true;
-      password = null; */
     });
 };
 
@@ -192,84 +192,30 @@ const autoLogIN = () => {
     .then((response) => {
       username = response.data.user;
       test();
-      /*       statuss = true;
-      wrongpass = false; */
     });
 };
 
 const logOUT = () => {
   axios
-    .post(urlLogOut, {
-      token: localStorage.dinhotoken,
-    })
-    .then((response) => {
+    .post(
+      urlLogOut,
+      { token: localStorage.dinhotoken },
+      {
+        headers: { Authorization: "Token " + localStorage.dinhotoken },
+      }
+    )
+    .then(() => {
       localStorage.removeItem("dinhotoken");
+
+      btnLogin.classList.remove("hidden");
+      btnRegistration.classList.remove("hidden");
+      btnBet.classList.add("hidden");
+      accountDropdown.classList.add("hidden");
     })
     .catch((err) => {
       console.error(err);
     });
 };
-
-//First try - axios GET request.
-/////////////////////////////////////////////////////
-/* axios
-  .get(urlLogin, {
-    headers: { "Access-Control-Allow-Origin": "*" },
-  })
-  .then(response => {
-    console.log(response);
-  }); */
-
-//Second try- axios GET request using IIFE logic.
-/////////////////////////////////////////////////////
-/* const getData = async () => {
-  try {
-    const response = await axios.get(urlLogin);
-    return response.data.data;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-(async () => {
-  const test = await getData();
-  console.log(test);
-})(); */
-
-//Third try - axios GET request using .then logic.
-/////////////////////////////////////////////////////
-/* const getData = async () => {
-  try {
-    const response = await axios.get(urlLogin);
-    return response.data.data;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-getData().then(data =>
-  data.forEach(row => {
-    console.log(row.username);
-  })
-); */
-
-//Fourth try - axios GET request using .then logic.
-/////////////////////////////////////////////////////
-/* const getDataTable = async () => {
-  try {
-    const response = await axios.get(urlLogin);
-    return response.data.data;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-getDataTable().then(data => {
-  console.log(data);
-  data.forEach(row => {
-    console.log(row.username);
-  });
-}); */
 
 // CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
