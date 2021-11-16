@@ -155,41 +155,40 @@ const openBodyPage = function () {
 
 //AXIOS REQUEST. Creates table in HTML with scores.
 const getDataTable = () => {
-  let i = 1;
-
+  let positionCounter = 1;
+  let tdTable = [];
+  //Axios asynchronous request for getting data for table.
   axios
     .get(urlTable)
     .then((response) => {
       let data = response.data.data;
-
-      data.length;
-
+      //For each loop, for each player create row in table & insert values.
       data.forEach((row) => {
-        let td1 = document.createElement("td");
-        let td2 = document.createElement("td");
-        let td3 = document.createElement("td");
-        let td4 = document.createElement("td");
-        let td5 = document.createElement("td");
         let tr = document.createElement("tr");
-        let position = document.createTextNode(i);
-        let name = document.createTextNode(row.username);
-        let score = document.createTextNode(row.score);
-        let lrTip = document.createTextNode(row.last_round_tip_name);
-        let lrScore = document.createTextNode(row.last_round_score);
+        let tableRows = [
+          { key: positionCounter },
+          { key: row.username },
+          { key: row.score },
+          { key: row.last_round_tip_name },
+          { key: row.last_round_score },
+        ];
 
-        tr.appendChild(td1);
-        td1.appendChild(position);
-        tr.appendChild(td2);
-        td2.appendChild(name);
-        tr.appendChild(td3);
-        td3.appendChild(score);
-        tr.appendChild(td4);
-        td4.appendChild(lrTip);
-        tr.appendChild(td5);
-        td5.appendChild(lrScore);
+        //IIFE loop for creating variables based on number of columns neccessary to paste into table.
+        (function createTdVariables() {
+          for (let i = 0; i <= tableRows.length - 1; i++) {
+            tdTable[i] = document.createElement("td");
+          }
+          return tdTable;
+        })();
+
+        //Loop for pasting tds and its values into table.
+        for (let i = 0; i <= tableRows.length - 1; i++) {
+          tr.appendChild(tdTable[i]);
+          tdTable[i].appendChild(document.createTextNode(tableRows[i].key));
+        }
+
         tableBody.appendChild(tr);
-
-        i++;
+        positionCounter++;
       });
     })
     .catch((err) => {
@@ -223,6 +222,8 @@ const autoLogIN = () => {
       username = response.data.user;
       loginStatus = true;
       logHider();
+    }).catch((err) => {
+      console.log(err)
     });
 };
 
