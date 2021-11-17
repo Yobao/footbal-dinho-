@@ -6,6 +6,7 @@ const urlLogin = "https://www.dinho.eu/api/account/login";
 const urlAutoLogin = "https://www.dinho.eu/api/account/autologin";
 const urlLogOut = "https://www.dinho.eu/api/account/logout";
 const urlRegistration = "https://www.dinho.eu/api/account/register";
+const urlChangePassword = "https://www.dinho.eu/api/change-password/";
 
 //HEADERS
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
@@ -16,12 +17,15 @@ const btnHomeImage = document.querySelector(".image_home");
 const btnRegistration = document.getElementById("btn-registration");
 const btnLogin = document.getElementById("btn-login");
 const btnBet = document.getElementById("btn-bet");
+const btnLogOut = document.getElementById("btn-logout");
+const btnChange = document.getElementById("btn-change");
 
 //MODALS
 const modals = document.querySelectorAll(".modal");
 //modalLogin & modalRegistration may be obsolete, check "test" function
 const modalLogin = document.getElementById("modal-login");
 const modalRegistration = document.getElementById("modal-registration");
+const modalChangePassword = document.getElementById("modal-change-password");
 const btnCloseModal = document.querySelectorAll(".button-close");
 
 //BODY PAGES
@@ -36,17 +40,20 @@ const inputRegEmail = document.getElementById("reg-email");
 const inputRegChelsea = document.getElementById("reg-chelsea-account");
 const btnRegReg = document.getElementById("btn-reg-reg");
 
-//Logout
-const btnLogOut = document.getElementById("btn-logout");
-
 //LOGIN
 const inputLoginName = document.getElementById("login-name");
 const inputLoginPwd = document.getElementById("login-password");
-const inputShowPwd = document.getElementById("login-show-pwd");
+const loginShowPwd = document.getElementById("login_show_pwd");
 const btnLoginLogin = document.getElementById("btn-login-login");
+
+//CHANGE PASSWORD
+const inputChangePassword1 = document.getElementById("change-password1");
+const inputChangePassword2 = document.getElementById("change-password2");
+const btnChangeChange = document.getElementById("btn-change-change");
 
 //The rest.
 const overlay = document.querySelector(".overlay");
+const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
 
 //STATUS VARIABLES
 let loginStatus = true;
@@ -122,7 +129,6 @@ const openModal = function () {
       `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
     )
     .classList.remove("hidden");
-  /*   inputClear(); */
   overlay.classList.remove("hidden");
 };
 
@@ -148,6 +154,19 @@ const openBodyPage = function () {
       `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
     )
     .classList.remove("hidden");
+};
+
+const pwdChangeLook = function () {
+  let pwdToChangeLook = document.querySelectorAll(
+    `.input_${this.id.slice(0, this.id.indexOf("_"))}_password`
+  );
+  pwdToChangeLook.forEach((input) => {
+    if (input.type === "password") {
+      input.type = "text";
+    } else {
+      input.type = "password";
+    }
+  });
 };
 
 // AXIOS CALL SECTION
@@ -222,8 +241,9 @@ const autoLogIN = () => {
       username = response.data.user;
       loginStatus = true;
       logHider();
-    }).catch((err) => {
-      console.log(err)
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 
@@ -265,6 +285,23 @@ const registration = () => {
     });
 };
 
+const passwordChange = () => {
+  axios
+    .put(
+      urlChangePassword,
+      {
+        old_password: inputChangePassword1.value,
+        new_password: inputChangePassword2.value,
+      },
+      {
+        headers: { Authorization: "Token " + localStorage.dinhotoken },
+      }
+    )
+    .then(() => {
+      logHider();
+    });
+};
+
 // CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
 getDataTable();
@@ -291,16 +328,29 @@ document.addEventListener("keydown", function (btn) {
   }
 });
 
-// PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
+/* // PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
 //Listener for enter to log in.
 document
-  .getElementById("modal-login")
+  .getElementById(`modal-login`)
   .addEventListener("keydown", function (btn) {
     if (btn.keyCode === 13) {
       btn.preventDefault();
       btnLoginLogin.click();
     }
+  }); */
+
+// PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
+//Listener for enter to log in.
+modals.forEach((modal) => {
+  modal.addEventListener("keydown", function (btn) {
+    if (btn.keyCode === 13) {
+      btn.preventDefault();
+      modal.id === "modal-login" ? btnLoginLogin.click() : null;
+      modal.id === "modal-change" ? btnChangeChange.click() : null;
+      modal.id === "modal-registration" ? btnRegReg.click() : null;
+    }
   });
+});
 
 //Listener for hiding "overlay" & active modal window after clicking on "X" button.
 btnCloseModal.forEach((btn) => {
@@ -312,17 +362,15 @@ btnsHeaderBody.forEach((btn) => {
   btn.addEventListener("click", openBodyPage);
 });
 
+//Buttons listeners
 //////////////////////////////////////////////////////
 btnLoginLogin.addEventListener("click", logIN);
 btnRegReg.addEventListener("click", registration);
 btnLogOut.addEventListener("click", logOUT);
+btnChangeChange.addEventListener("click", passwordChange);
 
 //Listener for checkbox to show password.
 //////////////////////////////////////////////////////
-inputShowPwd.addEventListener("click", function () {
-  if (inputLoginPwd.type === "password") {
-    inputLoginPwd.type = "text";
-  } else {
-    inputLoginPwd.type = "password";
-  }
+inputsShowPassword.forEach((btn) => {
+  btn.addEventListener("click", pwdChangeLook);
 });

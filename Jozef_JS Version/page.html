@@ -54,8 +54,14 @@
                 Účet
               </button>
               <div class="account-dropdown-list">
-                <a class="button_account">Profil</a>
-                <a class="button_account">Zmena hesla</a>
+                <a id="btn-profil" class="button_account btn_account_profil"
+                  >Profil</a
+                >
+                <a
+                  id="btn-change"
+                  class="button_header_modal button_account btn_account_change"
+                  >Zmena hesla</a
+                >
                 <a id="btn-logout" class="button_account btn_account_logout"
                   >Odhlásenie</a
                 >
@@ -107,7 +113,7 @@
           id="login-name"
           class="input_login_name"
           type="text"
-          placeholder="Napíšte Meno"
+          placeholder="Zadajte Meno"
         />
       </div>
       <div id="" class="login-password">
@@ -116,16 +122,12 @@
           id="login-password"
           class="input_login_password"
           type="password"
-          placeholder="Napíšte Heslo"
+          placeholder="Zadajte Heslo"
         />
       </div>
-      <div class="login-show-pwd">
-        <p class="login_show_pwd_text">Ukáž heslo</p>
-        <input
-          id="login-show-pwd"
-          class="input_login_show_pwd"
-          type="checkbox"
-        />
+      <div class="show-pwd">
+        <p class="show_pwd_text">Ukáž heslo</p>
+        <input id="login_show_pwd" class="input_show_pwd" type="checkbox" />
       </div>
       <div id="" class="login-btns">
         <button id="btn-login-login" class="button_login button_login_login">
@@ -149,36 +151,93 @@
       <h1>Registrácia</h1>
       <div id="" class="reg-name">
         <p>Meno</p>
-        <input id="reg-name" class="input_reg_name" />
+        <input
+          id="reg-name"
+          class="input_reg_name"
+          placeholder="Zadajte Meno"
+        />
       </div>
       <div id="" class="reg-password">
         <p>Heslo</p>
-        <input id="reg-password" class="input_reg_password" />
+        <input
+          id="reg-password"
+          class="input_reg_password"
+          type="password"
+          placeholder="Heslo aspoň 6 znakov"
+        />
       </div>
       <div id="" class="reg-confirm-password">
-        <p>Znovu zadaj heslo</p>
-        <input id="reg-confirm-password" class="input_reg_confirm_password" />
+        <p>Potvrdenie Hesla</p>
+        <input
+          id="reg-confirm-password"
+          class="input_reg_password"
+          type="password"
+          placeholder="Heslo aspoň 6 znakov"
+        />
       </div>
       <div id="" class="reg-email">
         <p>Email</p>
-        <input id="reg-email" class="input_reg_email" />
+        <input
+          id="reg-email"
+          class="input_reg_email"
+          placeholder="Zadajte Email"
+        />
         <p class="email_info">Email nieje povinný. Slúži na reset hesla.</p>
       </div>
       <div id="" class="reg-chelsea-account">
         <p>chelsea-fc.cz účet</p>
-        <input id="reg-chelsea-account" class="input_reg_chelsea_account" />
+        <input
+          id="reg-chelsea-account"
+          class="input_reg_chelsea_account"
+          placeholder="Zadajte Chelsea účet"
+        />
       </div>
-      <div id="" class="div reg btns">
+      <div class="show-pwd">
+        <p class="show_pwd_text">Ukáž heslo</p>
+        <input id="reg_show_pwd" class="input_show_pwd" type="checkbox" />
+      </div>
+      <div id="" class="reg-button">
         <button id="btn-reg-reg" class="button_reg button_reg_reg">
           Zaregistrovať
         </button>
       </div>
     </div>
 
-    <!-- MENU MODAL -->
+    <!-- CHANGE PASSWORD MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal" class="modal modal-menu hidden">
-      <button id="close-menu" class="button-close menu">&times;</button>
+    <div id="modal-change" class="modal modal-change hidden">
+      <button id="close-change" class="button-close change">&times;</button>
+      <h1>Zmena Hesla</h1>
+      <div id="" class="change-password1">
+        <p>Staré Heslo</p>
+        <input
+          id="change-password1"
+          class="input_change_password"
+          type="password"
+          placeholder="Zadajte staré heslo"
+        />
+      </div>
+      <div id="" class="change-password2">
+        <p>Nové Heslo</p>
+        <input
+          id="change-password2"
+          class="input_change_password"
+          type="password"
+          placeholder="Heslo aspoň 6 znakov"
+        />
+      </div>
+      <div class="show-pwd">
+        <p class="show_pwd_text">Ukáž heslo</p>
+        <input id="change_show_pwd" class="input_show_pwd" type="checkbox" />
+      </div>
+      <div id="" class="change-button">
+        <button
+          id="btn-change-change"
+          class="button_change button_change_change"
+        >
+          Zmeniť Heslo
+        </button>
+      </div>
     </div>
 
     <!-- OVERLAY MODAL -->
