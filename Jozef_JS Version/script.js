@@ -129,6 +129,9 @@ const openModal = function () {
   );
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
+  navigator.userAgentData.mobile
+    ? (modal.style.position = "absolute")
+    : (modal.style.position = "fixed");
 };
 
 //Function expression to hide modal and "overlay" div.
