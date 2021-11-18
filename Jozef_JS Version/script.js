@@ -129,6 +129,7 @@ const openModal = function () {
   );
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
+  alert(navigator.userAgentData.mobile);
   navigator.userAgentData.mobile
     ? (modal.style.position = "absolute")
     : (modal.style.position = "fixed");
