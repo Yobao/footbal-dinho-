@@ -54,9 +54,10 @@
                 Účet
               </button>
               <div class="account-dropdown-list">
-                <a id="btn-profil" class="button_account btn_account_profil"
-                  >Profil</a
-                >
+                <a
+                  id="btn-user"
+                  class="button_header_body button_account btn_account_profil"
+                ></a>
                 <a
                   id="btn-change"
                   class="button_header_modal button_account btn_account_change"
@@ -93,10 +94,18 @@
           </table>
         </div>
         <div id="body-tip" class="body-modal modal-tip body-tip hidden"></div>
-        <div
-          id="body-user"
-          class="body-modal modal-user body-user hidden"
-        ></div>
+        <div id="body-user" class="body-modal modal-user body-user hidden">
+          <table id="user_table" class="table_table" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Zápas</th>
+                <th>Dátum</th>
+                <th>Tip</th>
+                <th>Body</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -111,7 +120,7 @@
         <p>Meno</p>
         <input
           id="login-name"
-          class="input_login_name"
+          class="input_login_name inputs_clear"
           type="text"
           placeholder="Zadajte Meno"
         />
@@ -120,7 +129,7 @@
         <p>Heslo</p>
         <input
           id="login-password"
-          class="input_login_password"
+          class="input_login_password inputs_clear"
           type="password"
           placeholder="Zadajte Heslo"
         />
@@ -153,7 +162,7 @@
         <p>Meno</p>
         <input
           id="reg-name"
-          class="input_reg_name"
+          class="input_reg_name inputs_clear"
           placeholder="Zadajte Meno"
         />
       </div>
@@ -161,7 +170,7 @@
         <p>Heslo</p>
         <input
           id="reg-password"
-          class="input_reg_password"
+          class="input_reg_password inputs_clear"
           type="password"
           placeholder="Heslo aspoň 6 znakov"
         />
@@ -170,7 +179,7 @@
         <p>Potvrdenie Hesla</p>
         <input
           id="reg-confirm-password"
-          class="input_reg_password"
+          class="input_reg_password inputs_clear"
           type="password"
           placeholder="Heslo aspoň 6 znakov"
         />
@@ -179,7 +188,7 @@
         <p>Email</p>
         <input
           id="reg-email"
-          class="input_reg_email"
+          class="input_reg_email inputs_clear"
           placeholder="Zadajte Email"
         />
         <p class="email_info">Email nieje povinný. Slúži na reset hesla.</p>
@@ -188,7 +197,7 @@
         <p>chelsea-fc.cz účet</p>
         <input
           id="reg-chelsea-account"
-          class="input_reg_chelsea_account"
+          class="input_reg_chelsea_account inputs_clear"
           placeholder="Zadajte Chelsea účet"
         />
       </div>
@@ -212,7 +221,7 @@
         <p>Staré Heslo</p>
         <input
           id="change-password1"
-          class="input_change_password"
+          class="input_change_password inputs_clear"
           type="password"
           placeholder="Zadajte staré heslo"
         />
@@ -221,7 +230,7 @@
         <p>Nové Heslo</p>
         <input
           id="change-password2"
-          class="input_change_password"
+          class="input_change_password inputs_clear"
           type="password"
           placeholder="Heslo aspoň 6 znakov"
         />

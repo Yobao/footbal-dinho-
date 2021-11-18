@@ -7,6 +7,8 @@ const urlAutoLogin = "https://www.dinho.eu/api/account/autologin";
 const urlLogOut = "https://www.dinho.eu/api/account/logout";
 const urlRegistration = "https://www.dinho.eu/api/account/register";
 const urlChangePassword = "https://www.dinho.eu/api/change-password/";
+const urlPlayers = "https://www.dinho.eu/api/players";
+const urlUserTips = "https://www.dinho.eu/api/tips";
 
 //HEADERS
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
@@ -19,6 +21,7 @@ const btnLogin = document.getElementById("btn-login");
 const btnBet = document.getElementById("btn-bet");
 const btnLogOut = document.getElementById("btn-logout");
 const btnChange = document.getElementById("btn-change");
+const btnUser = document.getElementById("btn-user");
 
 //MODALS
 const modals = document.querySelectorAll(".modal");
@@ -54,12 +57,13 @@ const btnChangeChange = document.getElementById("btn-change-change");
 //The rest.
 const overlay = document.querySelector(".overlay");
 const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
+const inputsToClear = document.querySelectorAll(".inputs_clear");
 
 //STATUS VARIABLES
 let loginStatus = true;
+let userName = null;
 
 //Variables for API
-let username = null;
 let cfc_username = "";
 let password = null;
 let password2 = null;
@@ -77,6 +81,14 @@ let wrongresetpass = false;
 
 // FUNCTION EXPRESSION CONSTANTS/VARIABLES
 //----------------------------------------------------------------------------------------------------------------------------
+
+//Variable for accessing correct modal.
+let modalCurrent = function (self) {
+  let modal = document.querySelector(
+    `.modal-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
+  );
+  return modal;
+};
 
 //Loop through modals to detect which is unhidden.
 const modalsLoop = function () {
@@ -116,47 +128,37 @@ const logHider = function () {
   }
 };
 
-/* //This expression resets all input fields values.
-const inputClear = function () {
-  inputLoginName.value = "";
-  inputLoginPwd.value = "";
-}; */
+const clearInputs = function () {
+  inputsToClear.forEach((input) => {
+    input.value = "";
+  });
+};
 
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
-  let modal = document.querySelector(
-    `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
-  );
-  modal.classList.remove("hidden");
+  modalCurrent(this).classList.remove("hidden");
   overlay.classList.remove("hidden");
-  alert(navigator.userAgentData.mobile);
+  //Check if device is mobile/pc and set centering of view accordingly.
   navigator.userAgentData.mobile
-    ? (modal.style.position = "absolute")
-    : (modal.style.position = "fixed");
+    ? (modalCurrent(this).style.position = "absolute")
+    : (modalCurrent(this).style.position = "fixed");
 };
 
 //Function expression to hide modal and "overlay" div.
 const closeModal = function () {
   if (this.className != "overlay") {
-    document
-      .querySelector(
-        `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
-      )
-      .classList.add("hidden");
+    modalCurrent(this).classList.add("hidden");
   } else {
     modalsLoop();
   }
   overlay.classList.add("hidden");
+  clearInputs();
 };
 
 //Function expression to show modal and "overlay" div.
 const openBodyPage = function () {
   bodyPagesLoop();
-  document
-    .querySelector(
-      `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
-    )
-    .classList.remove("hidden");
+  modalCurrent(this).classList.remove("hidden");
 };
 
 const pwdChangeLook = function () {
@@ -175,8 +177,8 @@ const pwdChangeLook = function () {
 // AXIOS CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
 
-//AXIOS REQUEST. Creates table in HTML with scores.
-const getDataTable = () => {
+//IIFE which creates table in HTML with scores.
+(function () {
   let positionCounter = 1;
   let tdTable = [];
   //Axios asynchronous request for getting data for table.
@@ -216,7 +218,72 @@ const getDataTable = () => {
     .catch((err) => {
       console.error(err);
     });
-};
+})();
+
+//IIFE FOR AUTOLOGIN.
+(function () {
+  axios
+    .post(urlAutoLogin, {
+      token: localStorage.dinhotoken,
+    })
+    .then((response) => {
+      btnUser.innerHTML = response.data.user;
+      loginStatus = true;
+      logHider();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+})();
+
+console.log(btnUser.innerText);
+
+//IIFE which creates table in HTML with scores.
+function getProfileTable() {
+  let positionCounter = 1;
+  let tdTable = [];
+  //Axios asynchronous request for getting data for table.
+  axios
+    .get(`${urlUserTips}?u=-9&cu=${btnUser.innerHTML.value}`, {
+      headers: { Authorization: "Token " + localStorage.dinhotoken },
+    })
+    .then((response) => {
+      let data = response.data;
+      //For each loop, for each player create row in table & insert values.
+
+      console.log(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+/* //IIFE which creates table in HTML with scores.
+function getPlayersBet() {
+  let positionCounter = 1;
+  let tdTable = [];
+  //Axios asynchronous request for getting data for table.
+  axios
+    .get(urlPlayers, {
+      params: {
+        t: 1,
+        m: 1,
+      },
+
+      headers: { Authorization: "Token " + localStorage.dinhotoken },
+    })
+    .then((response) => {
+      let data = response.data;
+      //For each loop, for each player create row in table & insert values.
+
+      console.log(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+} */
+
+getProfileTable();
 
 //AXIOS REQUEST. Makes login works. Post "username" & "password" and returns token for saving login.
 const logIN = () => {
@@ -235,21 +302,7 @@ const logIN = () => {
     });
 };
 
-const autoLogIN = () => {
-  axios
-    .post(urlAutoLogin, {
-      token: localStorage.dinhotoken,
-    })
-    .then((response) => {
-      username = response.data.user;
-      loginStatus = true;
-      logHider();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
+//AXIOS REQUEST. Logout from page.
 const logOUT = () => {
   axios
     .post(
@@ -269,6 +322,7 @@ const logOUT = () => {
     });
 };
 
+//AXIOS REQUEST. Registration to page. Sends values from inputs and returns token.
 const registration = () => {
   axios
     .post(urlRegistration, {
@@ -288,6 +342,7 @@ const registration = () => {
     });
 };
 
+//AXIOS REQUEST. Changes passwor for logged user.
 const passwordChange = () => {
   axios
     .put(
@@ -307,8 +362,6 @@ const passwordChange = () => {
 
 // CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
-getDataTable();
-autoLogIN();
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
@@ -330,17 +383,6 @@ document.addEventListener("keydown", function (btn) {
     overlay.classList.add("hidden");
   }
 });
-
-/* // PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
-//Listener for enter to log in.
-document
-  .getElementById(`modal-login`)
-  .addEventListener("keydown", function (btn) {
-    if (btn.keyCode === 13) {
-      btn.preventDefault();
-      btnLoginLogin.click();
-    }
-  }); */
 
 // PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
 //Listener for enter to log in.
