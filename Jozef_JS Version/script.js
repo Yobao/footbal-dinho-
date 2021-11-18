@@ -124,11 +124,10 @@ const inputClear = function () {
 
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
-  document
-    .querySelector(
-      `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
-    )
-    .classList.remove("hidden");
+  let modal = document.querySelector(
+    `.modal-${this.id.slice(this.id.indexOf("-") + 1, this.id.length)}`
+  );
+  modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 };
 

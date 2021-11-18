@@ -15,14 +15,14 @@
 }
 
 html {
-  height: 100%;
-  width: 100%;
+  height: auto;
+  width: auto;
   box-sizing: border-box;
 }
 
 body {
-  height: auto;
-  width: auto;
+  height: 100%;
+  width: 100%;
   display: block;
   position: relative;
 }
@@ -74,7 +74,7 @@ input {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
