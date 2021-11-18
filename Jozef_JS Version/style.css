@@ -330,6 +330,22 @@ input {
   margin: auto;
 }
 
+.body-table-pages {
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn_table_pages {
+  height: 40px;
+  width: 40px;
+  margin: 10px;
+
+  cursor: pointer;
+  border-radius: 1.5rem;
+  text-align: center;
+}
+
 /* TABLE */
 /* ---------------------------------------------------------------------- */
 table {

@@ -34,6 +34,8 @@ const btnCloseModal = document.querySelectorAll(".button-close");
 //BODY PAGES
 const bodyPages = document.querySelectorAll(".body-modal");
 const tableBody = document.getElementById("table-body");
+const tableUser = document.getElementById("table-user");
+const tableBodyPages = document.getElementById("body-table-pages");
 
 //REGISTRATION
 const inputRegName = document.getElementById("reg-name");
@@ -185,7 +187,9 @@ const pwdChangeLook = function () {
   axios
     .get(urlTable)
     .then((response) => {
+      /////////////// MAIN TABLE PART ///////////////
       let data = response.data.data;
+      let matches = response.data.matches;
       //For each loop, for each player create row in table & insert values.
       data.forEach((row) => {
         let tr = document.createElement("tr");
@@ -198,7 +202,7 @@ const pwdChangeLook = function () {
         ];
 
         //IIFE loop for creating variables based on number of columns neccessary to paste into table.
-        (function createTdVariables() {
+        (() => {
           for (let i = 0; i <= tableRows.length - 1; i++) {
             tdTable[i] = document.createElement("td");
           }
@@ -214,76 +218,79 @@ const pwdChangeLook = function () {
         tableBody.appendChild(tr);
         positionCounter++;
       });
+
+      /////////////// PAGING TABLE PART ///////////////
+      let i = 1;
+      matches.forEach((row) => {
+        let btn = document.createElement("button");
+        //Loop for pasting tds and its values into table.
+        tableBodyPages.appendChild(btn);
+        btn.innerText = i;
+        btn.classList.add("btn_table_pages");
+        i += 1;
+      });
     })
     .catch((err) => {
       console.error(err);
     });
 })();
 
-//IIFE FOR AUTOLOGIN.
-(function () {
-  axios
-    .post(urlAutoLogin, {
+//IIFE async-await FOR AUTOLOGIN + user bet history table creation.
+(async () => {
+  try {
+    let response = await axios.post(urlAutoLogin, {
       token: localStorage.dinhotoken,
-    })
-    .then((response) => {
-      btnUser.innerHTML = response.data.user;
-      loginStatus = true;
-      logHider();
-    })
-    .catch((err) => {
-      console.log(err);
     });
+    userName = response.data.user;
+    btnUser.innerText = userName;
+    loginStatus = true;
+    logHider();
+
+    (() => {
+      //Axios asynchronous request for getting data for table.
+      axios
+        .get(`${urlUserTips}?u=-9&cu=${userName}`, {
+          headers: { Authorization: "Token " + localStorage.dinhotoken },
+        })
+        .then((response) => {
+          let data = response.data.data;
+          let tdTable = [];
+          //For each loop, for each match create row in table & insert values.
+          data.forEach((row) => {
+            let tr = document.createElement("tr");
+            let tableRows = [
+              { key: row.match },
+              { key: row.start },
+              { key: row.tip },
+              { key: row.score },
+            ];
+
+            //IIFE loop for creating variables based on number of columns neccessary to paste into table.
+            (() => {
+              for (let i = 0; i <= tableRows.length - 1; i++) {
+                tdTable[i] = document.createElement("td");
+              }
+              return tdTable;
+            })();
+
+            //Loop for pasting tds and its values into table.
+            for (let i = 0; i <= tableRows.length - 1; i++) {
+              tr.appendChild(tdTable[i]);
+              tdTable[i].appendChild(document.createTextNode(tableRows[i].key));
+            }
+
+            tableUser.appendChild(tr);
+          });
+          //For each loop, for each player create row in table & insert values.
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    })();
+  } catch (err) {
+    console.error(err);
+  }
 })();
-
-console.log(btnUser.innerText);
-
-//IIFE which creates table in HTML with scores.
-function getProfileTable() {
-  let positionCounter = 1;
-  let tdTable = [];
-  //Axios asynchronous request for getting data for table.
-  axios
-    .get(`${urlUserTips}?u=-9&cu=${btnUser.innerHTML.value}`, {
-      headers: { Authorization: "Token " + localStorage.dinhotoken },
-    })
-    .then((response) => {
-      let data = response.data;
-      //For each loop, for each player create row in table & insert values.
-
-      console.log(data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
-
-/* //IIFE which creates table in HTML with scores.
-function getPlayersBet() {
-  let positionCounter = 1;
-  let tdTable = [];
-  //Axios asynchronous request for getting data for table.
-  axios
-    .get(urlPlayers, {
-      params: {
-        t: 1,
-        m: 1,
-      },
-
-      headers: { Authorization: "Token " + localStorage.dinhotoken },
-    })
-    .then((response) => {
-      let data = response.data;
-      //For each loop, for each player create row in table & insert values.
-
-      console.log(data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-} */
-
-getProfileTable();
 
 //AXIOS REQUEST. Makes login works. Post "username" & "password" and returns token for saving login.
 const logIN = () => {
@@ -384,7 +391,7 @@ document.addEventListener("keydown", function (btn) {
   }
 });
 
-// PREROBIT !!!!!!!!!!!! WHAT IF REGISTRATION IS OPENED ????
+// PREROBIT !!!!!!!!!!!! MAS NA VIAC AKO NA TAKE POSNE KODY :D
 //Listener for enter to log in.
 modals.forEach((modal) => {
   modal.addEventListener("keydown", function (btn) {
