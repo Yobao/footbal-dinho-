@@ -33,6 +33,12 @@ h1 {
   background-color: inherit;
 }
 
+h2 {
+  margin: 20px;
+  text-align: center;
+  background-color: inherit;
+}
+
 p {
   margin-left: 5px;
   background-color: inherit;
@@ -330,10 +336,20 @@ input {
   margin: auto;
 }
 
+.body-table-round {
+  text-align: center;
+}
+
 .body-table-pages {
   display: inline-block;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.body-table-info {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .btn_table_pages {
@@ -344,6 +360,18 @@ input {
   cursor: pointer;
   border-radius: 1.5rem;
   text-align: center;
+}
+.btn_table_pages_active {
+  background-color: rgb(85, 174, 0);
+}
+
+.btn_table_pages:hover {
+  background-color: rgb(85, 174, 0);
+}
+
+.btn_show_specific_user:hover {
+  background-color: yellow;
+  cursor: pointer;
 }
 
 /* TABLE */

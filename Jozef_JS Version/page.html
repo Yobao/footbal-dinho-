@@ -53,7 +53,7 @@
               >
                 Účet
               </button>
-              <div class="account-dropdown-list">
+              <div id="account-dropdown-list" class="account-dropdown-list">
                 <a
                   id="btn-user"
                   class="button_header_body button_account btn_account_profil"
@@ -80,7 +80,11 @@
           <a> <img class="image_instructions" src="Main.png" /> </a>
         </div>
         <div id="body-table" class="body-modal modal-table body-table hidden">
+          <div id="body-table-round" class="body-table-round">
+            <h3>Poradové číslo kola</h3>
+          </div>
           <div id="body-table-pages" class="body-table-pages"></div>
+          <div id="body-table-info" class="body-table-info"></div>
           <table id="score_table" class="table_table" cellspacing="0">
             <thead>
               <tr>
@@ -96,6 +100,9 @@
         </div>
         <div id="body-tip" class="body-modal modal-tip body-tip hidden"></div>
         <div id="body-user" class="body-modal modal-user body-user hidden">
+          <div id="body-current-user-name" class="body-current-user-name">
+            <h2 id="body_current_user_name"></h2>
+          </div>
           <table id="user_table" class="table_table" cellspacing="0">
             <thead>
               <tr>
@@ -105,7 +112,26 @@
                 <th>Body</th>
               </tr>
             </thead>
-            <tbody id="table-user"></tbody>
+            <tbody id="table-user-current"></tbody>
+          </table>
+        </div>
+        <div
+          id="body-user-other"
+          class="body-modal modal-user-other body-user-other hidden"
+        >
+          <div id="body-other-user-name" class="body-other-user-name">
+            <h2 id="body_other_user_name"></h2>
+          </div>
+          <table id="user_table" class="table_table" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Zápas</th>
+                <th>Dátum</th>
+                <th>Tip</th>
+                <th>Body</th>
+              </tr>
+            </thead>
+            <tbody id="table-user-other"></tbody>
           </table>
         </div>
       </div>
