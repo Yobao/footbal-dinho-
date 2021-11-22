@@ -168,12 +168,7 @@ const openBodyPage = function (huga) {
   //Variable for "this" keyword.
   let thisElement;
   bodyPagesLoop();
-  if (typeof this === "undefined") {
-    thisElement = huga;
-  } else {
-    thisElement = this;
-  }
-
+  typeof this === "undefined" ? (thisElement = huga) : (thisElement = this);
   modalCurrent(thisElement).classList.remove("hidden");
   if (thisElement.id === "btn-table") tableScoreFinal();
 };
@@ -257,7 +252,7 @@ async function tableScoreFinal(roundVariable) {
       for (let i = 0; i <= tableColumns.length - 1; i++) {
         tr.appendChild(tdTable[i]);
         if (tableColumns[i].key === row.username) {
-          tdTable[i].setAttribute("value", row.username);
+          tdTable[i].setAttribute("value", row.id);
           tdTable[i].setAttribute("id", "btn-user-other");
           tdTable[i].classList.add("btn_show_specific_user");
         }
@@ -291,11 +286,12 @@ async function tableScoreFinal(roundVariable) {
       });
     }
 
+    //Event listener, after clicking on the name of user in the table, show specific user tip history.
     document.querySelectorAll(".btn_show_specific_user").forEach((user) => {
       user.addEventListener("click", function () {
-        let user = this.getAttribute("value");
-        createUserTable(user, userOtherName, tableUserOther);
-        openBodyPage(this);
+        let userID = this.getAttribute("value");
+        let user = this.innerText;
+        createUserTable(user, userID, userOtherName, tableUserOther, this);
       });
     });
   } catch (err) {
@@ -304,26 +300,26 @@ async function tableScoreFinal(roundVariable) {
 }
 
 //FUNCTION to show table for each user after clicking on name in the table.
-function createUserTable(userName, userNameTitle, userTable) {
+function createUserTable(userName, userID, userNameTitle, userTable, self) {
+  //Deletes all rows in table.
+  while (userTable.firstChild) {
+    userTable.removeChild(userTable.firstChild);
+  }
+  //Deletes title text of round.
+  while (userNameTitle.firstChild) {
+    userNameTitle.removeChild(userNameTitle.firstChild);
+  }
+
   //Axios asynchronous request for getting data for user table.
   axios
     .get(
-      `${urlUserTips}?u=-9&cu=${userName}` /* , {
+      `${urlUserTips}?u=${userID}&cu=${userName}` /* , {
       headers: { Authorization: "Token " + localStorage.dinhotoken },
     } */
     )
     .then((response) => {
       let data = response.data.data;
       let tdTable = [];
-
-      //Deletes all rows in table.
-      while (userTable.firstChild) {
-        userTable.removeChild(userTable.firstChild);
-      }
-      //Deletes title text of round.
-      while (userNameTitle.firstChild) {
-        userNameTitle.removeChild(userNameTitle.firstChild);
-      }
 
       //For each loop, for each match create row in table & insert values.
       data.forEach((row) => {
@@ -351,6 +347,9 @@ function createUserTable(userName, userNameTitle, userTable) {
         userTable.appendChild(tr);
       });
 
+      //Run openBodyPage to show correct body page.
+      userID !== "-9" ? openBodyPage(self) : null;
+      //Inserts name of clicked user in Title.
       userNameTitle.appendChild(document.createTextNode(userName));
     })
     .catch((err) => {
@@ -364,12 +363,12 @@ function createUserTable(userName, userNameTitle, userTable) {
     let response = await axios.post(urlAutoLogin, {
       token: localStorage.dinhotoken,
     });
+    let userID = "-9";
     userName = response.data.user;
     btnUser.innerText = userName;
     loginStatus = true;
     logHider();
-
-    createUserTable(userName, userCurrentName, tableUserCurrent);
+    createUserTable(userName, userID, userCurrentName, tableUserCurrent);
   } catch (err) {
     console.error(err);
   }
