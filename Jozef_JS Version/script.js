@@ -173,7 +173,7 @@ const openBodyPage = function (self) {
   ///////////////////////////////////////////////////////////////////////////////////
   //MISSING PROPER LOGIC !!! NECESSERY TO REFACTOR / RECREATE LOGIC OF THIS APPROACH.
   //Run function to create new table after clicking "Tabuľka".
-  if (thisElement.id === "btn-table") tableScoreFinal();
+  /*   if (thisElement.id === "btn-table") tableScoreFinal(); */
 };
 
 const pwdChangeLook = function () {
@@ -181,11 +181,9 @@ const pwdChangeLook = function () {
     `.input_${this.id.slice(0, this.id.indexOf("_"))}_password`
   );
   pwdToChangeLook.forEach((input) => {
-    if (input.type === "password") {
-      input.type = "text";
-    } else {
-      input.type = "password";
-    }
+    input.type === "password"
+      ? (input.type = "text")
+      : (input.type = "password");
   });
 };
 
@@ -200,7 +198,7 @@ function deleter(elementToClear) {
 
 //IIFE which creates table in HTML with scores.
 
-async function tableScoreFinal(roundVariable) {
+async function tableScoreFinal(roundVariable, asdf) {
   try {
     let response = await axios.get(`${urlTable}?m=${roundVariable}`);
     let tdTable = [];
@@ -247,6 +245,7 @@ async function tableScoreFinal(roundVariable) {
       tableBody.appendChild(tr);
     });
 
+    /////////////////////////////// REFACTOR THIS SHIT !!! ///////////////////////////////////////
     /////////////// PAGING TABLE PART ///////////////
     //If buttons already exists, then skip, otherwise create buttons.
     if (tableBodyPages.childElementCount < 1) {
@@ -265,8 +264,7 @@ async function tableScoreFinal(roundVariable) {
       //Event listener for each button.
       document.querySelectorAll(".btn_table_pages").forEach((btn) => {
         btn.addEventListener("click", function () {
-          self = this.value;
-          tableScoreFinal(self);
+          tableScoreFinal(this.value, this.innerText - 1);
         });
       });
     }
@@ -280,20 +278,23 @@ async function tableScoreFinal(roundVariable) {
       });
     });
 
-    //Finaly, loop for background color change for buttons.
-    document.querySelectorAll(".btn_table_pages").forEach((btn) => {
-      if (roundVariable) {
-        if (btn.value === roundVariable) {
-          btn.classList.add("btn_table_pages_active");
-        } else {
-          btn.classList.remove("btn_table_pages_active");
-        }
-      } else {
-        btn.classList.remove("btn_table_pages_active");
-        if (btn.textContent == matches.length)
-          btn.classList.add("btn_table_pages_active");
-      }
+    //Variable for all buttons.
+    let tablePageButtons = document.querySelectorAll(".btn_table_pages");
+
+    //Clear all buttons from Highlightning.
+    tablePageButtons.forEach((btn) => {
+      btn.classList.remove("btn_table_pages_active");
     });
+
+    //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button.
+    if (roundVariable.id === "btn-table") {
+      tablePageButtons[tablePageButtons.length - 1].classList.add(
+        "btn_table_pages_active"
+      );
+      openBodyPage(roundVariable);
+    } else {
+      tablePageButtons[asdf].classList.add("btn_table_pages_active");
+    }
   } catch (err) {
     console.error(err);
   }
@@ -445,7 +446,6 @@ const passwordChange = () => {
 
 // CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
-tableScoreFinal();
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
@@ -488,10 +488,13 @@ btnCloseModal.forEach((btn) => {
 
 //Listener for buttons which controls body content.
 btnsHeaderBody.forEach((btn) => {
-  btn.addEventListener("click", openBodyPage);
+  btn.addEventListener("click", function () {
+    //If btn is "Tabuľka", run tableScoreFinal where openBodyPage is triggered. Otherwise, show other bodyPage.
+    this.id === "btn-table" ? tableScoreFinal(this) : openBodyPage(this);
+  });
 });
 
-//Buttons listeners
+//Buttons listeners.
 //////////////////////////////////////////////////////
 btnLoginLogin.addEventListener("click", logIN);
 btnRegReg.addEventListener("click", registration);
