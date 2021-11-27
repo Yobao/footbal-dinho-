@@ -164,12 +164,15 @@ const closeModal = function () {
 };
 
 //Function expression to show page and "overlay" div.
-const openBodyPage = function (huga) {
+const openBodyPage = function (self) {
   //Variable for "this" keyword.
   let thisElement;
   bodyPagesLoop();
-  typeof this === "undefined" ? (thisElement = huga) : (thisElement = this);
+  typeof this === "undefined" ? (thisElement = self) : (thisElement = this);
   modalCurrent(thisElement).classList.remove("hidden");
+  ///////////////////////////////////////////////////////////////////////////////////
+  //MISSING PROPER LOGIC !!! NECESSERY TO REFACTOR / RECREATE LOGIC OF THIS APPROACH.
+  //Run function to create new table after clicking "Tabuľka".
   if (thisElement.id === "btn-table") tableScoreFinal();
 };
 
@@ -186,6 +189,12 @@ const pwdChangeLook = function () {
   });
 };
 
+//Function to delete all childs of specified element (e.g. clear table)
+function deleter(elementToClear) {
+  while (elementToClear.firstChild)
+    elementToClear.removeChild(elementToClear.firstChild);
+}
+
 // AXIOS CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -194,7 +203,6 @@ const pwdChangeLook = function () {
 async function tableScoreFinal(roundVariable) {
   try {
     let response = await axios.get(`${urlTable}?m=${roundVariable}`);
-    let positionCounter = 1;
     let tdTable = [];
     let data = response.data.data;
     let matches = response.data.matches;
@@ -202,80 +210,57 @@ async function tableScoreFinal(roundVariable) {
     let lastMatchInfoHeader = document.createElement("h1");
 
     //Deletes all rows in table.
-    while (tableBody.firstChild) {
-      tableBody.removeChild(tableBody.firstChild);
-    }
+    deleter(tableBody);
     //Deletes title text of round.
-    while (tableBodyInfo.firstChild) {
-      tableBodyInfo.removeChild(tableBodyInfo.firstChild);
-    }
-
-    //Finaly, loop for background color change for buttons.
-    document.querySelectorAll(".btn_table_pages").forEach((btn) => {
-      if (roundVariable) {
-        if (btn.value === roundVariable) {
-          btn.classList.add("btn_table_pages_active");
-        } else {
-          btn.classList.remove("btn_table_pages_active");
-        }
-      } else {
-        btn.classList.remove("btn_table_pages_active");
-        if (btn.textContent == matches.length)
-          btn.classList.add("btn_table_pages_active");
-      }
-    });
+    deleter(tableBodyInfo);
 
     /////////////// MAIN TABLE PART ///////////////
     //Creates title for score table.
     tableBodyInfo.appendChild(lastMatchInfoHeader);
     lastMatchInfoHeader.appendChild(document.createTextNode(lastMatchInfo));
     //For each loop, for each player create row in table & insert values.
-    data.forEach((row) => {
+    data.forEach((row, index) => {
       let tr = document.createElement("tr");
       let tableColumns = [
-        { key: positionCounter },
+        { key: index },
         { key: row.username },
         { key: row.score },
         { key: row.last_round_tip_name },
         { key: row.last_round_score },
       ];
 
-      //IIFE loop for creating variables based on number of columns neccessary to paste into table.
-      (() => {
-        for (let i = 0; i <= tableColumns.length - 1; i++) {
-          tdTable[i] = document.createElement("td");
-        }
-        return tdTable;
-      })();
+      //Loop for creating variables based on number of columns neccessary to paste into table.
+      tableColumns.forEach((column, i) => {
+        tdTable[i] = document.createElement("td");
+      });
 
       //Loop for pasting tds and its values into table.
-      for (let i = 0; i <= tableColumns.length - 1; i++) {
+      tableColumns.forEach((column, i) => {
         tr.appendChild(tdTable[i]);
-        if (tableColumns[i].key === row.username) {
+        if (column.key === row.username) {
           tdTable[i].setAttribute("value", row.id);
           tdTable[i].setAttribute("id", "btn-user-other");
           tdTable[i].classList.add("btn_show_specific_user");
         }
-        tdTable[i].appendChild(document.createTextNode(tableColumns[i].key));
-      }
+        tdTable[i].appendChild(document.createTextNode(column.key));
+      });
       tableBody.appendChild(tr);
-      positionCounter++;
     });
 
     /////////////// PAGING TABLE PART ///////////////
     //If buttons already exists, then skip, otherwise create buttons.
     if (tableBodyPages.childElementCount < 1) {
-      for (let i = 1; i <= matches.length; i++) {
+      matches.forEach((match, i) => {
         let btn = document.createElement("button");
         //Loop for pasting tds and its values into table.
         tableBodyPages.appendChild(btn);
-        btn.appendChild(document.createTextNode(i));
-        btn.setAttribute("value", matches[i - 1].mid);
+        btn.appendChild(document.createTextNode(i + 1));
+        btn.setAttribute("value", match.mid);
         btn.classList.add("btn_table_pages");
         matches.length === i
           ? btn.classList.add("btn_table_pages_active")
           : btn.classList.remove("btn_table_pages_active");
-      }
+      });
 
       //Event listener for each button.
       document.querySelectorAll(".btn_table_pages").forEach((btn) => {
@@ -294,6 +279,21 @@ async function tableScoreFinal(roundVariable) {
         createUserTable(user, userID, userOtherName, tableUserOther, this);
       });
     });
+
+    //Finaly, loop for background color change for buttons.
+    document.querySelectorAll(".btn_table_pages").forEach((btn) => {
+      if (roundVariable) {
+        if (btn.value === roundVariable) {
+          btn.classList.add("btn_table_pages_active");
+        } else {
+          btn.classList.remove("btn_table_pages_active");
+        }
+      } else {
+        btn.classList.remove("btn_table_pages_active");
+        if (btn.textContent == matches.length)
+          btn.classList.add("btn_table_pages_active");
+      }
+    });
   } catch (err) {
     console.error(err);
   }
@@ -302,13 +302,9 @@ async function tableScoreFinal(roundVariable) {
 //FUNCTION to show table for each user after clicking on name in the table.
 function createUserTable(userName, userID, userNameTitle, userTable, self) {
   //Deletes all rows in table.
-  while (userTable.firstChild) {
-    userTable.removeChild(userTable.firstChild);
-  }
+  deleter(userTable);
   //Deletes title text of round.
-  while (userNameTitle.firstChild) {
-    userNameTitle.removeChild(userNameTitle.firstChild);
-  }
+  deleter(userNameTitle);
 
   //Axios asynchronous request for getting data for user table.
   axios
@@ -327,30 +323,28 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
         let tableRows = [
           { key: row.match },
           { key: row.start },
-          { key: row.tip },
+          { key: row.tip_name },
           { key: row.score },
         ];
 
-        //IIFE loop for creating variables based on number of columns neccessary to paste into table.
-        (() => {
-          for (let i = 0; i <= tableRows.length - 1; i++) {
-            tdTable[i] = document.createElement("td");
-          }
-          return tdTable;
-        })();
+        //Creating variables based on number of columns neccessary to paste into table.
+        tableRows.forEach((row, i) => {
+          tdTable[i] = document.createElement("td");
+        });
 
         //Loop for pasting tds and its values into table.
-        for (let i = 0; i <= tableRows.length - 1; i++) {
+        tableRows.forEach((row, i) => {
           tr.appendChild(tdTable[i]);
-          tdTable[i].appendChild(document.createTextNode(tableRows[i].key));
-        }
+          tdTable[i].appendChild(document.createTextNode(row.key));
+        });
+
         userTable.appendChild(tr);
       });
 
-      //Run openBodyPage to show correct body page.
-      userID !== "-9" ? openBodyPage(self) : null;
       //Inserts name of clicked user in Title.
       userNameTitle.appendChild(document.createTextNode(userName));
+      //Run openBodyPage to show correct body page.
+      userID !== "-9" ? openBodyPage(self) : null;
     })
     .catch((err) => {
       console.error(err);
