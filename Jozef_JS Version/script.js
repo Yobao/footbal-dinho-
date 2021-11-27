@@ -42,6 +42,8 @@ const tableBodyPages = document.getElementById("body-table-pages");
 const tableBodyInfo = document.getElementById("body-table-info");
 const userCurrentName = document.getElementById("body_current_user_name");
 const userOtherName = document.getElementById("body_other_user_name");
+const bodyTable = document.getElementById("body-table");
+const bodyUserOther = document.getElementById("body-user-other");
 
 //REGISTRATION
 const inputRegName = document.getElementById("reg-name");
@@ -66,26 +68,11 @@ const btnChangeChange = document.getElementById("btn-change-change");
 const overlay = document.querySelector(".overlay");
 const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
 const inputsToClear = document.querySelectorAll(".inputs_clear");
+const bodyUserOtherBack = document.getElementById("body_other_user_back");
 
 //STATUS VARIABLES
 let loginStatus = true;
 let userName = null;
-
-//Variables for API
-let cfc_username = "";
-let password = null;
-let password2 = null;
-let email = null;
-let statuss = false;
-let wrongpass = false;
-/* let registration = false; */
-let wrongreg = false;
-let passchanged = false;
-let showforgotpass = false;
-let wrongemail = false;
-let passreseted = false;
-let resetpasscode = false;
-let wrongresetpass = false;
 
 // FUNCTION EXPRESSION CONSTANTS/VARIABLES
 //----------------------------------------------------------------------------------------------------------------------------
@@ -170,10 +157,6 @@ const openBodyPage = function (self) {
   bodyPagesLoop();
   typeof this === "undefined" ? (thisElement = self) : (thisElement = this);
   modalCurrent(thisElement).classList.remove("hidden");
-  ///////////////////////////////////////////////////////////////////////////////////
-  //MISSING PROPER LOGIC !!! NECESSERY TO REFACTOR / RECREATE LOGIC OF THIS APPROACH.
-  //Run function to create new table after clicking "Tabuľka".
-  /*   if (thisElement.id === "btn-table") tableScoreFinal(); */
 };
 
 const pwdChangeLook = function () {
@@ -196,11 +179,10 @@ function deleter(elementToClear) {
 // AXIOS CALL SECTION
 //----------------------------------------------------------------------------------------------------------------------------
 
-//IIFE which creates table in HTML with scores.
-
-async function tableScoreFinal(roundVariable, asdf) {
+//Async FUNCTION which creates table in HTML with scores.
+async function tableScoreFinal(roundButtonValue, roundInnerText) {
   try {
-    let response = await axios.get(`${urlTable}?m=${roundVariable}`);
+    let response = await axios.get(`${urlTable}?m=${roundButtonValue}`);
     let tdTable = [];
     let data = response.data.data;
     let matches = response.data.matches;
@@ -220,25 +202,20 @@ async function tableScoreFinal(roundVariable, asdf) {
     data.forEach((row, index) => {
       let tr = document.createElement("tr");
       let tableColumns = [
-        { key: index },
+        { key: index + 1 },
         { key: row.username },
         { key: row.score },
         { key: row.last_round_tip_name },
         { key: row.last_round_score },
       ];
 
-      //Loop for creating variables based on number of columns neccessary to paste into table.
-      tableColumns.forEach((column, i) => {
-        tdTable[i] = document.createElement("td");
-      });
-
       //Loop for pasting tds and its values into table.
       tableColumns.forEach((column, i) => {
+        tdTable[i] = document.createElement("td");
         tr.appendChild(tdTable[i]);
         if (column.key === row.username) {
           tdTable[i].setAttribute("value", row.id);
           tdTable[i].setAttribute("id", "btn-user-other");
-          tdTable[i].classList.add("btn_show_specific_user");
         }
         tdTable[i].appendChild(document.createTextNode(column.key));
       });
@@ -255,45 +232,40 @@ async function tableScoreFinal(roundVariable, asdf) {
         tableBodyPages.appendChild(btn);
         btn.appendChild(document.createTextNode(i + 1));
         btn.setAttribute("value", match.mid);
-        btn.classList.add("btn_table_pages");
-        matches.length === i
-          ? btn.classList.add("btn_table_pages_active")
-          : btn.classList.remove("btn_table_pages_active");
       });
-
       //Event listener for each button.
-      document.querySelectorAll(".btn_table_pages").forEach((btn) => {
+      [...tableBodyPages.children].forEach((btn) => {
         btn.addEventListener("click", function () {
           tableScoreFinal(this.value, this.innerText - 1);
         });
       });
     }
 
+    //Variable for all buttons.
+    let tablePageButtons = [...tableBodyPages.children];
+
     //Event listener, after clicking on the name of user in the table, show specific user tip history.
-    document.querySelectorAll(".btn_show_specific_user").forEach((user) => {
-      user.addEventListener("click", function () {
+    for (let i = 0; i < tableBody.childElementCount; i++) {
+      tableBody.children[i].children[1].addEventListener("click", function () {
         let userID = this.getAttribute("value");
         let user = this.innerText;
         createUserTable(user, userID, userOtherName, tableUserOther, this);
       });
-    });
-
-    //Variable for all buttons.
-    let tablePageButtons = document.querySelectorAll(".btn_table_pages");
+    }
 
     //Clear all buttons from Highlightning.
     tablePageButtons.forEach((btn) => {
       btn.classList.remove("btn_table_pages_active");
     });
 
-    //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button.
-    if (roundVariable.id === "btn-table") {
+    //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button. If specific round button is pressed, highlight it.
+    if (roundButtonValue.id === "btn-table") {
       tablePageButtons[tablePageButtons.length - 1].classList.add(
         "btn_table_pages_active"
       );
-      openBodyPage(roundVariable);
+      openBodyPage(roundButtonValue);
     } else {
-      tablePageButtons[asdf].classList.add("btn_table_pages_active");
+      tablePageButtons[roundInnerText].classList.add("btn_table_pages_active");
     }
   } catch (err) {
     console.error(err);
@@ -306,7 +278,6 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
   deleter(userTable);
   //Deletes title text of round.
   deleter(userNameTitle);
-
   //Axios asynchronous request for getting data for user table.
   axios
     .get(
@@ -327,18 +298,15 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
           { key: row.tip_name },
           { key: row.score },
         ];
-
         //Creating variables based on number of columns neccessary to paste into table.
         tableRows.forEach((row, i) => {
           tdTable[i] = document.createElement("td");
         });
-
         //Loop for pasting tds and its values into table.
         tableRows.forEach((row, i) => {
           tr.appendChild(tdTable[i]);
           tdTable[i].appendChild(document.createTextNode(row.key));
         });
-
         userTable.appendChild(tr);
       });
 
@@ -444,8 +412,7 @@ const passwordChange = () => {
     });
 };
 
-// CALL SECTION
-//----------------------------------------------------------------------------------------------------------------------------
+const betting = () => {};
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
@@ -468,7 +435,7 @@ document.addEventListener("keydown", function (btn) {
   }
 });
 
-// PREROBIT !!!!!!!!!!!! MAS NA VIAC AKO NA TAKE POSNE KODY :D
+// PREROBIT !!!!!!!!!!!!
 //Listener for enter to log in.
 modals.forEach((modal) => {
   modal.addEventListener("keydown", function (btn) {
@@ -500,6 +467,10 @@ btnLoginLogin.addEventListener("click", logIN);
 btnRegReg.addEventListener("click", registration);
 btnLogOut.addEventListener("click", logOUT);
 btnChangeChange.addEventListener("click", passwordChange);
+bodyUserOtherBack.addEventListener("click", function () {
+  bodyUserOther.classList.add("hidden");
+  bodyTable.classList.remove("hidden");
+});
 
 //Listener for checkbox to show password.
 //////////////////////////////////////////////////////

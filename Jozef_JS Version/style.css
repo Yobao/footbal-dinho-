@@ -346,13 +346,7 @@ input {
   margin-bottom: 10px;
 }
 
-.body-table-info {
-  text-align: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
-}
-
-.btn_table_pages {
+.body-table-pages button {
   height: 40px;
   width: 40px;
   margin: 10px;
@@ -361,15 +355,38 @@ input {
   border-radius: 1.5rem;
   text-align: center;
 }
+
+.body-table-pages button:hover {
+  background-color: rgb(85, 174, 0);
+}
+
+.body-table-info {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
 .btn_table_pages_active {
   background-color: rgb(85, 174, 0);
 }
 
-.btn_table_pages:hover {
+.body_other_user_back {
+  font-size: large;
+  text-align: center;
+  color: white;
+  border-radius: 1rem;
+
+  height: 40px;
+  width: 100px;
   background-color: rgb(85, 174, 0);
 }
 
-.btn_show_specific_user:hover {
+.body_other_user_back:hover {
+  cursor: pointer;
+  background-color: rgb(0, 100, 0);
+}
+
+#table-body tr td:nth-child(2):hover {
   background-color: yellow;
   cursor: pointer;
 }
