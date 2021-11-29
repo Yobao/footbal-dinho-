@@ -45,6 +45,11 @@ const userOtherName = document.getElementById("body_other_user_name");
 const bodyTable = document.getElementById("body-table");
 const bodyUserOther = document.getElementById("body-user-other");
 
+const betBodyInfo = document.getElementById("body-bet-info");
+const betBodyPoints = document.getElementById("body-bet-points");
+const betBodyTime = document.getElementById("body-bet-time");
+const betBodyBet = document.getElementById("body-bet-bet");
+
 //REGISTRATION
 const inputRegName = document.getElementById("reg-name");
 const inputRegPwd = document.getElementById("reg-password");
@@ -287,7 +292,6 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
     )
     .then((response) => {
       let data = response.data.data;
-      let tdTable = [];
 
       //For each loop, for each match create row in table & insert values.
       data.forEach((row) => {
@@ -298,14 +302,12 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
           { key: row.tip_name },
           { key: row.score },
         ];
-        //Creating variables based on number of columns neccessary to paste into table.
-        tableRows.forEach((row, i) => {
-          tdTable[i] = document.createElement("td");
-        });
+
         //Loop for pasting tds and its values into table.
-        tableRows.forEach((row, i) => {
-          tr.appendChild(tdTable[i]);
-          tdTable[i].appendChild(document.createTextNode(row.key));
+        tableRows.forEach((row) => {
+          let rowColumn = document.createElement("td");
+          rowColumn.appendChild(document.createTextNode(row.key));
+          tr.appendChild(rowColumn);
         });
         userTable.appendChild(tr);
       });
@@ -412,7 +414,57 @@ const passwordChange = () => {
     });
 };
 
-const betting = () => {};
+(async function betting() {
+  try {
+    let response = await axios.get(`${urlPlayers}?t=1`, {
+      headers: { Authorization: "Token " + localStorage.dinhotoken },
+    });
+    let match = response.data.match;
+    let points = `Hrá sa o ${response.data.pool} bodov.`;
+    let players = response.data.players;
+    let time = response.data.time;
+    let infoElem = document.createElement("h1");
+    let pointsElem = document.createElement("h2");
+    let timeElem = document.createElement("h3");
+
+    let days = Math.floor(time / 86400);
+    let hours = Math.floor((time % 3600) / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = Math.floor(time % 60);
+
+    console.log(days, hours, minutes, seconds);
+
+    players.forEach((player) => {
+      let card = document.createElement("div");
+      let cardRows = [
+        { key: player.name },
+        { key: `počet hráčov: ${player.bettors}` },
+        { key: `max. možná výhra: ${player.points}` },
+      ];
+
+      cardRows.forEach((row) => {
+        let innerText = document.createElement("p");
+        innerText.appendChild(document.createTextNode(row.key));
+        card.appendChild(innerText);
+      });
+
+      betBodyBet.appendChild(card);
+    });
+
+    infoElem.appendChild(document.createTextNode(match));
+    betBodyInfo.appendChild(infoElem);
+
+    pointsElem.appendChild(document.createTextNode(points));
+    betBodyPoints.appendChild(pointsElem);
+
+    timeElem.appendChild(
+      document.createTextNode(
+        `Zápas začína o ${days}d, ${hours}h a ${minutes}m`
+      )
+    );
+    betBodyTime.appendChild(timeElem);
+  } catch {}
+})();
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------

@@ -30,6 +30,7 @@ body {
 h1 {
   margin: 5px;
   justify-content: center;
+  text-align: center;
   background-color: inherit;
 }
 
@@ -115,10 +116,12 @@ input {
   position: center;
   background-color: none;
   border-radius: 1rem;
+  font-size: medium;
+  color: rgb(0, 0, 0, 0.7);
 }
 
 .button_header:hover {
-  background-color: #ddd;
+  color: hsl(217, 71%, 45%);
 }
 
 .show-pwd {
@@ -238,6 +241,7 @@ input {
 
 .button_change_change {
   background-color: #034694;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
 }
 
 /* ALL CLASSES WHICH NEED TO BE CHANGED.*/
@@ -255,7 +259,8 @@ input {
 /* NAVBAR HOME */
 /* //////////////////////////////////// */
 .navbar-home {
-  margin-right: 50px;
+  margin-right: 25px;
+  margin-left: 25px;
   width: 100px;
   height: 100px;
 }
@@ -269,7 +274,7 @@ input {
 
 .image_home img {
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 /* NAVBAR btns */
@@ -291,10 +296,8 @@ input {
 .account-dropdown-list {
   display: none;
   position: absolute;
-  /*   background-color: #f1f1f1; */
   min-width: 150px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  /*   border-radius: 1rem; */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
   z-index: 11;
 }
 
@@ -303,11 +306,11 @@ input {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  /*   border-radius: 1rem; */
 }
 
 .account-dropdown-list a:hover {
-  background-color: #ddd;
+  background-color: hsl(0, 0%, 96%);
+  color: hsl(217, 71%, 45%);
 }
 
 .account-dropdown:hover .account-dropdown-list {
@@ -336,40 +339,6 @@ input {
   margin: auto;
 }
 
-.body-table-round {
-  text-align: center;
-}
-
-.body-table-pages {
-  display: inline-block;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.body-table-pages button {
-  height: 40px;
-  width: 40px;
-  margin: 10px;
-
-  cursor: pointer;
-  border-radius: 1.5rem;
-  text-align: center;
-}
-
-.body-table-pages button:hover {
-  background-color: rgb(85, 174, 0);
-}
-
-.body-table-info {
-  text-align: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
-}
-
-.btn_table_pages_active {
-  background-color: rgb(85, 174, 0);
-}
-
 .body_other_user_back {
   font-size: large;
   text-align: center;
@@ -386,17 +355,12 @@ input {
   background-color: rgb(0, 100, 0);
 }
 
-#table-body tr td:nth-child(2):hover {
-  background-color: yellow;
-  cursor: pointer;
-}
-
 /* TABLE */
 /* ---------------------------------------------------------------------- */
 table {
   width: 100%;
   border: none;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.2);
 }
 
 tr {
@@ -404,21 +368,128 @@ tr {
 }
 
 th {
-  border: 1px solid;
+  border: 1px solid rgb(0, 0, 0, 0.2);
+  font-size: large;
   border-right: none;
   border-bottom: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 th:nth-last-child(1) {
-  border-right: 1px solid;
+  border-right: 1px solid rgb(0, 0, 0, 0.2);
 }
 
 td {
-  border: 1px solid;
+  border: 1px solid rgb(0, 0, 0, 0.2);
   border-right: none;
   border-bottom: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 td:nth-last-child(1) {
   border-right: 1px solid;
+}
+
+/* Score table firs column bigger and bold text */
+#score_table tr td:nth-child(1) {
+  font-weight: bold;
+  font-size: large;
+}
+
+/* Even rows color FOR ALL TABLES */
+.table_table tr:nth-child(even) td {
+  background-color: hsl(0, 0%, 98%);
+}
+
+/* Even rows HOVER color FOR ALL TABLES */
+.table_table tr:nth-child(even):hover td {
+  background-color: hsl(0, 0%, 96%);
+}
+
+/* Odd rows HOVER color FOR ALL TABLES */
+.table_table tr:nth-child(odd):hover td {
+  background-color: hsl(0, 0%, 98%);
+}
+
+/* Don't change hover color of third column of Score Table */
+#score_table tr:hover > td:nth-child(3) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* Second column hover of Score Table*/
+#score_table tr td:nth-child(2):hover {
+  cursor: pointer;
+}
+
+/* Third column color of Score Table*/
+#score_table tr td:nth-child(3) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* PAGINATION --------------------- */
+.btn_table_pages_active {
+  background-color: #485fc7;
+  color: white;
+}
+
+.body-table-round {
+  text-align: center;
+}
+
+.body-table-pages {
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.body-table-pages button {
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid rgb(0, 0, 0, 0.25);
+  border-radius: 2rem;
+  text-align: center;
+}
+
+.body-table-pages button:hover {
+  border: 1px solid rgb(0, 0, 0, 0.5);
+}
+/* END --------------------- */
+
+.body-table-info {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  color: rgb(0, 0, 0, 0.65);
+}
+
+/* USER TABLE */
+/* ---------------------------------------------------------------------- */
+
+/* Third column color of Score Table*/
+#user_table tr td:nth-child(2) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* Don't change hover color of third column of Score Table */
+#user_table tr:hover > td:nth-child(2) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* BETTING PAGE  */
+/* ---------------------------------------------------------------------- */
+.body-bet-bet {
+  display: grid;
+}
+
+.body-bet-bet div:hover {
+  background-color: green;
+  cursor: pointer;
 }

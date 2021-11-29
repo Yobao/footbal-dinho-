@@ -4,6 +4,10 @@
     <link rel="stylesheet" href="style.css" />
     <meta charset="UTF-8" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--     <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    /> -->
   </head>
 
   <body>
@@ -77,6 +81,10 @@
 
       <div id="body" class="body">
         <div id="body-home" class="body-modal modal-home body-home">
+          <h1>Vitajte na tipovačke zápasov Chelsea</h1>
+          <br />
+          <br />
+          <h2>Príklad kalkulácie skóre:</h2>
           <a> <img class="image_instructions" src="Main.png" /> </a>
         </div>
         <div id="body-table" class="body-modal modal-table body-table hidden">
@@ -98,7 +106,12 @@
             <tbody id="table-body"></tbody>
           </table>
         </div>
-        <div id="body-tip" class="body-modal modal-tip body-tip hidden"></div>
+        <div id="body-bet" class="body-modal modal-bet body-bet hidden">
+          <div id="body-bet-info"></div>
+          <div id="body-bet-points"></div>
+          <div id="body-bet-time"></div>
+          <div id="body-bet-bet" class="body-bet-bet"></div>
+        </div>
         <div id="body-user" class="body-modal modal-user body-user hidden">
           <div id="body-current-user-name" class="body-current-user-name">
             <h2 id="body_current_user_name"></h2>
