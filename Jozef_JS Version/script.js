@@ -112,6 +112,8 @@ const logHider = function () {
   if (loginStatus) {
     if (!overlay.classList.contains("hidden")) {
       overlay.classList.add("hidden");
+      document.body.classList.remove("stop-scroll");
+      accountDropdownList.style.add()
       modalsLoop();
     }
     btnRegistration.classList.add("hidden");
@@ -138,6 +140,8 @@ const clearInputs = function () {
 const openModal = function () {
   modalCurrent(this).classList.remove("hidden");
   overlay.classList.remove("hidden");
+  document.body.classList.add("stop-scroll");
+  accountDropdownList.classList.remove("hidden");
   //Check if device is mobile/pc and set centering of view accordingly.
   navigator.userAgentData.mobile
     ? (modalCurrent(this).style.position = "absolute")
@@ -152,6 +156,8 @@ const closeModal = function () {
     modalsLoop();
   }
   overlay.classList.add("hidden");
+  document.body.classList.remove("stop-scroll");
+  accountDropdownList.classList.remove("hidden");
   clearInputs();
 };
 
