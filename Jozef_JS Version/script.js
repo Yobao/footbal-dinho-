@@ -14,15 +14,15 @@ const urlUserTips = "https://www.dinho.eu/api/tips";
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
 const btnsHeaderBody = document.querySelectorAll(".button_header_body");
 const accountDropdown = document.querySelector(".account-dropdown");
+const navbarMenu = document.getElementById("navbar-menu");
 const btnAccount = document.getElementById("btn-account");
-const btnHomeImage = document.querySelector(".image_home");
 const btnRegistration = document.getElementById("btn-registration");
 const btnLogin = document.getElementById("btn-login");
 const btnBet = document.getElementById("btn-bet");
 const btnLogOut = document.getElementById("btn-logout");
 const btnChange = document.getElementById("btn-change");
 const btnUser = document.getElementById("btn-user");
-const btnsAccount = document.querySelectorAll(".button_account");
+const btnNavbarBurger = document.getElementById("navbar_burger");
 const accountDropdownList = document.getElementById("account-dropdown-list");
 
 //MODALS
@@ -84,8 +84,8 @@ let userName = null;
 
 //Variable for accessing correct modal.
 let modalCurrent = function (self) {
-  let modal = document.querySelector(
-    `.modal-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
+  let modal = document.getElementById(
+    `body-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
   );
   return modal;
 };
@@ -93,8 +93,8 @@ let modalCurrent = function (self) {
 //Loop through modals to detect which is unhidden.
 const modalsLoop = function () {
   modals.forEach((modal) => {
-    if (!modal.classList.contains("hidden")) {
-      modal.classList.add("hidden");
+    if (!modal.classList.contains("is-hidden")) {
+      modal.classList.add("is-hidden");
     }
   });
 };
@@ -102,30 +102,30 @@ const modalsLoop = function () {
 //Loop through BODY modals to detect which is unhidden.
 const bodyPagesLoop = function () {
   bodyPages.forEach((page) => {
-    if (!page.classList.contains("hidden")) {
-      page.classList.add("hidden");
+    if (!page.classList.contains("is-hidden")) {
+      page.classList.add("is-hidden");
     }
   });
 };
 
 const logHider = function () {
   if (loginStatus) {
-    if (!overlay.classList.contains("hidden")) {
-      overlay.classList.add("hidden");
+    if (!overlay.classList.contains("is-hidden")) {
+      overlay.classList.add("is-hidden");
       document.body.classList.remove("stop-scroll");
-      accountDropdownList.style.add()
+      accountDropdownList.style.add();
       modalsLoop();
     }
-    btnRegistration.classList.add("hidden");
-    btnLogin.classList.add("hidden");
-    btnBet.classList.remove("hidden");
-    accountDropdown.classList.remove("hidden");
+    btnRegistration.classList.add("is-hidden");
+    btnLogin.classList.add("is-hidden");
+    btnBet.classList.remove("is-hidden");
+    accountDropdown.classList.remove("is-hidden");
   } else {
-    if (overlay.classList.contains("hidden")) {
-      btnRegistration.classList.remove("hidden");
-      btnLogin.classList.remove("hidden");
-      btnBet.classList.add("hidden");
-      accountDropdown.classList.add("hidden");
+    if (overlay.classList.contains("is-hidden")) {
+      btnRegistration.classList.remove("is-hidden");
+      btnLogin.classList.remove("is-hidden");
+      btnBet.classList.add("is-hidden");
+      accountDropdown.classList.add("is-hidden");
     }
   }
 };
@@ -138,10 +138,10 @@ const clearInputs = function () {
 
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
-  modalCurrent(this).classList.remove("hidden");
-  overlay.classList.remove("hidden");
+  modalCurrent(this).classList.remove("is-hidden");
+  overlay.classList.remove("is-hidden");
   document.body.classList.add("stop-scroll");
-  accountDropdownList.classList.remove("hidden");
+  accountDropdownList.classList.remove("is-hidden");
   //Check if device is mobile/pc and set centering of view accordingly.
   navigator.userAgentData.mobile
     ? (modalCurrent(this).style.position = "absolute")
@@ -151,13 +151,13 @@ const openModal = function () {
 //Function expression to hide modal and "overlay" div.
 const closeModal = function () {
   if (this.className != "overlay") {
-    modalCurrent(this).classList.add("hidden");
+    modalCurrent(this).classList.add("is-hidden");
   } else {
     modalsLoop();
   }
-  overlay.classList.add("hidden");
+  overlay.classList.add("is-hidden");
   document.body.classList.remove("stop-scroll");
-  accountDropdownList.classList.remove("hidden");
+  accountDropdownList.classList.remove("is-hidden");
   clearInputs();
 };
 
@@ -167,7 +167,7 @@ const openBodyPage = function (self) {
   let thisElement;
   bodyPagesLoop();
   typeof this === "undefined" ? (thisElement = self) : (thisElement = this);
-  modalCurrent(thisElement).classList.remove("hidden");
+  modalCurrent(thisElement).classList.remove("is-hidden");
 };
 
 const pwdChangeLook = function () {
@@ -243,6 +243,7 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
         tableBodyPages.appendChild(btn);
         btn.appendChild(document.createTextNode(i + 1));
         btn.setAttribute("value", match.mid);
+        btn.setAttribute("class", "pagination-link");
       });
       //Event listener for each button.
       [...tableBodyPages.children].forEach((btn) => {
@@ -266,17 +267,15 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
 
     //Clear all buttons from Highlightning.
     tablePageButtons.forEach((btn) => {
-      btn.classList.remove("btn_table_pages_active");
+      btn.classList.remove("is-current");
     });
 
     //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button. If specific round button is pressed, highlight it.
     if (roundButtonValue.id === "btn-table") {
-      tablePageButtons[tablePageButtons.length - 1].classList.add(
-        "btn_table_pages_active"
-      );
+      tablePageButtons[tablePageButtons.length - 1].classList.add("is-current");
       openBodyPage(roundButtonValue);
     } else {
-      tablePageButtons[roundInnerText].classList.add("btn_table_pages_active");
+      tablePageButtons[roundInnerText].classList.add("is-current");
     }
   } catch (err) {
     console.error(err);
@@ -526,12 +525,17 @@ btnRegReg.addEventListener("click", registration);
 btnLogOut.addEventListener("click", logOUT);
 btnChangeChange.addEventListener("click", passwordChange);
 bodyUserOtherBack.addEventListener("click", function () {
-  bodyUserOther.classList.add("hidden");
-  bodyTable.classList.remove("hidden");
+  bodyUserOther.classList.add("is-hidden");
+  bodyTable.classList.remove("is-hidden");
 });
 
 //Listener for checkbox to show password.
 //////////////////////////////////////////////////////
 inputsShowPassword.forEach((btn) => {
   btn.addEventListener("click", pwdChangeLook);
+});
+
+btnNavbarBurger.addEventListener("click", () => {
+  navbarMenu.classList.toggle("is-active");
+  btnNavbarBurger.classList.toggle("is-active");
 });

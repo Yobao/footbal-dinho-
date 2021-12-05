@@ -1,103 +1,128 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css" />
+    <!--     <link rel="stylesheet" href="style.css" /> -->
     <meta charset="UTF-8" />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!--     <link
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    /> -->
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
 
   <body>
-    <div id="app" class="app">
+    <div id="app" class="">
       <!-- HEADER -->
       <!-- ---------------------------------------------------------------------------------------------------------- -->
-      <div id="header" class="header">
-        <nav role="navigation" class="navbar-navbar">
-          <div id="" class="navbar navbar-home">
-            <a class="image_home">
+      <div class="columns is-centered is-6">
+        <nav role="navigation" class="navbar" aria-label="main navigation">
+          <!-- ---------------------------------------------------- -->
+          <div class="navbar-brand py-5">
+            <a class="navbar-item">
               <img
                 src="brand.png"
                 id="btn-home"
-                class="button_header_body home"
+                class="button_header_body"
+                alt="Dinho"
+                style="max-height: 75px"
               />
             </a>
-          </div>
-          <div id="" class="navbar navbar-buttons">
-            <button
-              id="btn-table"
-              class="button_header button_header_body table"
-            >
+
+            <!-- ----------------------------------------- -->
+            <a id="btn-table" class="button_header_body navbar-item">
               Tabuľka
-            </button>
-            <button
-              id="btn-bet"
-              class="button_header button_header_body bet hidden"
-            >
-              Tipuj
-            </button>
-            <button
-              id="btn-login"
-              class="button_header button_header_modal login"
-            >
+            </a>
+
+            <!-- ----------------------------------------- -->
+            <a id="btn-login" class="button_header_modal navbar-item">
               Prihlásenie
-            </button>
-            <button
-              id="btn-registration"
-              class="button_header button_header_modal reg"
-            >
+            </a>
+
+            <!-- ----------------------------------------- -->
+            <a id="btn-registration" class="button_header_modal navbar-item">
               Registrácia
-            </button>
-            <div id="account-dropdown " class="account-dropdown hidden">
-              <button
-                id="btn-account"
-                class="button_header button_header_body_account"
+            </a>
+            <a
+              id="navbar_burger"
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+          <!-- ----------------------------------------- -->
+          <div id="navbar-menu" class="navbar-menu">
+            <div class="navbar-start">
+              <!-- ----------------------------------------- -->
+              <a id="btn-bet" class="button_header_body navbar-item is-hidden">
+                Tipuj
+              </a>
+              <!-- ----------------------------------------- -->
+              <div
+                id="account-dropdown "
+                class="account-dropdown navbar-item has-dropdown is-hoverable"
               >
-                Účet
-              </button>
-              <div id="account-dropdown-list" class="account-dropdown-list">
                 <a
-                  id="btn-user"
-                  class="button_header_body button_account btn_account_profil"
-                ></a>
-                <a
-                  id="btn-change"
-                  class="button_header_modal button_account btn_account_change"
-                  >Zmena hesla</a
+                  id="btn-account"
+                  class="button_header_body_account navbar-link"
                 >
-                <a id="btn-logout" class="button_account btn_account_logout"
-                  >Odhlásenie</a
+                  Účet
+                </a>
+                <div
+                  id="account-dropdown-list"
+                  class="account-dropdown-list navbar-dropdown"
                 >
+                  <a id="btn-user" class="button_header_body navbar-item"></a>
+                  <a id="btn-change" class="button_header_modal navbar-item"
+                    >Zmena hesla</a
+                  >
+                  <a id="btn-logout" class="navbar-item">Odhlásenie</a>
+                </div>
               </div>
+              <!-- ----------------------------------------- -->
             </div>
+            <div class="navbar-end"></div>
           </div>
         </nav>
       </div>
-
       <!-- BODY -->
       <!-- ---------------------------------------------------------------------------------------------------------- -->
 
-      <div id="body" class="body">
-        <div id="body-home" class="body-modal modal-home body-home">
-          <h1>Vitajte na tipovačke zápasov Chelsea</h1>
-          <br />
-          <br />
-          <div class="body-home-title">
-            <h2>Príklad kalkulácie skóre:</h2>
-            <a> <img class="image_instructions" src="Main.png" /> </a>
+      <div id="body" class="columns is-centered">
+        <div id="body-home" class="body-modal column is-6">
+          <div class="has-text-centered">
+            <h1 class="title is-3">Vitajte na tipovačke zápasov Chelsea</h1>
+            <br />
+            <h2 class="subtitle is-4">Príklad kalkulácie skóre:</h2>
+            <figure class="image is-inline-block">
+              <img src="Main.png" class="pl-6" />
+            </figure>
           </div>
         </div>
-        <div id="body-table" class="body-modal modal-table body-table hidden">
-          <div id="body-table-round" class="body-table-round">
+        <!-- ---------------------------------------------------- -->
+        <div id="body-table" class="body-modal column is-6 is-hidden">
+          <div id="body-table-round">
             <h3>Poradové číslo kola</h3>
           </div>
-          <div id="body-table-pages" class="body-table-pages"></div>
-          <div id="body-table-info" class="body-table-info"></div>
-          <table id="score_table" class="table_table" cellspacing="0">
+          <div class="pagination is-rounded">
+            <div id="body-table-pages" class="pagination-list"></div>
+          </div>
+          <div id="body-table-info"></div>
+          <table
+            id="score_table"
+            cellspacing="0"
+            class="
+              table
+              is-bordered is-striped is-narrow is-hoverable is-fullwidth
+            "
+          >
             <thead>
-              <tr>
+              <tr class="has-text-centered">
                 <th>Pozícia</th>
                 <th>Meno</th>
                 <th>Skóre</th>
@@ -108,13 +133,21 @@
             <tbody id="table-body"></tbody>
           </table>
         </div>
-        <div id="body-bet" class="body-modal modal-bet body-bet hidden">
+        <!-- ---------------------------------------------------- -->
+        <div
+          id="body-bet"
+          class="body-modal column is-6 modal-bet body-bet is-hidden"
+        >
           <div id="body-bet-info"></div>
           <div id="body-bet-points"></div>
           <div id="body-bet-time"></div>
           <div id="body-bet-bet" class="body-bet-bet"></div>
         </div>
-        <div id="body-user" class="body-modal modal-user body-user hidden">
+        <!-- ---------------------------------------------------- -->
+        <div
+          id="body-user"
+          class="body-modal column is-6 modal-user body-user is-hidden"
+        >
           <div id="body-current-user-name" class="body-current-user-name">
             <h2 id="body_current_user_name"></h2>
           </div>
@@ -130,9 +163,17 @@
             <tbody id="table-user-current"></tbody>
           </table>
         </div>
+        <!-- ---------------------------------------------------- -->
         <div
           id="body-user-other"
-          class="body-modal modal-user-other body-user-other hidden"
+          class="
+            body-modal
+            column
+            is-6
+            modal-user-other
+            body-user-other
+            is-hidden
+          "
         >
           <div class="body-other-user-back">
             <button id="body_other_user_back" class="body_other_user_back">
@@ -154,6 +195,7 @@
             <tbody id="table-user-other"></tbody>
           </table>
         </div>
+        <!-- ---------------------------------------------------- -->
       </div>
     </div>
 
@@ -161,7 +203,7 @@
     <!-- ---------------------------------------------------------------------------------------------------------- -->
     <!-- LOGIN MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-login" class="modal modal-login hidden">
+    <div id="modal-login" class="modal modal-login is-hidden">
       <button id="close-login" class="button-close login">&times;</button>
       <h1>Prihlásenie</h1>
       <div id="" class="login-name">
@@ -201,7 +243,7 @@
 
     <!-- REGISTRATION MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-registration" class="modal modal-registration hidden">
+    <div id="modal-registration" class="modal modal-registration is-hidden">
       <button id="close-registration" class="button-close registration">
         &times;
       </button>
@@ -262,7 +304,7 @@
 
     <!-- CHANGE PASSWORD MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-change" class="modal modal-change hidden">
+    <div id="modal-change" class="modal modal-change is-hidden">
       <button id="close-change" class="button-close change">&times;</button>
       <h1>Zmena Hesla</h1>
       <div id="" class="change-password1">
@@ -300,7 +342,7 @@
     <!-- OVERLAY MODAL -->
     <!-- ------------------------------------------------------- -->
 
-    <div class="overlay hidden"></div>
+    <div class="overlay is-hidden"></div>
 
     <script src="script.js"></script>
   </body>

@@ -1,0 +1,505 @@
+/* GENERAL STYLE CLASSIFICATION.*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+* {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  min-height: inherit;
+
+  /* Just fun with background image; */
+  /*   background-image: url("Dinho.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover; */
+}
+
+html {
+  height: auto;
+  width: auto;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  display: block;
+  position: relative;
+}
+
+h1 {
+  margin: 5px;
+  justify-content: center;
+  text-align: center;
+  background-color: inherit;
+}
+
+h2 {
+  margin: 20px;
+  text-align: center;
+  background-color: inherit;
+}
+
+p {
+  margin-left: 5px;
+  background-color: inherit;
+}
+
+input {
+  margin: 5px;
+  padding: 5px;
+  width: 20rem;
+  height: 1.5rem;
+  background-color: white;
+  border-radius: 0.3rem;
+}
+
+.app {
+  height: inherit;
+  padding: 20px;
+}
+
+.header {
+  width: 60%;
+  height: 20%;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  max-width: 600px;
+  max-height: 120px;
+}
+
+.body {
+  margin: auto;
+  height: auto;
+}
+
+/* GENERAL CLASSES TO WORK WITH.*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+.hidden {
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  backdrop-filter: blur(2.5px);
+  background: rgba(130, 130, 130, 0.4);
+  z-index: 10;
+}
+
+.stop-scroll {
+  overflow: hidden;
+}
+
+.button-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.button-close:hover {
+  color: red;
+}
+
+.button_header {
+  padding: 2rem 1rem;
+  margin: auto;
+  min-width: 100px;
+  max-height: 100px;
+  border: none;
+  cursor: pointer;
+  position: center;
+  background-color: none;
+  border-radius: 1rem;
+  font-size: medium;
+  color: rgb(0, 0, 0, 0.7);
+}
+
+.button_header:hover {
+  color: hsl(217, 71%, 45%);
+}
+
+.show-pwd {
+  align-items: center;
+  display: flex;
+}
+
+.input_show_pwd {
+  width: auto;
+}
+
+/* MODAL PART OF THE CODE*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  max-width: 500px;
+
+  padding: 10px;
+  margin: 10px;
+
+  background-color: white;
+  border: none;
+  border-radius: 1rem;
+
+  z-index: 11;
+}
+
+/* LOGIN MODAL */
+/* ---------------------------------------------------------------------- */
+.modal-login {
+  height: 100%;
+  max-height: 260px;
+}
+
+.button_login {
+  margin-top: 10px;
+  margin-left: 5px;
+  padding: 5px;
+  text-align: center;
+  font-size: 1rem;
+  color: white;
+
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.button_login_login {
+  background-color: forestgreen;
+}
+
+.button_login_lost_password {
+  background-color: burlywood;
+}
+
+/* REGISTRATION MODAL */
+/* ---------------------------------------------------------------------- */
+.modal-registration {
+  height: 100%;
+  max-height: 480px;
+}
+
+.button_reg {
+  margin-top: 10px;
+  margin-left: 5px;
+  padding: 5px;
+  text-align: center;
+  font-size: 1rem;
+  color: white;
+
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.button_reg_reg {
+  background-color: slateblue;
+}
+
+.email_info {
+  color: red;
+  margin-bottom: 5px;
+}
+
+/* MENU MODAL */
+/* ---------------------------------------------------------------------- */
+.modal.menu {
+  z-index: 11;
+}
+
+/* CHANGE PASSWORD MODAL */
+/* ---------------------------------------------------------------------- */
+
+.modal-change-password {
+  height: 100%;
+  max-height: 250px;
+}
+
+.button_change {
+  margin-top: 10px;
+  margin-left: 5px;
+  padding: 5px;
+  text-align: center;
+  font-size: 1rem;
+  color: white;
+
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.button_change_change {
+  background-color: #034694;
+}
+
+/* ALL CLASSES WHICH NEED TO BE CHANGED.*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+/* HEADER PART */
+/*--------------------------------------------------------------------------------------------------------------------------*/
+.navbar-navbar {
+  display: flex;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.body-home-title h2 {
+  text-align: center;
+}
+
+/* NAVBAR HOME */
+/* //////////////////////////////////// */
+.navbar-home {
+  margin-right: 25px;
+  margin-left: 25px;
+  width: 100px;
+  height: 100px;
+}
+
+.image_home {
+  position: center;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.image_home img {
+  width: 100%;
+  height: 100%;
+}
+
+/* NAVBAR btns */
+/* //////////////////////////////////// */
+.navbar-buttons {
+  display: flex;
+  position: center;
+}
+
+/* NAVBAR ACCOUNT */
+/* //////////////////////////////////// */
+
+.account-dropdown {
+  margin: auto;
+  position: relative;
+  border-radius: 1rem;
+}
+
+.account-dropdown-list {
+  display: none;
+  position: absolute;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
+  z-index: 11;
+}
+
+.account-dropdown-list a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.account-dropdown-list a:hover {
+  background-color: hsl(0, 0%, 96%);
+  color: hsl(217, 71%, 45%);
+}
+
+.account-dropdown:hover .account-dropdown-list {
+  display: block;
+}
+
+.button_header_body_account {
+  height: 100%;
+}
+
+.button_account {
+  cursor: pointer;
+}
+
+/* BODY PART */
+/*--------------------------------------------------------------------------------------------------------------------------*/
+.body-modal {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.image_instructions {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  /* margin-right: auto; */
+}
+
+.body_other_user_back {
+  font-size: large;
+  text-align: center;
+  color: white;
+  border-radius: 1rem;
+
+  height: 40px;
+  width: 100px;
+  background-color: rgb(85, 174, 0);
+}
+
+.body_other_user_back:hover {
+  cursor: pointer;
+  background-color: rgb(0, 100, 0);
+}
+
+/* TABLE */
+/* ---------------------------------------------------------------------- */
+table {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+tr {
+  text-align: center;
+}
+
+th {
+  border: 1px solid rgb(0, 0, 0, 0.2);
+  font-size: large;
+  border-right: none;
+  border-bottom: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+th:nth-last-child(1) {
+  border-right: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+td {
+  border: 1px solid rgb(0, 0, 0, 0.2);
+  border-right: none;
+  border-bottom: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+td:nth-last-child(1) {
+  border-right: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+/* Score table firs column bigger and bold text */
+#score_table tr td:nth-child(1) {
+  font-weight: bold;
+  font-size: large;
+}
+
+/* Even rows color FOR ALL TABLES */
+.table_table tr:nth-child(even) td {
+  background-color: hsl(0, 0%, 98%);
+}
+
+/* Even rows HOVER color FOR ALL TABLES */
+.table_table tr:nth-child(even):hover td {
+  background-color: hsl(0, 0%, 96%);
+}
+
+/* Odd rows HOVER color FOR ALL TABLES */
+.table_table tr:nth-child(odd):hover td {
+  background-color: hsl(0, 0%, 98%);
+}
+
+/* Don't change hover color of third column of Score Table */
+#score_table tr:hover > td:nth-child(3) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* Second column hover of Score Table*/
+#score_table tr td:nth-child(2):hover {
+  cursor: pointer;
+}
+
+/* Third column color of Score Table*/
+#score_table tr td:nth-child(3) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* PAGINATION --------------------- */
+.btn_table_pages_active {
+  background-color: #485fc7;
+  color: white;
+}
+
+.body-table-round {
+  text-align: center;
+}
+
+.body-table-pages {
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.body-table-pages button {
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid rgb(0, 0, 0, 0.25);
+  border-radius: 2rem;
+  text-align: center;
+}
+
+.body-table-pages button:hover {
+  border: 1px solid rgb(0, 0, 0, 0.5);
+}
+/* END --------------------- */
+
+.body-table-info {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  color: rgb(0, 0, 0, 0.65);
+}
+
+/* USER TABLE */
+/* ---------------------------------------------------------------------- */
+
+/* Third column color of Score Table*/
+#user_table tr td:nth-child(2) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* Don't change hover color of third column of Score Table */
+#user_table tr:hover > td:nth-child(2) {
+  background-color: hsl(171, 100%, 41%, 11%);
+}
+
+/* BETTING PAGE  */
+/* ---------------------------------------------------------------------- */
+.body-bet-bet {
+  display: grid;
+}
+
+.body-bet-bet div:hover {
+  background-color: green;
+  cursor: pointer;
+}
