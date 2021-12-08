@@ -94,7 +94,7 @@
       <!-- ---------------------------------------------------------------------------------------------------------- -->
 
       <div id="body" class="columns is-centered">
-        <div id="body-home" class="body-modal column is-6">
+        <div id="body-home" class="body-page body-pagecolumn is-6">
           <div class="has-text-centered">
             <h1 class="title is-3">Vitajte na tipovačke zápasov Chelsea</h1>
             <br />
@@ -105,7 +105,7 @@
           </div>
         </div>
         <!-- ---------------------------------------------------- -->
-        <div id="body-table" class="body-modal column is-6 is-hidden">
+        <div id="body-table" class="body-page column is-6 is-hidden">
           <div id="body-table-round">
             <h3>Poradové číslo kola</h3>
           </div>
@@ -134,20 +134,14 @@
           </table>
         </div>
         <!-- ---------------------------------------------------- -->
-        <div
-          id="body-bet"
-          class="body-modal column is-6 modal-bet body-bet is-hidden"
-        >
+        <div id="body-bet" class="body-page column is-6 is-hidden">
           <div id="body-bet-info"></div>
           <div id="body-bet-points"></div>
           <div id="body-bet-time"></div>
           <div id="body-bet-bet" class="body-bet-bet"></div>
         </div>
         <!-- ---------------------------------------------------- -->
-        <div
-          id="body-user"
-          class="body-modal column is-6 modal-user body-user is-hidden"
-        >
+        <div id="body-user" class="body-page column is-6 is-hidden">
           <div id="body-current-user-name" class="body-current-user-name">
             <h2 id="body_current_user_name"></h2>
           </div>
@@ -164,17 +158,7 @@
           </table>
         </div>
         <!-- ---------------------------------------------------- -->
-        <div
-          id="body-user-other"
-          class="
-            body-modal
-            column
-            is-6
-            modal-user-other
-            body-user-other
-            is-hidden
-          "
-        >
+        <div id="body-user-other" class="body-modal column is-6 is-hidden">
           <div class="body-other-user-back">
             <button id="body_other_user_back" class="body_other_user_back">
               Späť
@@ -203,47 +187,64 @@
     <!-- ---------------------------------------------------------------------------------------------------------- -->
     <!-- LOGIN MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-login" class="modal modal-login is-hidden">
-      <button id="close-login" class="button-close login">&times;</button>
-      <h1>Prihlásenie</h1>
-      <div id="" class="login-name">
-        <p>Meno</p>
-        <input
-          id="login-name"
-          class="input_login_name inputs_clear"
-          type="text"
-          placeholder="Zadajte Meno"
-        />
+    <div id="modal-login" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content has-background-white py-5 px-5">
+        <!-- <p class="title is-3 is-spaced">Prihlásenie</p> -->
+        <div id="" class="field">
+          <label class="label">Meno</label>
+          <input
+            id="login-name"
+            class="input inputs_clear"
+            type="text"
+            placeholder="Zadajte Meno"
+          />
+        </div>
+        <div id="" class="field">
+          <label class="label">Heslo</label>
+          <div class="control">
+            <input
+              id="login-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Zadajte Heslo"
+            />
+          </div>
+        </div>
+        <div class="checkbox">
+          <input id="login_show_pwd" class="input_show_pwd" type="checkbox" />
+          Ukáž heslo
+        </div>
+        <div id="" class="login-btns">
+          <button
+            id="btn-login-login"
+            class="button is-success mt-3 mr-3 button_login button_login_login"
+          >
+            Prihlásiť sa
+          </button>
+          <button
+            id="btn-login-lost-password"
+            class="
+              button
+              is-success
+              mt-3
+              button_login button_login_lost_password
+            "
+          >
+            Zabudnuté heslo
+          </button>
+        </div>
       </div>
-      <div id="" class="login-password">
-        <p>Heslo</p>
-        <input
-          id="login-password"
-          class="input_login_password inputs_clear"
-          type="password"
-          placeholder="Zadajte Heslo"
-        />
-      </div>
-      <div class="show-pwd">
-        <p class="show_pwd_text">Ukáž heslo</p>
-        <input id="login_show_pwd" class="input_show_pwd" type="checkbox" />
-      </div>
-      <div id="" class="login-btns">
-        <button id="btn-login-login" class="button_login button_login_login">
-          Prihlásiť sa
-        </button>
-        <button
-          id="btn-login-lost-password"
-          class="button_login button_login_lost_password"
-        >
-          Zabudnuté heslo
-        </button>
-      </div>
+      <button
+        id="close-login"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
     </div>
 
     <!-- REGISTRATION MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-registration" class="modal modal-registration is-hidden">
+    <div id="modal-registration" class="modal is-hidden">
       <button id="close-registration" class="button-close registration">
         &times;
       </button>

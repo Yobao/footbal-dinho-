@@ -34,7 +34,7 @@ const modalChangePassword = document.getElementById("modal-change-password");
 const btnCloseModal = document.querySelectorAll(".button-close");
 
 //BODY PAGES
-const bodyPages = document.querySelectorAll(".body-modal");
+const bodyPages = document.querySelectorAll(".body-page");
 const tableBody = document.getElementById("table-body");
 const tableUserCurrent = document.getElementById("table-user-current");
 const tableUserOther = document.getElementById("table-user-other");
@@ -70,6 +70,7 @@ const inputChangePassword2 = document.getElementById("change-password2");
 const btnChangeChange = document.getElementById("btn-change-change");
 
 //The rest.
+const modalBack = document.getElementsByClassName("modal-background");
 const overlay = document.querySelector(".overlay");
 const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
 const inputsToClear = document.querySelectorAll(".inputs_clear");
@@ -82,10 +83,18 @@ let userName = null;
 // FUNCTION EXPRESSION CONSTANTS/VARIABLES
 //----------------------------------------------------------------------------------------------------------------------------
 
+//Variable for accessing correct page.
+let bodyCurrent = function (self) {
+  let modal = document.getElementById(
+    `body-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
+  );
+  return modal;
+};
+
 //Variable for accessing correct modal.
 let modalCurrent = function (self) {
   let modal = document.getElementById(
-    `body-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
+    `modal-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
   );
   return modal;
 };
@@ -93,18 +102,16 @@ let modalCurrent = function (self) {
 //Loop through modals to detect which is unhidden.
 const modalsLoop = function () {
   modals.forEach((modal) => {
-    if (!modal.classList.contains("is-hidden")) {
-      modal.classList.add("is-hidden");
-    }
+    if (!modal.classList.contains("is-hidden"))
+      return modal.classList.add("is-hidden");
   });
 };
 
 //Loop through BODY modals to detect which is unhidden.
 const bodyPagesLoop = function () {
   bodyPages.forEach((page) => {
-    if (!page.classList.contains("is-hidden")) {
-      page.classList.add("is-hidden");
-    }
+    if (!page.classList.contains("is-hidden"))
+      return page.classList.add("is-hidden");
   });
 };
 
@@ -130,6 +137,7 @@ const logHider = function () {
   }
 };
 
+//For each input field in modals, clear everything what was previoulsy written.
 const clearInputs = function () {
   inputsToClear.forEach((input) => {
     input.value = "";
@@ -138,24 +146,19 @@ const clearInputs = function () {
 
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
-  modalCurrent(this).classList.remove("is-hidden");
-  overlay.classList.remove("is-hidden");
+  modalCurrent(this).classList.add("is-active");
+
   document.body.classList.add("stop-scroll");
   accountDropdownList.classList.remove("is-hidden");
-  //Check if device is mobile/pc and set centering of view accordingly.
-  navigator.userAgentData.mobile
-    ? (modalCurrent(this).style.position = "absolute")
-    : (modalCurrent(this).style.position = "fixed");
 };
 
 //Function expression to hide modal and "overlay" div.
 const closeModal = function () {
   if (this.className != "overlay") {
-    modalCurrent(this).classList.add("is-hidden");
+    modalCurrent(this).classList.remove("is-active");
   } else {
     modalsLoop();
   }
-  overlay.classList.add("is-hidden");
   document.body.classList.remove("stop-scroll");
   accountDropdownList.classList.remove("is-hidden");
   clearInputs();
@@ -163,11 +166,12 @@ const closeModal = function () {
 
 //Function expression to show page and "overlay" div.
 const openBodyPage = function (self) {
+  console.log(self);
   //Variable for "this" keyword.
   let thisElement;
   bodyPagesLoop();
   typeof this === "undefined" ? (thisElement = self) : (thisElement = this);
-  modalCurrent(thisElement).classList.remove("is-hidden");
+  bodyCurrent(thisElement).classList.remove("is-hidden");
 };
 
 const pwdChangeLook = function () {
