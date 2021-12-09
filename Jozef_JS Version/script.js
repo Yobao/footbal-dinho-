@@ -70,7 +70,7 @@ const inputChangePassword2 = document.getElementById("change-password2");
 const btnChangeChange = document.getElementById("btn-change-change");
 
 //The rest.
-const modalBack = document.getElementsByClassName("modal-background");
+const modalBack = document.querySelectorAll(".modal-background");
 const overlay = document.querySelector(".overlay");
 const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
 const inputsToClear = document.querySelectorAll(".inputs_clear");
@@ -102,38 +102,28 @@ let modalCurrent = function (self) {
 //Loop through modals to detect which is unhidden.
 const modalsLoop = function () {
   modals.forEach((modal) => {
-    if (!modal.classList.contains("is-hidden"))
-      return modal.classList.add("is-hidden");
+    if (modal.classList.contains("is-active"))
+      modal.classList.remove("is-active");
   });
 };
 
 //Loop through BODY modals to detect which is unhidden.
 const bodyPagesLoop = function () {
   bodyPages.forEach((page) => {
-    if (!page.classList.contains("is-hidden"))
-      return page.classList.add("is-hidden");
+    if (!page.classList.contains("is-hidden")) page.classList.add("is-hidden");
   });
 };
 
 const logHider = function () {
   if (loginStatus) {
-    if (!overlay.classList.contains("is-hidden")) {
-      overlay.classList.add("is-hidden");
-      document.body.classList.remove("stop-scroll");
-      accountDropdownList.style.add();
-      modalsLoop();
-    }
+    modalsLoop();
     btnRegistration.classList.add("is-hidden");
     btnLogin.classList.add("is-hidden");
-    btnBet.classList.remove("is-hidden");
-    accountDropdown.classList.remove("is-hidden");
+    navbarMenu.classList.remove("is-hidden");
   } else {
-    if (overlay.classList.contains("is-hidden")) {
-      btnRegistration.classList.remove("is-hidden");
-      btnLogin.classList.remove("is-hidden");
-      btnBet.classList.add("is-hidden");
-      accountDropdown.classList.add("is-hidden");
-    }
+    btnRegistration.classList.remove("is-hidden");
+    btnLogin.classList.remove("is-hidden");
+    navbarMenu.classList.add("is-hidden");
   }
 };
 
@@ -166,7 +156,6 @@ const closeModal = function () {
 
 //Function expression to show page and "overlay" div.
 const openBodyPage = function (self) {
-  console.log(self);
   //Variable for "this" keyword.
   let thisElement;
   bodyPagesLoop();
@@ -486,14 +475,13 @@ btnsHeaderModal.forEach((btn) => {
 });
 
 //Listener for hiding "overlay" & active modal window.
-overlay.addEventListener("click", closeModal);
+modalBack.forEach((background) =>
+  background.addEventListener("click", modalsLoop)
+);
 
 //Listener for hiding "overlay" & active modal window.
 document.addEventListener("keydown", function (btn) {
-  if (btn.key === "Escape") {
-    modalsLoop();
-    overlay.classList.add("hidden");
-  }
+  if (btn.key === "Escape") modalsLoop();
 });
 
 // PREROBIT !!!!!!!!!!!!

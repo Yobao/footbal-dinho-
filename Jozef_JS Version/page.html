@@ -17,7 +17,6 @@
       <!-- ---------------------------------------------------------------------------------------------------------- -->
       <div class="columns is-centered is-6">
         <nav role="navigation" class="navbar" aria-label="main navigation">
-          <!-- ---------------------------------------------------- -->
           <div class="navbar-brand py-5">
             <a class="navbar-item">
               <img
@@ -29,17 +28,14 @@
               />
             </a>
 
-            <!-- ----------------------------------------- -->
             <a id="btn-table" class="button_header_body navbar-item">
               Tabuľka
             </a>
 
-            <!-- ----------------------------------------- -->
             <a id="btn-login" class="button_header_modal navbar-item">
               Prihlásenie
             </a>
 
-            <!-- ----------------------------------------- -->
             <a id="btn-registration" class="button_header_modal navbar-item">
               Registrácia
             </a>
@@ -55,14 +51,11 @@
               <span aria-hidden="true"></span>
             </a>
           </div>
-          <!-- ----------------------------------------- -->
-          <div id="navbar-menu" class="navbar-menu">
+
+          <div id="navbar-menu" class="navbar-menu is-hidden">
             <div class="navbar-start">
-              <!-- ----------------------------------------- -->
-              <a id="btn-bet" class="button_header_body navbar-item is-hidden">
-                Tipuj
-              </a>
-              <!-- ----------------------------------------- -->
+              <a id="btn-bet" class="button_header_body navbar-item"> Tipuj </a>
+
               <div
                 id="account-dropdown "
                 class="account-dropdown navbar-item has-dropdown is-hoverable"
@@ -84,7 +77,6 @@
                   <a id="btn-logout" class="navbar-item">Odhlásenie</a>
                 </div>
               </div>
-              <!-- ----------------------------------------- -->
             </div>
             <div class="navbar-end"></div>
           </div>
@@ -104,7 +96,7 @@
             </figure>
           </div>
         </div>
-        <!-- ---------------------------------------------------- -->
+
         <div id="body-table" class="body-page column is-6 is-hidden">
           <div id="body-table-round">
             <h3>Poradové číslo kola</h3>
@@ -133,14 +125,14 @@
             <tbody id="table-body"></tbody>
           </table>
         </div>
-        <!-- ---------------------------------------------------- -->
+
         <div id="body-bet" class="body-page column is-6 is-hidden">
           <div id="body-bet-info"></div>
           <div id="body-bet-points"></div>
           <div id="body-bet-time"></div>
           <div id="body-bet-bet" class="body-bet-bet"></div>
         </div>
-        <!-- ---------------------------------------------------- -->
+
         <div id="body-user" class="body-page column is-6 is-hidden">
           <div id="body-current-user-name" class="body-current-user-name">
             <h2 id="body_current_user_name"></h2>
@@ -157,7 +149,7 @@
             <tbody id="table-user-current"></tbody>
           </table>
         </div>
-        <!-- ---------------------------------------------------- -->
+
         <div id="body-user-other" class="body-modal column is-6 is-hidden">
           <div class="body-other-user-back">
             <button id="body_other_user_back" class="body_other_user_back">
@@ -189,7 +181,10 @@
     <!-- ------------------------------------------------------- -->
     <div id="modal-login" class="modal">
       <div class="modal-background"></div>
-      <div class="modal-content has-background-white py-5 px-5">
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
         <!-- <p class="title is-3 is-spaced">Prihlásenie</p> -->
         <div id="" class="field">
           <label class="label">Meno</label>
@@ -200,6 +195,7 @@
             placeholder="Zadajte Meno"
           />
         </div>
+
         <div id="" class="field">
           <label class="label">Heslo</label>
           <div class="control">
@@ -211,25 +207,22 @@
             />
           </div>
         </div>
+
         <div class="checkbox">
           <input id="login_show_pwd" class="input_show_pwd" type="checkbox" />
           Ukáž heslo
         </div>
+
         <div id="" class="login-btns">
           <button
             id="btn-login-login"
-            class="button is-success mt-3 mr-3 button_login button_login_login"
+            class="button is-info mt-3 mr-3 button_login button_login_login"
           >
             Prihlásiť sa
           </button>
           <button
             id="btn-login-lost-password"
-            class="
-              button
-              is-success
-              mt-3
-              button_login button_login_lost_password
-            "
+            class="button is-info mt-3 button_login button_login_lost_password"
           >
             Zabudnuté heslo
           </button>
@@ -244,106 +237,129 @@
 
     <!-- REGISTRATION MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-registration" class="modal is-hidden">
-      <button id="close-registration" class="button-close registration">
-        &times;
-      </button>
-      <h1>Registrácia</h1>
-      <div id="" class="reg-name">
-        <p>Meno</p>
-        <input
-          id="reg-name"
-          class="input_reg_name inputs_clear"
-          placeholder="Zadajte Meno"
-        />
+    <div id="modal-registration" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div id="" class="field">
+          <label class="label">Meno</label>
+          <input
+            id="reg-name"
+            class="input inputs_clear"
+            type="text"
+            placeholder="Zadajte Meno"
+          />
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Heslo</label>
+          <input
+            id="reg-password"
+            class="input inputs_clear"
+            type="password"
+            placeholder="Heslo aspoň 6 znakov"
+          />
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Potvrdenie Hesla</label>
+          <input
+            id="reg-confirm-password"
+            class="input inputs_clear"
+            type="password"
+            placeholder="Heslo aspoň 6 znakov"
+          />
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Email</label>
+          <input
+            id="reg-email"
+            class="input inputs_clear"
+            type="text"
+            placeholder="Zadajte Email"
+          />
+          <p class="mt-2 mb-2 is-red">
+            Email nieje povinný. Slúži na reset hesla.
+          </p>
+        </div>
+
+        <div id="" class="field">
+          <label class="label">chelsea-fc.cz účet</label>
+          <input
+            id="reg-chelsea-account"
+            class="input inputs_clear"
+            type="text"
+            placeholder="Zadajte Chelsea účet"
+          />
+        </div>
+
+        <div id="" class="reg-button">
+          <button
+            id="btn-reg-reg"
+            class="button is-info mt-3 button_reg button_reg_reg"
+          >
+            Zaregistrovať
+          </button>
+        </div>
       </div>
-      <div id="" class="reg-password">
-        <p>Heslo</p>
-        <input
-          id="reg-password"
-          class="input_reg_password inputs_clear"
-          type="password"
-          placeholder="Heslo aspoň 6 znakov"
-        />
-      </div>
-      <div id="" class="reg-confirm-password">
-        <p>Potvrdenie Hesla</p>
-        <input
-          id="reg-confirm-password"
-          class="input_reg_password inputs_clear"
-          type="password"
-          placeholder="Heslo aspoň 6 znakov"
-        />
-      </div>
-      <div id="" class="reg-email">
-        <p>Email</p>
-        <input
-          id="reg-email"
-          class="input_reg_email inputs_clear"
-          placeholder="Zadajte Email"
-        />
-        <p class="email_info">Email nieje povinný. Slúži na reset hesla.</p>
-      </div>
-      <div id="" class="reg-chelsea-account">
-        <p>chelsea-fc.cz účet</p>
-        <input
-          id="reg-chelsea-account"
-          class="input_reg_chelsea_account inputs_clear"
-          placeholder="Zadajte Chelsea účet"
-        />
-      </div>
-      <div class="show-pwd">
-        <p class="show_pwd_text">Ukáž heslo</p>
-        <input id="reg_show_pwd" class="input_show_pwd" type="checkbox" />
-      </div>
-      <div id="" class="reg-button">
-        <button id="btn-reg-reg" class="button_reg button_reg_reg">
-          Zaregistrovať
-        </button>
-      </div>
+
+      <button
+        id="close-registration"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
     </div>
 
     <!-- CHANGE PASSWORD MODAL -->
     <!-- ------------------------------------------------------- -->
     <div id="modal-change" class="modal modal-change is-hidden">
-      <button id="close-change" class="button-close change">&times;</button>
-      <h1>Zmena Hesla</h1>
-      <div id="" class="change-password1">
-        <p>Staré Heslo</p>
-        <input
-          id="change-password1"
-          class="input_change_password inputs_clear"
-          type="password"
-          placeholder="Zadajte staré heslo"
-        />
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div class="field">
+          <label class="label">Staré Heslo</label>
+          <input
+            id="change-password1"
+            class="input inputs_clear"
+            type="password"
+            placeholder="Zadajte staré heslo"
+          />
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Nové Heslo</label>
+          <input
+            id="change-password2"
+            class="input inputs_clear"
+            type="password"
+            placeholder="Heslo aspoň 6 znakov"
+          />
+        </div>
+
+        <div id="" class="change-button">
+          <button
+            id="btn-change-change"
+            class="button_change button_change_change"
+          >
+            Zmeniť Heslo
+          </button>
+        </div>
       </div>
-      <div id="" class="change-password2">
-        <p>Nové Heslo</p>
-        <input
-          id="change-password2"
-          class="input_change_password inputs_clear"
-          type="password"
-          placeholder="Heslo aspoň 6 znakov"
-        />
-      </div>
-      <div class="show-pwd">
-        <p class="show_pwd_text">Ukáž heslo</p>
-        <input id="change_show_pwd" class="input_show_pwd" type="checkbox" />
-      </div>
-      <div id="" class="change-button">
-        <button
-          id="btn-change-change"
-          class="button_change button_change_change"
-        >
-          Zmeniť Heslo
-        </button>
-      </div>
+
+      <button
+        id="close-registration"
+        class="modal-change is-large button-close"
+        aria-label="close"
+      ></button>
     </div>
 
     <!-- OVERLAY MODAL -->
     <!-- ------------------------------------------------------- -->
-
-    <div class="overlay is-hidden"></div>
 
     <script src="script.js"></script>
   </body>
