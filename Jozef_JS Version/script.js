@@ -9,6 +9,7 @@ const urlRegistration = "https://www.dinho.eu/api/account/register";
 const urlChangePassword = "https://www.dinho.eu/api/change-password/";
 const urlPlayers = "https://www.dinho.eu/api/players";
 const urlUserTips = "https://www.dinho.eu/api/tips";
+const urlBet = "https://www.dinho.eu/api/bet";
 
 //HEADERS
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
@@ -425,7 +426,6 @@ const registration = () => {
     })
     .then((response) => {
       localStorage.setItem("dinhotoken", response.data.token);
-      loginStatus = true;
       logHider();
     })
     .catch((err) => {
@@ -447,6 +447,7 @@ const passwordChange = () => {
       }
     )
     .then(() => {
+      alert("Heslo bolo úspešne zmenené.");
       logHider();
     });
 };
@@ -464,13 +465,14 @@ const passwordChange = () => {
     let pointsElem = document.createElement("h2");
     let timeElem = document.createElement("h3");
 
+    //Creating time variable...
     let days = Math.floor(time / 86400);
     let hours = Math.floor((time % 3600) / 3600);
     let minutes = Math.floor((time % 3600) / 60);
     let seconds = Math.floor(time % 60);
-
     console.log(days, hours, minutes, seconds);
 
+    //Creates card/box for each player on which you can bet.
     players.forEach((player) => {
       let card = document.createElement("div");
       let cardRows = [
@@ -478,28 +480,50 @@ const passwordChange = () => {
         { key: `počet hráčov: ${player.bettors}` },
         { key: `max. možná výhra: ${player.points}` },
       ];
-
+      //For each card append child elements with text - player info, points etc.
       cardRows.forEach((row) => {
         let innerText = document.createElement("p");
         innerText.appendChild(document.createTextNode(row.key));
         card.appendChild(innerText);
+        card.setAttribute(
+          "class",
+          "column box is-2 my-3 mx-2 px-2 is-clickable "
+        );
       });
-
+      //Append each card to container.
       betBodyBet.appendChild(card);
     });
 
+    //Append child title and match info text.
     infoElem.appendChild(document.createTextNode(match));
     betBodyInfo.appendChild(infoElem);
-
+    infoElem.setAttribute("class", "has-text-weight-bold");
+    //Append child title and points info text.
     pointsElem.appendChild(document.createTextNode(points));
     betBodyPoints.appendChild(pointsElem);
-
+    //Append child title and time info text.
     timeElem.appendChild(
       document.createTextNode(
         `Zápas začína o ${days}d, ${hours}h a ${minutes}m`
       )
     );
     betBodyTime.appendChild(timeElem);
+
+    //Add EventListener for each card, after click send tip and highlight this card.
+    [...betBodyBet.children].forEach((card) => {
+      card.addEventListener("click", async function () {
+        try {
+          let response2 = await axios.post(
+            urlBet,
+            { tip: 36 },
+            {
+              headers: { Authorization: "Token " + localStorage.dinhotoken },
+            }
+          );
+          console.log(response2);
+        } catch {}
+      });
+    });
   } catch {}
 })();
 

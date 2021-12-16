@@ -129,11 +129,14 @@
           </table>
         </div>
 
-        <div id="body-bet" class="body-page column is-6 is-hidden">
-          <div id="body-bet-info"></div>
-          <div id="body-bet-points"></div>
-          <div id="body-bet-time"></div>
-          <div id="body-bet-bet" class="body-bet-bet"></div>
+        <div
+          id="body-bet"
+          class="body-page is-centered is-6 is-hidden is-fullwidth"
+        >
+          <div id="body-bet-info" class="has-text-centered title is-2"></div>
+          <div id="body-bet-points" class="has-text-centered title is-3"></div>
+          <div id="body-bet-time" class="has-text-centered title is-3"></div>
+          <div id="body-bet-bet" class="columns is-multiline is-centered"></div>
         </div>
 
         <div id="body-user" class="body-page column is-6 is-hidden">
@@ -198,7 +201,7 @@
     </div>
 
     <!-- MODALS -->
-    <!-- ---------------------------------------------------------------------------------------------------------- -->
+    <!-- ---------------------------------------------------------------------------------- -->
     <!-- LOGIN MODAL -->
     <!-- ------------------------------------------------------- -->
     <div id="modal-login" class="modal">
@@ -337,7 +340,7 @@
 
     <!-- CHANGE PASSWORD MODAL -->
     <!-- ------------------------------------------------------- -->
-    <div id="modal-change" class="modal modal-change is-hidden">
+    <div id="modal-change" class="modal">
       <div class="modal-background"></div>
       <div
         class="modal-content has-background-white py-5 px-5"
@@ -366,7 +369,7 @@
         <div id="" class="change-button">
           <button
             id="btn-change-change"
-            class="button_change button_change_change"
+            class="button is-info mt-3 button_change button_change_change"
           >
             Zmeniť Heslo
           </button>
@@ -374,8 +377,8 @@
       </div>
 
       <button
-        id="close-registration"
-        class="modal-change is-large button-close"
+        id="close-change"
+        class="modal-close is-large button-close"
         aria-label="close"
       ></button>
     </div>
