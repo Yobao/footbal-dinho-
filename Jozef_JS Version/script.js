@@ -460,6 +460,7 @@ const passwordChange = () => {
     let match = response.data.match;
     let points = `Hrá sa o ${response.data.pool} bodov.`;
     let players = response.data.players;
+    let currentBet = response.data.current;
     let time = response.data.time;
     let infoElem = document.createElement("h1");
     let pointsElem = document.createElement("h2");
@@ -480,18 +481,23 @@ const passwordChange = () => {
         { key: `počet hráčov: ${player.bettors}` },
         { key: `max. možná výhra: ${player.points}` },
       ];
+
       //For each card append child elements with text - player info, points etc.
       cardRows.forEach((row) => {
         let innerText = document.createElement("p");
         innerText.appendChild(document.createTextNode(row.key));
         card.appendChild(innerText);
+        card.setAttribute("class", "column box is-2 my-3 mx-4 is-clickable");
+      });
+      //Append each card to container + add ID of player.
+      betBodyBet.appendChild(card);
+      card.setAttribute("value", player.id);
+      //Changes background color of current BET.
+      if (player.name === currentBet)
         card.setAttribute(
           "class",
-          "column box is-2 my-3 mx-2 px-2 is-clickable "
+          "column box is-2 my-3 mx-4 is-clickable has-background-warning"
         );
-      });
-      //Append each card to container.
-      betBodyBet.appendChild(card);
     });
 
     //Append child title and match info text.
@@ -513,14 +519,23 @@ const passwordChange = () => {
     [...betBodyBet.children].forEach((card) => {
       card.addEventListener("click", async function () {
         try {
+          //Axios request to BET API, post token + ID of player from card.
           let response2 = await axios.post(
             urlBet,
-            { tip: 36 },
+            { tip: this.getAttribute("value") },
             {
               headers: { Authorization: "Token " + localStorage.dinhotoken },
             }
           );
-          console.log(response2);
+          [...betBodyBet.children].forEach((child) => {
+            if (child.classList.contains("has-background-warning"))
+              child.classList.remove("has-background-warning");
+          });
+          alert(`Tipnuté na ${this.firstChild.innerText}.`);
+          this.setAttribute(
+            "class",
+            "column box is-2 my-3 mx-4 is-clickable has-background-warning"
+          );
         } catch {}
       });
     });
