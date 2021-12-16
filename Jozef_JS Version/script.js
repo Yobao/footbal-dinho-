@@ -114,17 +114,14 @@ const bodyPagesLoop = function () {
   });
 };
 
+//Function which hides Login, registr.. buttons and shows Tipuj & burger menu.
 const logHider = function () {
-  if (loginStatus) {
-    modalsLoop();
-    btnRegistration.classList.add("is-hidden");
-    btnLogin.classList.add("is-hidden");
-    navbarMenu.classList.remove("is-hidden");
-  } else {
-    btnRegistration.classList.remove("is-hidden");
-    btnLogin.classList.remove("is-hidden");
-    navbarMenu.classList.add("is-hidden");
-  }
+  modalsLoop();
+  btnRegistration.classList.add("is-hidden");
+  btnLogin.classList.add("is-hidden");
+  btnBet.classList.remove("is-hidden");
+  btnNavbarBurger.classList.remove("is-hidden");
+  navbarMenu.classList.remove("is-hidden");
 };
 
 //For each input field in modals, clear everything what was previoulsy written.
@@ -215,13 +212,28 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
 
       //Loop for pasting tds and its values into table.
       tableColumns.forEach((column, i) => {
-        tdTable[i] = document.createElement("td");
-        tr.appendChild(tdTable[i]);
+        tdTable = document.createElement("td");
+        tr.appendChild(tdTable);
+        //Change formatting of "User name" column.
         if (column.key === row.username) {
-          tdTable[i].setAttribute("value", row.id);
-          tdTable[i].setAttribute("id", "btn-user-other");
+          tdTable.setAttribute("value", row.id);
+          tdTable.setAttribute("id", "btn-user-other");
+          tdTable.setAttribute("class", "is-clickable");
         }
-        tdTable[i].appendChild(document.createTextNode(column.key));
+        //Change formatting of "Skóre" column.
+        if (i === 2 && column.key === row.score)
+          tdTable.setAttribute("class", "has-background-primary-light");
+        //Change formatting of "Zmena" column.
+        if (column.key === row.last_round_score && row.last_round_score > 0)
+          tdTable.setAttribute(
+            "class",
+            "has-text-success has-text-weight-bold"
+          );
+        //Change formatting of "Pozícia" column.
+        if (column.key === index + 1)
+          tdTable.setAttribute("class", "has-text-weight-bold");
+
+        tdTable.appendChild(document.createTextNode(column.key));
       });
       tableBody.appendChild(tr);
     });
@@ -231,14 +243,14 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
     //If buttons already exists, then skip, otherwise create buttons.
     if (tableBodyPages.childElementCount < 1) {
       matches.forEach((match, i) => {
-        let btn = document.createElement("button");
+        let btn = document.createElement("li");
         //Loop for pasting tds and its values into table.
         tableBodyPages.appendChild(btn);
         btn.appendChild(document.createTextNode(i + 1));
         btn.setAttribute("value", match.mid);
-        btn.setAttribute("class", "pagination-link");
+        btn.setAttribute("class", "pagination-link m-1 is-clickable");
       });
-      //Event listener for each button.
+      //Event listener for each button. Rest operator to convert NodeList into array for looping.
       [...tableBodyPages.children].forEach((btn) => {
         btn.addEventListener("click", function () {
           tableScoreFinal(this.value, this.innerText - 1);
@@ -294,7 +306,7 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
       //For each loop, for each match create row in table & insert values.
       data.forEach((row) => {
         let tr = document.createElement("tr");
-        let tableRows = [
+        let tableColumns = [
           { key: row.match },
           { key: row.start },
           { key: row.tip_name },
@@ -302,9 +314,19 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
         ];
 
         //Loop for pasting tds and its values into table.
-        tableRows.forEach((row) => {
+        tableColumns.forEach((column) => {
           let rowColumn = document.createElement("td");
-          rowColumn.appendChild(document.createTextNode(row.key));
+          rowColumn.appendChild(document.createTextNode(column.key));
+          //Change formatting of "Dátum" column.
+          if (column.key === row.start)
+            rowColumn.setAttribute("class", "has-background-primary-light");
+          //Change formatting of "Body" column.
+          if (column.key === row.score && row.score > 0)
+            rowColumn.setAttribute(
+              "class",
+              "has-text-success has-text-weight-bold"
+            );
+          //Inserts whole row into table.
           tr.appendChild(rowColumn);
         });
         userTable.appendChild(tr);
@@ -313,7 +335,7 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
       //Inserts name of clicked user in Title.
       userNameTitle.appendChild(document.createTextNode(userName));
       //Run openBodyPage to show correct body page.
-      userID !== "-9" ? openBodyPage(self) : null;
+      if (userID !== "-9") openBodyPage(self);
     })
     .catch((err) => {
       console.error(err);
@@ -328,8 +350,12 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
     });
     let userID = "-9";
     userName = response.data.user;
-    btnUser.innerText = userName;
-    loginStatus = true;
+
+    //Deletes user name text in Button for current user. Then inserts user name as new.
+    deleter(btnUser);
+    btnUser.appendChild(document.createTextNode(userName));
+
+    //Hides and unhides Navbar buttons.
     logHider();
     createUserTable(userName, userID, userCurrentName, tableUserCurrent);
   } catch (err) {
@@ -345,12 +371,20 @@ const logIN = () => {
       password: inputLoginPwd.value,
     })
     .then((response) => {
+      let userID = "-9";
+      let userName = inputLoginName.value;
+      //Deletes user name text in Button for current user. Then inserts user name as new.
+      deleter(btnUser);
+      btnUser.appendChild(document.createTextNode(inputLoginName.value));
       localStorage.setItem("dinhotoken", response.data.token);
-      loginStatus = true;
+
+      //Hides and unhides Navbar buttons.
       logHider();
+      createUserTable(userName, userID, userCurrentName, tableUserCurrent);
     })
-    .catch(() => {
+    .catch((err) => {
       alert("Nesprávne Meno alebo Heslo. Skúste prosím ešte raz.");
+      console.log(err);
     });
 };
 
@@ -366,8 +400,13 @@ const logOUT = () => {
     )
     .then(() => {
       localStorage.removeItem("dinhotoken");
-      loginStatus = false;
-      logHider();
+
+      //Hides and unhides Navbar buttons.
+      btnRegistration.classList.remove("is-hidden");
+      btnLogin.classList.remove("is-hidden");
+      btnBet.classList.add("is-hidden");
+      btnNavbarBurger.classList.add("is-hidden");
+      navbarMenu.classList.add("is-hidden");
     })
     .catch((err) => {
       console.error(err);
@@ -484,15 +523,14 @@ document.addEventListener("keydown", function (btn) {
   if (btn.key === "Escape") modalsLoop();
 });
 
-// PREROBIT !!!!!!!!!!!!
 //Listener for enter to log in.
 modals.forEach((modal) => {
   modal.addEventListener("keydown", function (btn) {
     if (btn.keyCode === 13) {
       btn.preventDefault();
-      modal.id === "modal-login" ? btnLoginLogin.click() : null;
-      modal.id === "modal-change" ? btnChangeChange.click() : null;
-      modal.id === "modal-registration" ? btnRegReg.click() : null;
+      if (modal.id === "modal-login") btnLoginLogin.click();
+      if (modal.id === "modal-change") btnChangeChange.click();
+      if (modal.id === "modal-registration") btnRegReg.click();
     }
   });
 });
