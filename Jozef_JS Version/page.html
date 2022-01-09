@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="htmlelement">
   <head>
     <!--     <link rel="stylesheet" href="style.css" /> -->
     <meta charset="UTF-8" />
@@ -8,6 +8,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
 
@@ -111,10 +115,7 @@
           <table
             id="score_table"
             cellspacing="0"
-            class="
-              table
-              is-bordered is-striped is-narrow is-hoverable is-fullwidth
-            "
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
               <tr class="has-text-centered">
@@ -148,10 +149,7 @@
           </div>
           <table
             id="user_table"
-            class="
-              table
-              is-bordered is-striped is-narrow is-hoverable is-fullwidth
-            "
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
             cellspacing="0"
           >
             <thead>
@@ -180,10 +178,7 @@
           </div>
           <table
             id="user_table"
-            class="
-              table
-              is-bordered is-striped is-narrow is-hoverable is-fullwidth
-            "
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
             cellspacing="0"
           >
             <thead>
@@ -211,25 +206,34 @@
         style="border-radius: 1rem"
       >
         <!-- <p class="title is-3 is-spaced">Prihlásenie</p> -->
+
         <div id="" class="field">
           <label class="label">Meno</label>
-          <input
-            id="login-name"
-            class="input inputs_clear"
-            type="text"
-            placeholder="Zadajte Meno"
-          />
+          <div class="control has-icons-left">
+            <input
+              id="login-name"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Zadajte Meno"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
         </div>
 
         <div id="" class="field">
           <label class="label">Heslo</label>
-          <div class="control">
+          <div class="control has-icons-left">
             <input
               id="login-password"
               class="input inputs_clear"
               type="password"
               placeholder="Zadajte Heslo"
             />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
           </div>
         </div>
 
@@ -270,43 +274,63 @@
       >
         <div id="" class="field">
           <label class="label">Meno</label>
-          <input
-            id="reg-name"
-            class="input inputs_clear"
-            type="text"
-            placeholder="Zadajte Meno"
-          />
+          <div class="control has-icons-left">
+            <input
+              id="reg-name"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Zadajte Meno"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
         </div>
 
         <div id="" class="field">
           <label class="label">Heslo</label>
-          <input
-            id="reg-password"
-            class="input inputs_clear"
-            type="password"
-            placeholder="Heslo aspoň 6 znakov"
-          />
+          <div class="control has-icons-left">
+            <input
+              id="reg-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
         </div>
 
         <div id="" class="field">
           <label class="label">Potvrdenie Hesla</label>
-          <input
-            id="reg-confirm-password"
-            class="input inputs_clear"
-            type="password"
-            placeholder="Heslo aspoň 6 znakov"
-          />
+          <div class="control has-icons-left">
+            <input
+              id="reg-confirm-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
         </div>
 
         <div id="" class="field">
           <label class="label">Email</label>
-          <input
-            id="reg-email"
-            class="input inputs_clear"
-            type="text"
-            placeholder="Zadajte Email"
-          />
-          <p class="mt-2 mb-2 is-red">
+          <div class="control has-icons-left">
+            <input
+              id="reg-email"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Zadajte Email"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+          <p class="mt-2 mb-2 has-text-red">
             Email nieje povinný. Slúži na reset hesla.
           </p>
         </div>
@@ -348,22 +372,32 @@
       >
         <div class="field">
           <label class="label">Staré Heslo</label>
-          <input
-            id="change-password1"
-            class="input inputs_clear"
-            type="password"
-            placeholder="Zadajte staré heslo"
-          />
+          <div class="control has-icons-left">
+            <input
+              id="change-password1"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Zadajte staré heslo"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
         </div>
 
         <div id="" class="field">
           <label class="label">Nové Heslo</label>
-          <input
-            id="change-password2"
-            class="input inputs_clear"
-            type="password"
-            placeholder="Heslo aspoň 6 znakov"
-          />
+          <div class="control has-icons-left">
+            <input
+              id="change-password2"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
         </div>
 
         <div id="" class="change-button">

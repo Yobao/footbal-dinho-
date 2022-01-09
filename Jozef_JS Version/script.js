@@ -76,6 +76,7 @@ const overlay = document.querySelector(".overlay");
 const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
 const inputsToClear = document.querySelectorAll(".inputs_clear");
 const bodyUserOtherBack = document.getElementById("body_other_user_back");
+const htmlElement = document.getElementById("htmlelement");
 
 //STATUS VARIABLES
 let loginStatus = true;
@@ -123,6 +124,7 @@ const logHider = function () {
   btnBet.classList.remove("is-hidden");
   btnNavbarBurger.classList.remove("is-hidden");
   navbarMenu.classList.remove("is-hidden");
+  htmlElement.classList.remove("is-clipped");
 };
 
 //For each input field in modals, clear everything what was previoulsy written.
@@ -135,21 +137,18 @@ const clearInputs = function () {
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
   modalCurrent(this).classList.add("is-active");
-
   document.body.classList.add("stop-scroll");
   accountDropdownList.classList.remove("is-hidden");
+  htmlElement.classList.add("is-clipped");
 };
 
 //Function expression to hide modal and "overlay" div.
 const closeModal = function () {
-  if (this.className != "overlay") {
-    modalCurrent(this).classList.remove("is-active");
-  } else {
-    modalsLoop();
-  }
+  modalsLoop();
+  clearInputs();
   document.body.classList.remove("stop-scroll");
   accountDropdownList.classList.remove("is-hidden");
-  clearInputs();
+  htmlElement.classList.remove("is-clipped");
 };
 
 //Function expression to show page and "overlay" div.
@@ -162,6 +161,12 @@ const openBodyPage = function (self) {
 };
 
 const pwdChangeLook = function () {
+  inputLoginPwd.type === "password"
+    ? (inputLoginPwd.type = "text")
+    : (inputLoginPwd.type = "password");
+};
+
+/* const pwdChangeLook = function () {
   let pwdToChangeLook = document.querySelectorAll(
     `.input_${this.id.slice(0, this.id.indexOf("_"))}_password`
   );
@@ -170,7 +175,7 @@ const pwdChangeLook = function () {
       ? (input.type = "text")
       : (input.type = "password");
   });
-};
+}; */
 
 //Function to delete all childs of specified element (e.g. clear table)
 function deleter(elementToClear) {
@@ -245,16 +250,21 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
     if (tableBodyPages.childElementCount < 1) {
       matches.forEach((match, i) => {
         let btn = document.createElement("li");
+        let btnText = document.createElement("a");
         //Loop for pasting tds and its values into table.
+        btn.appendChild(btnText);
+        btnText.appendChild(document.createTextNode(i + 1));
+        btnText.setAttribute("value", match.mid);
+        btnText.setAttribute("class", "pagination-link m-1 is-clickable");
         tableBodyPages.appendChild(btn);
-        btn.appendChild(document.createTextNode(i + 1));
-        btn.setAttribute("value", match.mid);
-        btn.setAttribute("class", "pagination-link m-1 is-clickable");
       });
       //Event listener for each button. Rest operator to convert NodeList into array for looping.
       [...tableBodyPages.children].forEach((btn) => {
         btn.addEventListener("click", function () {
-          tableScoreFinal(this.value, this.innerText - 1);
+          tableScoreFinal(
+            this.children[0].getAttribute("value"),
+            this.children[0].innerText - 1
+          );
         });
       });
     }
@@ -273,15 +283,17 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
 
     //Clear all buttons from Highlightning.
     tablePageButtons.forEach((btn) => {
-      btn.classList.remove("is-current");
+      btn.children[0].classList.remove("is-current");
     });
 
     //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button. If specific round button is pressed, highlight it.
     if (roundButtonValue.id === "btn-table") {
-      tablePageButtons[tablePageButtons.length - 1].classList.add("is-current");
+      tablePageButtons[tablePageButtons.length - 1].children[0].classList.add(
+        "is-current"
+      );
       openBodyPage(roundButtonValue);
     } else {
-      tablePageButtons[roundInnerText].classList.add("is-current");
+      tablePageButtons[roundInnerText].children[0].classList.add("is-current");
     }
   } catch (err) {
     console.error(err);
@@ -303,6 +315,10 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
     )
     .then((response) => {
       let data = response.data.data;
+
+      //Scrolls to top of page after user name table is clicked.
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
 
       //For each loop, for each match create row in table & insert values.
       data.forEach((row) => {
@@ -359,6 +375,9 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
     //Hides and unhides Navbar buttons.
     logHider();
     createUserTable(userName, userID, userCurrentName, tableUserCurrent);
+
+    //Creates cards for betting pae.
+    betting();
   } catch (err) {
     console.error(err);
   }
@@ -382,6 +401,9 @@ const logIN = () => {
       //Hides and unhides Navbar buttons.
       logHider();
       createUserTable(userName, userID, userCurrentName, tableUserCurrent);
+
+      //Creates cards for betting pae.
+      betting();
     })
     .catch((err) => {
       alert("Nesprávne Meno alebo Heslo. Skúste prosím ešte raz.");
@@ -452,7 +474,7 @@ const passwordChange = () => {
     });
 };
 
-(async function betting() {
+async function betting() {
   try {
     let response = await axios.get(`${urlPlayers}?t=1`, {
       headers: { Authorization: "Token " + localStorage.dinhotoken },
@@ -473,6 +495,12 @@ const passwordChange = () => {
     let seconds = Math.floor(time % 60);
     console.log(days, hours, minutes, seconds);
 
+    //This functions deletes all current content for "Tipuj" page.
+    deleter(betBodyBet);
+    deleter(betBodyInfo);
+    deleter(betBodyPoints);
+    deleter(betBodyTime);
+
     //Creates card/box for each player on which you can bet.
     players.forEach((player) => {
       let card = document.createElement("div");
@@ -483,12 +511,16 @@ const passwordChange = () => {
       ];
 
       //For each card append child elements with text - player info, points etc.
-      cardRows.forEach((row) => {
+      cardRows.forEach((row, i) => {
         let innerText = document.createElement("p");
+        //If row is player name, set text to BOLD.
+        if (i === 0) innerText.setAttribute("class", "has-text-weight-bold");
         innerText.appendChild(document.createTextNode(row.key));
+
         card.appendChild(innerText);
         card.setAttribute("class", "column box is-2 my-3 mx-4 is-clickable");
       });
+
       //Append each card to container + add ID of player.
       betBodyBet.appendChild(card);
       card.setAttribute("value", player.id);
@@ -517,30 +549,38 @@ const passwordChange = () => {
 
     //Add EventListener for each card, after click send tip and highlight this card.
     [...betBodyBet.children].forEach((card) => {
-      card.addEventListener("click", async function () {
-        try {
+      //If already bet is placed on player, event listener will not be created.
+      if (card.firstChild.innerText !== currentBet) {
+        card.addEventListener("click", function () {
           //Axios request to BET API, post token + ID of player from card.
-          let response2 = await axios.post(
-            urlBet,
-            { tip: this.getAttribute("value") },
-            {
-              headers: { Authorization: "Token " + localStorage.dinhotoken },
-            }
-          );
-          [...betBodyBet.children].forEach((child) => {
-            if (child.classList.contains("has-background-warning"))
-              child.classList.remove("has-background-warning");
-          });
-          alert(`Tipnuté na ${this.firstChild.innerText}.`);
-          this.setAttribute(
-            "class",
-            "column box is-2 my-3 mx-4 is-clickable has-background-warning"
-          );
-        } catch {}
-      });
+          axios
+            .post(
+              urlBet,
+              { tip: this.getAttribute("value") },
+              {
+                headers: { Authorization: "Token " + localStorage.dinhotoken },
+              }
+            )
+            .then(() => {
+              //Hihlights "card" with current tip.
+              [...betBodyBet.children].forEach((child) => {
+                if (child.classList.contains("has-background-warning"))
+                  child.classList.remove("has-background-warning");
+              });
+              //Alert with name of player which user tiped.
+              alert(`Tipnuté na ${this.firstChild.innerText}.`);
+              this.setAttribute(
+                "class",
+                "column box is-2 my-3 mx-4 is-clickable has-background-warning"
+              );
+              //After alert shows, calls betting function which firstly deletes, then create new cards.
+              betting();
+            });
+        });
+      }
     });
   } catch {}
-})();
+}
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
@@ -554,12 +594,12 @@ btnsHeaderModal.forEach((btn) => {
 
 //Listener for hiding "overlay" & active modal window.
 modalBack.forEach((background) =>
-  background.addEventListener("click", modalsLoop)
+  background.addEventListener("click", closeModal)
 );
 
 //Listener for hiding "overlay" & active modal window.
 document.addEventListener("keydown", function (btn) {
-  if (btn.key === "Escape") modalsLoop();
+  if (btn.key === "Escape") closeModal();
 });
 
 //Listener for enter to log in.
