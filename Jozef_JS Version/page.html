@@ -250,7 +250,7 @@
             Prihlásiť sa
           </button>
           <button
-            id="btn-login-lost-password"
+            id="btn-forgot-send"
             class="button is-info mt-3 button_login button_login_lost_password"
           >
             Zabudnuté heslo
@@ -417,8 +417,104 @@
       ></button>
     </div>
 
-    <!-- OVERLAY MODAL -->
+    <!-- FOROTTEN PASSWORD-SEND MODAL -->
     <!-- ------------------------------------------------------- -->
+
+    <div id="modal-forgot-send" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div class="field">
+          <label class="label">Zadaj Email na reset hesla.</label>
+          <div class="control has-icons-left">
+            <input
+              id="forgot-email"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Email"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="change-button">
+          <button
+            id="btn-forgot-send-email-and-change"
+            class="button is-info mt-3 button_change button_change_change"
+          >
+            Vygeneruj heslo
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="close-change"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
+
+    <!-- FOROTTEN PASSWORD-CHANGE MODAL -->
+    <!-- ------------------------------------------------------- -->
+    <div id="modal-forgot-send-email-and-change" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <h2 class="is-centered has-text-success is-size-2">
+          Email bol odoslaný
+        </h2>
+        <div class="field">
+          <label class="label">Zadaj číselný kód</label>
+          <div class="control has-icons-left">
+            <input
+              id="forgot-code"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Kód"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Nové Heslo</label>
+          <div class="control has-icons-left">
+            <input
+              id="forgot-new-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="change-button">
+          <button
+            id="btn-change-change"
+            class="button is-info mt-3 button_change button_change_change"
+          >
+            Zmeniť Heslo
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="close-change"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
 
     <script src="script.js"></script>
   </body>

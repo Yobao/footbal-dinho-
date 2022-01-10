@@ -29,9 +29,9 @@ const accountDropdownList = document.getElementById("account-dropdown-list");
 //MODALS
 const modals = document.querySelectorAll(".modal");
 //modalLogin & modalRegistration may be obsolete, check "test" function
-const modalLogin = document.getElementById("modal-login");
+/* const modalLogin = document.getElementById("modal-login");
 const modalRegistration = document.getElementById("modal-registration");
-const modalChangePassword = document.getElementById("modal-change-password");
+const modalChangePassword = document.getElementById("modal-change-password"); */
 const btnCloseModal = document.querySelectorAll(".button-close");
 
 //BODY PAGES
@@ -64,11 +64,18 @@ const inputLoginName = document.getElementById("login-name");
 const inputLoginPwd = document.getElementById("login-password");
 const loginShowPwd = document.getElementById("login_show_pwd");
 const btnLoginLogin = document.getElementById("btn-login-login");
+const btnLoginForgotSend = document.getElementById("btn-forgot-send");
 
 //CHANGE PASSWORD
 const inputChangePassword1 = document.getElementById("change-password1");
 const inputChangePassword2 = document.getElementById("change-password2");
 const btnChangeChange = document.getElementById("btn-change-change");
+
+//FORGOT PASSWORD
+const inputForgotEmail = document.getElementById("forgot-email");
+const btnForgotSendEmailAndChange = document.getElementById(
+  "btn-forgot-send-email-and-change"
+);
 
 //The rest.
 const modalBack = document.querySelectorAll(".modal-background");
@@ -136,6 +143,13 @@ const clearInputs = function () {
 
 //Function expression to show modal and "overlay" div.
 const openModal = function () {
+  //SHITTY WORKARROUND FOR LOST PASSWORD FUNCTIONALITY...NECCESSARY REFACTOR !!!
+  if (this.id === "btn-forgot-send") closeModal();
+  if (this.id === "btn-forgot-send-email-and-change") {
+    console.log("Send e-mail");
+    closeModal();
+  }
+
   modalCurrent(this).classList.add("is-active");
   document.body.classList.add("stop-scroll");
   accountDropdownList.classList.remove("is-hidden");
@@ -488,6 +502,7 @@ async function betting() {
     let pointsElem = document.createElement("h2");
     let timeElem = document.createElement("h3");
 
+    //CHECK IT AND FINISH CALC FOR TIME.
     //Creating time variable...
     let days = Math.floor(time / 86400);
     let hours = Math.floor((time % 3600) / 3600);
@@ -592,6 +607,10 @@ btnsHeaderModal.forEach((btn) => {
   btn.addEventListener("click", openModal);
 });
 
+//Listener for lost password.
+btnLoginForgotSend.addEventListener("click", openModal);
+btnForgotSendEmailAndChange.addEventListener("click", openModal);
+
 //Listener for hiding "overlay" & active modal window.
 modalBack.forEach((background) =>
   background.addEventListener("click", closeModal)
@@ -610,6 +629,7 @@ modals.forEach((modal) => {
       if (modal.id === "modal-login") btnLoginLogin.click();
       if (modal.id === "modal-change") btnChangeChange.click();
       if (modal.id === "modal-registration") btnRegReg.click();
+      if (modal.id === "modal-forgot-send") btnForgotSendEmailAndChange.click();
     }
   });
 });
