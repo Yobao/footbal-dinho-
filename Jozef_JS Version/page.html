@@ -28,7 +28,7 @@
                 id="btn-home"
                 class="button_header_body"
                 alt="Dinho"
-                style="max-height: 75px"
+                style="max-height: 100px"
               />
             </a>
 
@@ -46,6 +46,7 @@
             <a id="btn-bet" class="button_header_body navbar-item is-hidden">
               Tipuj
             </a>
+            <a id="btn-user" class="button_header_body navbar-item"></a>
             <a
               id="navbar_burger"
               role="button"
@@ -75,7 +76,6 @@
                   id="account-dropdown-list"
                   class="account-dropdown-list navbar-dropdown"
                 >
-                  <a id="btn-user" class="button_header_body navbar-item"></a>
                   <a id="btn-change" class="button_header_modal navbar-item"
                     >Zmena hesla</a
                   >
@@ -95,7 +95,7 @@
           <div class="has-text-centered">
             <h1 class="title is-3">Vitajte na tipovačke zápasov Chelsea</h1>
             <br />
-            <h2 class="subtitle is-4">Príklad kalkulácie skóre:</h2>
+            <h2 class="title is-3">Príklad kalkulácie skóre:</h2>
             <figure class="image is-inline-block">
               <img src="Main.png" class="pl-6" />
             </figure>
@@ -104,9 +104,7 @@
 
         <div id="body-table" class="body-page column is-6 is-hidden">
           <div id="body-table-round">
-            <h3 class="has-text-centered title is-5 mb-3">
-              Poradové číslo kola
-            </h3>
+            <h3 class="has-text-centered title is-5 mb-3">Kolo</h3>
           </div>
           <div class="pagination is-rounded">
             <ul id="body-table-pages" class="pagination-list"></ul>
@@ -251,7 +249,7 @@
           </button>
           <button
             id="btn-forgot-send"
-            class="button is-info mt-3 button_login button_login_lost_password"
+            class="button is-warning mt-3 button_login button_login_lost_password"
           >
             Zabudnuté heslo
           </button>
@@ -318,6 +316,9 @@
         </div>
 
         <div id="" class="field">
+          <p class="mt-2 mb-2 has-text-danger">
+            Email nieje povinný. Slúži na reset hesla.
+          </p>
           <label class="label">Email</label>
           <div class="control has-icons-left">
             <input
@@ -330,9 +331,6 @@
               <i class="fas fa-envelope"></i>
             </span>
           </div>
-          <p class="mt-2 mb-2 has-text-red">
-            Email nieje povinný. Slúži na reset hesla.
-          </p>
         </div>
 
         <div id="" class="field">
@@ -475,7 +473,7 @@
             <input
               id="forgot-code"
               class="input inputs_clear"
-              type="password"
+              type="text"
               placeholder="Kód"
             />
             <span class="icon is-small is-left">
@@ -515,6 +513,7 @@
         aria-label="close"
       ></button>
     </div>
+    <!-- ------------------------------------------------------- -->
 
     <script src="script.js"></script>
   </body>

@@ -10,13 +10,15 @@ const urlChangePassword = "https://www.dinho.eu/api/change-password/";
 const urlPlayers = "https://www.dinho.eu/api/players";
 const urlUserTips = "https://www.dinho.eu/api/tips";
 const urlBet = "https://www.dinho.eu/api/bet";
+const urlForgotPassword = "https://www.dinho.eu/api/password_reset";
+const urlResetPassword =
+  "https://www.dinho.pythonanywhere.com/api/password_reset/confirm";
 
 //HEADERS
 const btnsHeaderModal = document.querySelectorAll(".button_header_modal");
 const btnsHeaderBody = document.querySelectorAll(".button_header_body");
 const accountDropdown = document.querySelector(".account-dropdown");
 const navbarMenu = document.getElementById("navbar-menu");
-const btnAccount = document.getElementById("btn-account");
 const btnRegistration = document.getElementById("btn-registration");
 const btnLogin = document.getElementById("btn-login");
 const btnBet = document.getElementById("btn-bet");
@@ -28,10 +30,6 @@ const accountDropdownList = document.getElementById("account-dropdown-list");
 
 //MODALS
 const modals = document.querySelectorAll(".modal");
-//modalLogin & modalRegistration may be obsolete, check "test" function
-/* const modalLogin = document.getElementById("modal-login");
-const modalRegistration = document.getElementById("modal-registration");
-const modalChangePassword = document.getElementById("modal-change-password"); */
 const btnCloseModal = document.querySelectorAll(".button-close");
 
 //BODY PAGES
@@ -79,7 +77,6 @@ const btnForgotSendEmailAndChange = document.getElementById(
 
 //The rest.
 const modalBack = document.querySelectorAll(".modal-background");
-const overlay = document.querySelector(".overlay");
 const inputsShowPassword = document.querySelectorAll(".input_show_pwd");
 const inputsToClear = document.querySelectorAll(".inputs_clear");
 const bodyUserOtherBack = document.getElementById("body_other_user_back");
@@ -88,6 +85,10 @@ const htmlElement = document.getElementById("htmlelement");
 //STATUS VARIABLES
 let loginStatus = true;
 let userName = null;
+
+//Array variables for hidding / unhiding navbar contents...
+const navbarLoggedIn = [];
+const navbarLoggenOut = [];
 
 // FUNCTION EXPRESSION CONSTANTS/VARIABLES
 //----------------------------------------------------------------------------------------------------------------------------
@@ -129,6 +130,7 @@ const logHider = function () {
   btnRegistration.classList.add("is-hidden");
   btnLogin.classList.add("is-hidden");
   btnBet.classList.remove("is-hidden");
+  btnUser.classList.remove("is-hidden");
   btnNavbarBurger.classList.remove("is-hidden");
   navbarMenu.classList.remove("is-hidden");
   htmlElement.classList.remove("is-clipped");
@@ -179,17 +181,6 @@ const pwdChangeLook = function () {
     ? (inputLoginPwd.type = "text")
     : (inputLoginPwd.type = "password");
 };
-
-/* const pwdChangeLook = function () {
-  let pwdToChangeLook = document.querySelectorAll(
-    `.input_${this.id.slice(0, this.id.indexOf("_"))}_password`
-  );
-  pwdToChangeLook.forEach((input) => {
-    input.type === "password"
-      ? (input.type = "text")
-      : (input.type = "password");
-  });
-}; */
 
 //Function to delete all childs of specified element (e.g. clear table)
 function deleter(elementToClear) {
@@ -412,6 +403,9 @@ const logIN = () => {
       btnUser.appendChild(document.createTextNode(inputLoginName.value));
       localStorage.setItem("dinhotoken", response.data.token);
 
+      //Clears written inputs...
+      clearInputs();
+
       //Hides and unhides Navbar buttons.
       logHider();
       createUserTable(userName, userID, userCurrentName, tableUserCurrent);
@@ -437,13 +431,16 @@ const logOUT = () => {
     )
     .then(() => {
       localStorage.removeItem("dinhotoken");
+      bodyPagesLoop();
 
       //Hides and unhides Navbar buttons.
       btnRegistration.classList.remove("is-hidden");
       btnLogin.classList.remove("is-hidden");
       btnBet.classList.add("is-hidden");
+      btnUser.classList.add("is-hidden");
       btnNavbarBurger.classList.add("is-hidden");
       navbarMenu.classList.add("is-hidden");
+      document.getElementById("body-home").classList.remove("is-hidden");
     })
     .catch((err) => {
       console.error(err);
@@ -560,6 +557,7 @@ async function betting() {
         `Zápas začína o ${days}d, ${hours}h a ${minutes}m`
       )
     );
+
     betBodyTime.appendChild(timeElem);
 
     //Add EventListener for each card, after click send tip and highlight this card.
@@ -596,6 +594,30 @@ async function betting() {
     });
   } catch {}
 }
+
+/* (function forgotPassword() {
+  //inputForgotEmail.value
+  axios
+    .post(urlForgotPassword, {
+      email: "jozef.babos11@gmail.com",
+    })
+    .then((response) => {
+      console.log(response);
+    });
+})(); */
+
+function resetPassword() {
+  axios
+    .post(urlResetPassword, {
+      password: "444627",
+      token: "test123",
+    })
+    .then((response) => {
+      console.log(response);
+    });
+}
+
+//resetPassword();
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
