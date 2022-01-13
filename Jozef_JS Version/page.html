@@ -8,6 +8,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
+    <link
+      rel="sheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <script
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
@@ -17,8 +21,6 @@
 
   <body>
     <div id="app" class="">
-      <!-------------------------------------- HEADER ------------------------------------- -->
-
       <div class="columns is-centered is-6">
         <nav role="navigation" class="navbar" aria-label="main navigation">
           <div class="navbar-brand py-5">
@@ -87,8 +89,6 @@
           </div>
         </nav>
       </div>
-
-      <!-- ------------------------------- BODY ------------------------------------------- -->
 
       <div id="body" class="columns is-centered">
         <div id="body-home" class="body-page body-pagecolumn is-6">
@@ -193,18 +193,12 @@
       </div>
     </div>
 
-    <!-- MODALS -->
-    <!-- ---------------------------------------------------------------------------------- -->
-    <!-- LOGIN MODAL -->
-    <!-- ------------------------------------------------------- -->
     <div id="modal-login" class="modal">
       <div class="modal-background"></div>
       <div
         class="modal-content has-background-white py-5 px-5"
         style="border-radius: 1rem"
       >
-        <!-- <p class="title is-3 is-spaced">Prihlásenie</p> -->
-
         <div id="" class="field">
           <label class="label">Meno</label>
           <div class="control has-icons-left">
@@ -232,13 +226,27 @@
             <span class="icon is-small is-left">
               <i class="fas fa-lock"></i>
             </span>
+            <span
+              id="login_show_pwd"
+              class="icon is-clickable"
+              style="position: absolute; right: 10px"
+            >
+              <i class="fas fa-eye"></i>
+            </span>
+            <span
+              id="login_hide_pwd"
+              class="icon is-clickable is-hidden"
+              style="position: absolute; right: 10px"
+            >
+              <i class="fas fa-eye-slash"></i>
+            </span>
           </div>
         </div>
 
-        <div class="checkbox">
+        <!--         <div class="checkbox">
           <input id="login_show_pwd" class="input_show_pwd" type="checkbox" />
           Ukáž heslo
-        </div>
+        </div> -->
 
         <div id="" class="login-btns">
           <button
@@ -262,8 +270,6 @@
       ></button>
     </div>
 
-    <!-- REGISTRATION MODAL -->
-    <!-- ------------------------------------------------------- -->
     <div id="modal-registration" class="modal">
       <div class="modal-background"></div>
       <div
@@ -360,8 +366,6 @@
       ></button>
     </div>
 
-    <!-- CHANGE PASSWORD MODAL -->
-    <!-- ------------------------------------------------------- -->
     <div id="modal-change" class="modal">
       <div class="modal-background"></div>
       <div
@@ -415,9 +419,6 @@
       ></button>
     </div>
 
-    <!-- FOROTTEN PASSWORD-SEND MODAL -->
-    <!-- ------------------------------------------------------- -->
-
     <div id="modal-forgot-send" class="modal">
       <div class="modal-background"></div>
       <div
@@ -456,8 +457,6 @@
       ></button>
     </div>
 
-    <!-- FOROTTEN PASSWORD-CHANGE MODAL -->
-    <!-- ------------------------------------------------------- -->
     <div id="modal-forgot-send-email-and-change" class="modal">
       <div class="modal-background"></div>
       <div
@@ -513,7 +512,6 @@
         aria-label="close"
       ></button>
     </div>
-    <!-- ------------------------------------------------------- -->
 
     <script src="script.js"></script>
   </body>

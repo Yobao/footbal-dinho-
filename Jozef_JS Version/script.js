@@ -61,6 +61,7 @@ const btnRegReg = document.getElementById("btn-reg-reg");
 const inputLoginName = document.getElementById("login-name");
 const inputLoginPwd = document.getElementById("login-password");
 const loginShowPwd = document.getElementById("login_show_pwd");
+const loginHidePwd = document.getElementById("login_hide_pwd");
 const btnLoginLogin = document.getElementById("btn-login-login");
 const btnLoginForgotSend = document.getElementById("btn-forgot-send");
 
@@ -176,12 +177,6 @@ const openBodyPage = function (self) {
   bodyCurrent(thisElement).classList.remove("is-hidden");
 };
 
-const pwdChangeLook = function () {
-  inputLoginPwd.type === "password"
-    ? (inputLoginPwd.type = "text")
-    : (inputLoginPwd.type = "password");
-};
-
 //Function to delete all childs of specified element (e.g. clear table)
 function deleter(elementToClear) {
   while (elementToClear.firstChild)
@@ -240,11 +235,58 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
             "class",
             "has-text-success has-text-weight-bold"
           );
-        //Change formatting of "Pozícia" column.
-        if (column.key === index + 1)
+        //Change formatting of "Pozícia" column. In addition, it will add priZe for first 8 places.
+        if (column.key === index + 1) {
           tdTable.setAttribute("class", "has-text-weight-bold");
+          //Switch case NOOB CODE FOR ADDING PRIZES INTO COLUMN "POSITION".
+          switch (index + 1) {
+            case 1:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (25€)`)
+              );
+              break;
+            case 2:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (20€)`)
+              );
+              break;
+            case 3:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (10€)`)
+              );
+              break;
+            case 4:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (5€)`)
+              );
+              break;
+            case 5:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (5€)`)
+              );
+              break;
+            case 6:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (5€)`)
+              );
+              break;
+            case 7:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (5€)`)
+              );
+              break;
+            case 8:
+              tdTable.appendChild(
+                document.createTextNode(`${column.key} (5€)`)
+              );
+              break;
+            default:
+              tdTable.appendChild(document.createTextNode(column.key));
+          }
+        }
 
-        tdTable.appendChild(document.createTextNode(column.key));
+        if (column.key !== index + 1)
+          tdTable.appendChild(document.createTextNode(column.key));
       });
       tableBody.appendChild(tr);
     });
@@ -381,7 +423,7 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
     logHider();
     createUserTable(userName, userID, userCurrentName, tableUserCurrent);
 
-    //Creates cards for betting pae.
+    //Creates cards for betting page.
     betting();
   } catch (err) {
     console.error(err);
@@ -502,10 +544,9 @@ async function betting() {
     //CHECK IT AND FINISH CALC FOR TIME.
     //Creating time variable...
     let days = Math.floor(time / 86400);
-    let hours = Math.floor((time % 3600) / 3600);
+    let hours = Math.floor((time % 86400) / 3600);
     let minutes = Math.floor((time % 3600) / 60);
-    let seconds = Math.floor(time % 60);
-    console.log(days, hours, minutes, seconds);
+    //let seconds = Math.floor(time % 60);
 
     //This functions deletes all current content for "Tipuj" page.
     deleter(betBodyBet);
@@ -551,14 +592,13 @@ async function betting() {
     //Append child title and points info text.
     pointsElem.appendChild(document.createTextNode(points));
     betBodyPoints.appendChild(pointsElem);
+    pointsElem.setAttribute("class", "has-text-weight-bold");
     //Append child title and time info text.
     timeElem.appendChild(
-      document.createTextNode(
-        `Zápas začína o ${days}d, ${hours}h a ${minutes}m`
-      )
+      document.createTextNode(`Zápas začína o ${days}d, ${hours}h, ${minutes}m`)
     );
-
     betBodyTime.appendChild(timeElem);
+    timeElem.setAttribute("class", "pb-6");
 
     //Add EventListener for each card, after click send tip and highlight this card.
     [...betBodyBet.children].forEach((card) => {
@@ -606,7 +646,7 @@ async function betting() {
     });
 })(); */
 
-function resetPassword() {
+/* function resetPassword() {
   axios
     .post(urlResetPassword, {
       password: "444627",
@@ -615,12 +655,18 @@ function resetPassword() {
     .then((response) => {
       console.log(response);
     });
-}
+} */
 
 //resetPassword();
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
+
+//If betting page is active, refresh betting page each minute.
+setInterval(function () {
+  if (!document.getElementById("body-bet").classList.contains("is-hidden"))
+    betting();
+}, 60000);
 
 // Header + buttons
 //////////////////////////////////////////////////////
@@ -680,10 +726,16 @@ bodyUserOtherBack.addEventListener("click", function () {
   bodyTable.classList.remove("is-hidden");
 });
 
-//Listener for checkbox to show password.
-//////////////////////////////////////////////////////
-inputsShowPassword.forEach((btn) => {
-  btn.addEventListener("click", pwdChangeLook);
+//Listener for EYE checkbox to show password.
+loginShowPwd.addEventListener("click", function () {
+  inputLoginPwd.type = "text";
+  this.classList.add("is-hidden");
+  loginHidePwd.classList.remove("is-hidden");
+});
+loginHidePwd.addEventListener("click", function () {
+  inputLoginPwd.type = "password";
+  this.classList.add("is-hidden");
+  loginShowPwd.classList.remove("is-hidden");
 });
 
 btnNavbarBurger.addEventListener("click", () => {
