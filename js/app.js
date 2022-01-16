@@ -632,7 +632,7 @@ async function betting() {
 function forgotPassword() {
   //inputForgotEmail.value
   axios
-    .post(`${url}/api/password_reset`, {
+    .post(`${url}/api/password_reset/`, {
       email: inputForgotEmail.value,
     })
     .then(() => {});
@@ -640,9 +640,9 @@ function forgotPassword() {
 
 function resetPassword() {
   axios
-    .post(`${url}/api/password_reset/confirm`, {
+    .post(`${url}/api/password_reset/confirm/`, {
       password: inputForgotNewPassword.value,
-      token: inputForgotCode,
+      token: inputForgotCode.value,
     })
     .then(() => {
       alert(`Vaše heslo bolo úspešne zmenené.`);
@@ -669,7 +669,7 @@ btnsHeaderModal.forEach((btn) => {
 //Listener for lost password.
 btnLoginForgotSend.addEventListener("click", openModal);
 btnForgotSendEmailAndChange.addEventListener("click", openModal);
-btnForgotSendEmailAndChange.addEventListener("click", forgotPassword);
+btnForgotSendEmailAndChange.addEventListener("click", forgotPassword());
 btnForgotChange.addEventListener("click", resetPassword());
 
 //Listener for hiding "overlay" & active modal window.
