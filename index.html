@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html id="htmlelement">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css\vstyle.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="img/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="img/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="img/favicon-16x16.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <link
+      rel="sheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div id="app" class="">
+      <div class="columns is-centered is-6">
+        <nav role="navigation" class="navbar py-5" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item">
+              <img
+                src="img\brand.png"
+                id="btn-home"
+                class="button_header_body"
+                alt="Dinho"
+                style="max-height: 90px"
+              />
+            </a>
+
+            <a id="btn-table" class="button_header_body navbar-item">
+              Tabuľka
+            </a>
+
+            <a id="btn-login" class="button_header_modal navbar-item">
+              Prihlásenie
+            </a>
+
+            <a id="btn-registration" class="button_header_modal navbar-item">
+              Registrácia
+            </a>
+            <a id="btn-bet" class="button_header_body navbar-item is-hidden">
+              Tipuj
+            </a>
+            <a id="btn-user" class="button_header_body navbar-item"></a>
+            <a
+              id="navbar_burger"
+              role="button"
+              class="navbar-burger my-auto is-hidden"
+              aria-label="menu"
+              aria-expanded="false"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div id="navbar-menu" class="navbar-menu is-hidden">
+            <div class="navbar-start">
+              <div
+                id="account-dropdown "
+                class="account-dropdown navbar-item has-dropdown is-hoverable"
+              >
+                <a
+                  id="btn-account"
+                  class="button_header_body_account navbar-link"
+                >
+                  Účet
+                </a>
+                <div
+                  id="account-dropdown-list"
+                  class="account-dropdown-list navbar-dropdown"
+                >
+                  <a id="btn-change" class="button_header_modal navbar-item"
+                    >Zmena hesla</a
+                  >
+                  <a id="btn-logout" class="navbar-item">Odhlásenie</a>
+                </div>
+              </div>
+            </div>
+            <div class="navbar-end"></div>
+          </div>
+        </nav>
+      </div>
+
+      <div id="body" class="columns is-centered">
+        <div id="body-home" class="body-page body-pagecolumn is-6">
+          <div class="has-text-centered">
+            <h1 class="title is-3">
+              &nbsp Vitajte na tipovačke zápasov Chelsea
+            </h1>
+            <br />
+            <h2 class="title is-3">&nbsp Príklad kalkulácie skóre:</h2>
+            <figure class="image is-inline-block">
+              <img src="img\rules.png" class="pl-6" />
+            </figure>
+          </div>
+        </div>
+
+        <div id="body-table" class="body-page column is-6 is-hidden">
+          <div id="body-table-round">
+            <h3 class="has-text-centered title is-5 mb-3">Kolo</h3>
+          </div>
+          <div class="pagination is-rounded">
+            <ul id="body-table-pages" class="pagination-list"></ul>
+          </div>
+          <div id="body-table-info" class="has-text-centered title is-3"></div>
+          <table
+            id="score_table"
+            cellspacing="0"
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
+            <thead>
+              <tr class="has-text-centered">
+                <th>Pozícia</th>
+                <th>Meno</th>
+                <th>Skóre</th>
+                <th>Tip</th>
+                <th>Zmena</th>
+              </tr>
+            </thead>
+            <tbody id="table-body" class="has-text-centered"></tbody>
+          </table>
+        </div>
+
+        <div
+          id="body-bet"
+          class="body-page is-centered is-6 is-hidden is-fullwidth"
+        >
+          <div id="body-bet-info" class="has-text-centered title is-2"></div>
+          <div id="body-bet-points" class="has-text-centered title is-3"></div>
+          <div id="body-bet-time" class="has-text-centered title is-3"></div>
+          <div id="body-bet-bet" class="columns is-multiline is-centered"></div>
+        </div>
+
+        <div id="body-user" class="body-page column is-6 is-hidden">
+          <div id="body-current-user-name" class="body-current-user-name">
+            <h2
+              id="body_current_user_name"
+              class="has-text-centered title is-3 mb-5"
+            ></h2>
+          </div>
+          <table
+            id="user_table"
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+            cellspacing="0"
+          >
+            <thead>
+              <tr class="has-text-centered">
+                <th>Zápas</th>
+                <th>Dátum</th>
+                <th>Tip</th>
+                <th>Body</th>
+              </tr>
+            </thead>
+            <tbody id="table-user-current" class="has-text-centered"></tbody>
+          </table>
+        </div>
+
+        <div id="body-user-other" class="body-page column is-6 is-hidden">
+          <div>
+            <button id="body_other_user_back" class="button is-primary">
+              Späť
+            </button>
+          </div>
+          <div id="body-other-user-name" class="body-other-user-name">
+            <h2
+              id="body_other_user_name"
+              class="has-text-centered title is-3 mb-5"
+            ></h2>
+          </div>
+          <table
+            id="user_table"
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+            cellspacing="0"
+          >
+            <thead>
+              <tr class="has-text-centered">
+                <th>Zápas</th>
+                <th>Dátum</th>
+                <th>Tip</th>
+                <th>Body</th>
+              </tr>
+            </thead>
+            <tbody id="table-user-other" class="has-text-centered"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-login" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div id="" class="field">
+          <label class="label">Meno</label>
+          <div class="control has-icons-left">
+            <input
+              id="login-name"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Zadajte Meno"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Heslo</label>
+          <div class="control has-icons-left">
+            <input
+              id="login-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Zadajte Heslo"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+            <span
+              id="login_show_pwd"
+              class="icon is-clickable"
+              style="position: absolute; right: 10px"
+            >
+              <i class="fas fa-eye"></i>
+            </span>
+            <span
+              id="login_hide_pwd"
+              class="icon is-clickable is-hidden"
+              style="position: absolute; right: 10px"
+            >
+              <i class="fas fa-eye-slash"></i>
+            </span>
+          </div>
+        </div>
+
+        <!--         <div class="checkbox">
+          <input id="login_show_pwd" class="input_show_pwd" type="checkbox" />
+          Ukáž heslo
+        </div> -->
+
+        <div id="" class="login-btns">
+          <button
+            id="btn-login-login"
+            class="button is-info mt-3 mr-3 button_login button_login_login"
+          >
+            Prihlásiť sa
+          </button>
+          <button
+            id="btn-forgot-send"
+            class="button is-warning mt-3 button_login button_login_lost_password"
+          >
+            Zabudnuté heslo
+          </button>
+        </div>
+      </div>
+      <button
+        id="close-login"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
+
+    <div id="modal-registration" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div id="" class="field">
+          <label class="label">Meno</label>
+          <div class="control has-icons-left">
+            <input
+              id="reg-name"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Zadajte Meno"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Heslo</label>
+          <div class="control has-icons-left">
+            <input
+              id="reg-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Potvrdenie Hesla</label>
+          <div class="control has-icons-left">
+            <input
+              id="reg-confirm-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="field">
+          <p class="mt-2 mb-2 has-text-danger">
+            Email nieje povinný. Slúži na reset hesla.
+          </p>
+          <label class="label">Email</label>
+          <div class="control has-icons-left">
+            <input
+              id="reg-email"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Zadajte Email"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="field">
+          <label class="label">chelsea-fc.cz účet</label>
+          <input
+            id="reg-chelsea-account"
+            class="input inputs_clear"
+            type="text"
+            placeholder="Zadajte Chelsea účet"
+          />
+        </div>
+
+        <div id="" class="reg-button">
+          <button
+            id="btn-reg-reg"
+            class="button is-info mt-3 button_reg button_reg_reg"
+          >
+            Zaregistrovať
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="close-registration"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
+
+    <div id="modal-change" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div class="field">
+          <label class="label">Staré Heslo</label>
+          <div class="control has-icons-left">
+            <input
+              id="change-password1"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Zadajte staré heslo"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="field">
+          <label class="label">Nové Heslo</label>
+          <div class="control has-icons-left">
+            <input
+              id="change-password2"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="" class="change-button">
+          <button
+            id="btn-change-change"
+            class="button is-info mt-3 button_change button_change_change"
+          >
+            Zmeniť Heslo
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="close-change"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
+
+    <div id="modal-forgot-send" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <div class="field">
+          <label class="label">Zadaj Email na reset hesla.</label>
+          <div class="control has-icons-left">
+            <input
+              id="forgot-email"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Email"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="change-button">
+          <button
+            id="btn-forgot-send-email-and-change"
+            class="button is-info mt-3 button_change button_change_change"
+          >
+            Vygeneruj heslo
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="close-change"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
+
+    <div id="modal-forgot-send-email-and-change" class="modal">
+      <div class="modal-background"></div>
+      <div
+        class="modal-content has-background-white py-5 px-5"
+        style="border-radius: 1rem"
+      >
+        <h2 class="is-centered has-text-success is-size-2">
+          Email bol odoslaný
+        </h2>
+        <div class="field">
+          <label class="label">Zadaj číselný kód</label>
+          <div class="control has-icons-left">
+            <input
+              id="forgot-code"
+              class="input inputs_clear"
+              type="text"
+              placeholder="Kód"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Nové Heslo</label>
+          <div class="control has-icons-left">
+            <input
+              id="forgot-new-password"
+              class="input inputs_clear"
+              type="password"
+              placeholder="Heslo aspoň 6 znakov"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="change-button">
+          <button
+            id="btn-change-change"
+            class="button is-info mt-3 button_change button_change_change"
+          >
+            Zmeniť Heslo
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="close-change"
+        class="modal-close is-large button-close"
+        aria-label="close"
+      ></button>
+    </div>
+
+    <script src="js\app.js"></script>
+    <script src="js\local.js"></script>
+  </body>
+</html>
