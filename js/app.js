@@ -58,6 +58,9 @@ const btnChangeChange = document.getElementById("btn-change-change");
 
 //FORGOT PASSWORD
 const inputForgotEmail = document.getElementById("forgot-email");
+const inputForgotCode = document.getElementById("forgot-code");
+const inputForgotNewPassword = document.getElementById("forgot-new-password");
+const btnForgotChange = document.getElementById("btn-forgot-change");
 const btnForgotSendEmailAndChange = document.getElementById(
   "btn-forgot-send-email-and-change"
 );
@@ -627,29 +630,26 @@ async function betting() {
   } catch {}
 }
 
-/* (function forgotPassword() {
+function forgotPassword() {
   //inputForgotEmail.value
   axios
     .post(`${url}/api/password_reset`, {
-      email: "jozef.babos11@gmail.com",
+      email: inputForgotEmail.value,
     })
-    .then((response) => {
-      console.log(response);
-    });
-})(); */
+    .then(() => {});
+}
 
-/* function resetPassword() {
+function resetPassword() {
   axios
     .post(`${url}/api/password_reset/confirm`, {
-      password: "444627",
-      token: "test123",
+      password: inputForgotNewPassword.value,
+      token: inputForgotCode,
     })
-    .then((response) => {
-      console.log(response);
+    .then(() => {
+      alert(`Vaše heslo bolo úspešne zmenené.`);
+      closeModal();
     });
-} */
-
-//resetPassword();
+}
 
 // EVENT SECTION
 //----------------------------------------------------------------------------------------------------------------------------
@@ -670,6 +670,8 @@ btnsHeaderModal.forEach((btn) => {
 //Listener for lost password.
 btnLoginForgotSend.addEventListener("click", openModal);
 btnForgotSendEmailAndChange.addEventListener("click", openModal);
+btnForgotSendEmailAndChange.addEventListener("click", forgotPassword);
+btnForgotChange.addEventListener("click", resetPassword());
 
 //Listener for hiding "overlay" & active modal window.
 modalBack.forEach((background) =>
@@ -690,6 +692,8 @@ modals.forEach((modal) => {
       if (modal.id === "modal-change") btnChangeChange.click();
       if (modal.id === "modal-registration") btnRegReg.click();
       if (modal.id === "modal-forgot-send") btnForgotSendEmailAndChange.click();
+      if (modal.id === "modal-forgot-send-email-and-change")
+        btnForgotChange.click();
     }
   });
 });
@@ -730,6 +734,8 @@ loginHidePwd.addEventListener("click", function () {
   this.classList.add("is-hidden");
   loginShowPwd.classList.remove("is-hidden");
 });
+
+//Listener for password reset buttons.
 
 btnNavbarBurger.addEventListener("click", () => {
   navbarMenu.classList.toggle("is-active");
