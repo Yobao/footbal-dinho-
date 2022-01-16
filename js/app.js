@@ -173,7 +173,7 @@ function deleter(elementToClear) {
 //Async FUNCTION which creates table in HTML with scores.
 async function tableScoreFinal(roundButtonValue, roundInnerText) {
   try {
-    let response = await axios.get(`${urlTable}?m=${roundButtonValue}`);
+    let response = await axios.get(`${url}/api/table?m=${roundButtonValue}`);
     let tdTable = [];
     let data = response.data.data;
     let matches = response.data.matches;
@@ -222,56 +222,41 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
         //Change formatting of "Pozícia" column. In addition, it will add priZe for first 8 places.
         if (column.key === index + 1) {
           tdTable.setAttribute("class", "has-text-weight-bold");
+          let prize;
           //Switch case NOOB CODE FOR ADDING PRIZES INTO COLUMN "POSITION". CHECK AND REFACTOR !!!!
           ///////////////////////////
           switch (index + 1) {
             case 1:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (25€)`)
-              );
+              prize = ` (25€)`;
               break;
             case 2:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (20€)`)
-              );
+              prize = ` (15€)`;
               break;
             case 3:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (10€)`)
-              );
+              prize = ` (10€)`;
               break;
             case 4:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (5€)`)
-              );
+              prize = ` (5€)`;
               break;
             case 5:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (5€)`)
-              );
+              prize = ` (5€)`;
               break;
             case 6:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (5€)`)
-              );
+              prize = ` (5€)`;
               break;
             case 7:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (5€)`)
-              );
+              prize = ` (5€)`;
               break;
             case 8:
-              tdTable.appendChild(
-                document.createTextNode(`${column.key} (5€)`)
-              );
+              prize = ` (5€)`;
               break;
             default:
-              tdTable.appendChild(document.createTextNode(column.key));
+              prize = ``;
           }
-        }
-
-        if (column.key !== index + 1)
+          tdTable.appendChild(document.createTextNode(column.key + prize));
+        } else {
           tdTable.appendChild(document.createTextNode(column.key));
+        }
       });
       tableBody.appendChild(tr);
     });
@@ -341,7 +326,7 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
   //Axios asynchronous request for getting data for user table.
   axios
     .get(
-      `${urlUserTips}?u=${userID}&cu=${userName}` /* , {
+      `${url}/api/tips?u=${userID}&cu=${userName}` /* , {
       headers: { Authorization: "Token " + localStorage.dinhotoken },
     } */
     )
@@ -394,7 +379,7 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
 //IIFE async-await FOR AUTOLOGIN + user bet history table creation.
 (async () => {
   try {
-    let response = await axios.post(urlAutoLogin, {
+    let response = await axios.post(`${url}/api/account/autologin`, {
       token: localStorage.dinhotoken,
     });
     let userID = "-9";
@@ -418,7 +403,7 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
 //AXIOS REQUEST. Makes login works. Post "username" & "password" and returns token for saving login.
 const logIN = () => {
   axios
-    .post(urlLogin, {
+    .post(`${url}/api/account/login`, {
       username: inputLoginName.value,
       password: inputLoginPwd.value,
     })
@@ -450,7 +435,7 @@ const logIN = () => {
 const logOUT = () => {
   axios
     .post(
-      urlLogOut,
+      `${url}/api/account/logout`,
       { token: localStorage.dinhotoken },
       {
         headers: { Authorization: "Token " + localStorage.dinhotoken },
@@ -477,7 +462,7 @@ const logOUT = () => {
 //AXIOS REQUEST. Registration to page. Sends values from inputs and returns token.
 const registration = () => {
   axios
-    .post(urlRegistration, {
+    .post(`${url}/api/account/register`, {
       username: inputRegName.value,
       password: inputRegPwd.value,
       password2: inputRegConfirmPwd.value,
@@ -503,7 +488,7 @@ const registration = () => {
 const passwordChange = () => {
   axios
     .put(
-      urlChangePassword,
+      `${url}/api/change-password`,
       {
         old_password: inputChangePassword1.value,
         new_password: inputChangePassword2.value,
@@ -520,7 +505,7 @@ const passwordChange = () => {
 
 async function betting() {
   try {
-    let response = await axios.get(`${urlPlayers}?t=1`, {
+    let response = await axios.get(`${url}/api/players?t=1`, {
       headers: { Authorization: "Token " + localStorage.dinhotoken },
     });
     let match = response.data.match;
@@ -615,7 +600,7 @@ async function betting() {
           //Axios request to BET API, post token + ID of player from card.
           axios
             .post(
-              urlBet,
+              `${url}/api/bet`,
               { tip: this.getAttribute("value") },
               {
                 headers: { Authorization: "Token " + localStorage.dinhotoken },
@@ -645,7 +630,7 @@ async function betting() {
 /* (function forgotPassword() {
   //inputForgotEmail.value
   axios
-    .post(urlForgotPassword, {
+    .post(`${url}/api/password_reset`, {
       email: "jozef.babos11@gmail.com",
     })
     .then((response) => {
@@ -655,7 +640,7 @@ async function betting() {
 
 /* function resetPassword() {
   axios
-    .post(urlResetPassword, {
+    .post(`${url}/api/password_reset/confirm`, {
       password: "444627",
       token: "test123",
     })
