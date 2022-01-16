@@ -668,8 +668,8 @@ btnsHeaderModal.forEach((btn) => {
 
 //Listener for lost password.
 btnLoginForgotSend.addEventListener("click", openModal);
-btnForgotSendEmailAndChange.addEventListener("click", openModal);
 btnForgotSendEmailAndChange.addEventListener("click", forgotPassword());
+btnForgotSendEmailAndChange.addEventListener("click", openModal);
 btnForgotChange.addEventListener("click", resetPassword());
 
 //Listener for hiding "overlay" & active modal window.
