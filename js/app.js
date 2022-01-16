@@ -136,6 +136,7 @@ const openModal = function () {
   //SHITTY WORKARROUND FOR LOST PASSWORD FUNCTIONALITY...NECCESSARY REFACTOR !!!
   if (this.id === "btn-forgot-send") closeModal();
   if (this.id === "btn-forgot-send-email-and-change") {
+    forgotPassword();
     closeModal();
   }
 
@@ -668,7 +669,6 @@ btnsHeaderModal.forEach((btn) => {
 
 //Listener for lost password.
 btnLoginForgotSend.addEventListener("click", openModal);
-btnForgotSendEmailAndChange.addEventListener("click", forgotPassword());
 btnForgotSendEmailAndChange.addEventListener("click", openModal);
 btnForgotChange.addEventListener("click", resetPassword());
 
