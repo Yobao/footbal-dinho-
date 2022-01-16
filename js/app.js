@@ -136,7 +136,6 @@ const openModal = function () {
   //SHITTY WORKARROUND FOR LOST PASSWORD FUNCTIONALITY...NECCESSARY REFACTOR !!!
   if (this.id === "btn-forgot-send") closeModal();
   if (this.id === "btn-forgot-send-email-and-change") {
-    console.log("Send e-mail");
     closeModal();
   }
 
