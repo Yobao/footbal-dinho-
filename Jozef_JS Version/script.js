@@ -95,19 +95,17 @@ const navbarLoggenOut = [];
 //----------------------------------------------------------------------------------------------------------------------------
 
 //Variable for accessing correct page.
-let bodyCurrent = function (self) {
-  let modal = document.getElementById(
+const bodyCurrent = function (self) {
+  return document.getElementById(
     `body-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
   );
-  return modal;
 };
 
 //Variable for accessing correct modal.
-let modalCurrent = function (self) {
-  let modal = document.getElementById(
+const modalCurrent = function (self) {
+  return document.getElementById(
     `modal-${self.id.slice(self.id.indexOf("-") + 1, self.id.length)}`
   );
-  return modal;
 };
 
 //Loop through modals to detect which is unhidden.
@@ -118,7 +116,7 @@ const modalsLoop = function () {
   });
 };
 
-//Loop through BODY modals to detect which is unhidden.
+//Loop through BODY pages to detect which is unhidden.
 const bodyPagesLoop = function () {
   bodyPages.forEach((page) => {
     if (!page.classList.contains("is-hidden")) page.classList.add("is-hidden");
@@ -177,7 +175,7 @@ const openBodyPage = function (self) {
   bodyCurrent(thisElement).classList.remove("is-hidden");
 };
 
-//Function to delete all childs of specified element (e.g. clear table)
+//Function to delete all children of specified element (e.g. clear table)
 function deleter(elementToClear) {
   while (elementToClear.firstChild)
     elementToClear.removeChild(elementToClear.firstChild);
@@ -238,7 +236,8 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
         //Change formatting of "Pozícia" column. In addition, it will add priZe for first 8 places.
         if (column.key === index + 1) {
           tdTable.setAttribute("class", "has-text-weight-bold");
-          //Switch case NOOB CODE FOR ADDING PRIZES INTO COLUMN "POSITION".
+          //Switch case NOOB CODE FOR ADDING PRIZES INTO COLUMN "POSITION". CHECK AND REFACTOR !!!!
+          ///////////////////////////
           switch (index + 1) {
             case 1:
               tdTable.appendChild(
@@ -500,6 +499,12 @@ const registration = () => {
       cfc_acc: inputRegChelsea.value,
     })
     .then((response) => {
+      //Deletes current user button name and replace with new after registration.
+      let userName = inputRegName.value;
+      deleter(btnUser);
+      btnUser.appendChild(document.createTextNode(userName));
+      createUserTable(userName, "-9", userCurrentName, tableUserCurrent);
+      //writes token into local storage.
       localStorage.setItem("dinhotoken", response.data.token);
       logHider();
     })
@@ -533,13 +538,14 @@ async function betting() {
       headers: { Authorization: "Token " + localStorage.dinhotoken },
     });
     let match = response.data.match;
-    let points = `Hrá sa o ${response.data.pool} bodov.`;
+    let points = response.data.pool;
     let players = response.data.players;
     let currentBet = response.data.current;
     let time = response.data.time;
     let infoElem = document.createElement("h1");
     let pointsElem = document.createElement("h2");
     let timeElem = document.createElement("h3");
+    let strong = document.createElement("strong");
 
     //CHECK IT AND FINISH CALC FOR TIME.
     //Creating time variable...
@@ -547,6 +553,15 @@ async function betting() {
     let hours = Math.floor((time % 86400) / 3600);
     let minutes = Math.floor((time % 3600) / 60);
     //let seconds = Math.floor(time % 60);
+    let dddd = days === 1 ? "deň" : days >= 2 && days <= 4 ? "dni" : "dní";
+    let hhhh =
+      hours === 1 ? "hodinu" : hours >= 2 && hours <= 4 ? "hodiny" : "hodín";
+    let mmmm =
+      minutes === 1
+        ? "minútu"
+        : minutes >= 2 && minutes <= 4
+        ? "minúty"
+        : "minút";
 
     //This functions deletes all current content for "Tipuj" page.
     deleter(betBodyBet);
@@ -569,7 +584,6 @@ async function betting() {
         //If row is player name, set text to BOLD.
         if (i === 0) innerText.setAttribute("class", "has-text-weight-bold");
         innerText.appendChild(document.createTextNode(row.key));
-
         card.appendChild(innerText);
         card.setAttribute("class", "column box is-2 my-3 mx-4 is-clickable");
       });
@@ -586,16 +600,23 @@ async function betting() {
     });
 
     //Append child title and match info text.
-    infoElem.appendChild(document.createTextNode(match));
+    infoElem.appendChild(document.createTextNode(`\u00A0 ${match}`));
     betBodyInfo.appendChild(infoElem);
     infoElem.setAttribute("class", "has-text-weight-bold");
     //Append child title and points info text.
-    pointsElem.appendChild(document.createTextNode(points));
+    pointsElem.appendChild(document.createTextNode("\u00A0 Hrá sa o "));
+    strong.setAttribute("class", "has-text-weight-bold");
+    strong.appendChild(document.createTextNode(points));
+    pointsElem.appendChild(strong);
+    pointsElem.appendChild(document.createTextNode(" bodov."));
     betBodyPoints.appendChild(pointsElem);
-    pointsElem.setAttribute("class", "has-text-weight-bold");
     //Append child title and time info text.
     timeElem.appendChild(
-      document.createTextNode(`Zápas začína o ${days}d, ${hours}h, ${minutes}m`)
+      document.createTextNode(
+        `\u00A0 Zápas začína o ${days + " " + dddd}, ${hours + " " + hhhh}, ${
+          minutes + " " + mmmm
+        }`
+      )
     );
     betBodyTime.appendChild(timeElem);
     timeElem.setAttribute("class", "pb-6");
@@ -712,6 +733,7 @@ btnsHeaderBody.forEach((btn) => {
   btn.addEventListener("click", function () {
     //If btn is "Tabuľka", run tableScoreFinal where openBodyPage is triggered. Otherwise, show other bodyPage.
     this.id === "btn-table" ? tableScoreFinal(this) : openBodyPage(this);
+    if (this.id === "btn-bet") betting();
   });
 });
 
