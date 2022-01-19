@@ -80,6 +80,9 @@ let userName = null;
 const navbarLoggedIn = [];
 const navbarLoggenOut = [];
 
+//Changing title of page (tab name)
+window.document.title = "Dinho";
+
 // FUNCTION EXPRESSION CONSTANTS/VARIABLES
 //----------------------------------------------------------------------------------------------------------------------------
 
