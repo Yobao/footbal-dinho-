@@ -13,6 +13,7 @@ const btnChange = document.getElementById("btn-change");
 const btnUser = document.getElementById("btn-user");
 const btnNavbarBurger = document.getElementById("navbar_burger");
 const accountDropdownList = document.getElementById("account-dropdown-list");
+const btnNavbarAccount = document.getElementById("btn-account");
 
 //MODALS
 const modals = document.querySelectorAll(".modal");
@@ -199,11 +200,11 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
     data.forEach((row, index) => {
       let tr = document.createElement("tr");
       let tableColumns = [
-        { key: index + 1 },
-        { key: row.username },
-        { key: row.score },
-        { key: row.last_round_tip_name },
-        { key: row.last_round_score },
+        index + 1,
+        row.username,
+        row.score,
+        row.last_round_tip_name,
+        row.last_round_score,
       ];
 
       //Loop for pasting tds and its values into table.
@@ -211,22 +212,22 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
         tdTable = document.createElement("td");
         tr.appendChild(tdTable);
         //Change formatting of "User name" column.
-        if (column.key === row.username) {
+        if (column === row.username) {
           tdTable.setAttribute("value", row.id);
           tdTable.setAttribute("id", "btn-user-other");
           tdTable.setAttribute("class", "is-clickable");
         }
         //Change formatting of "Skóre" column.
-        if (i === 2 && column.key === row.score)
+        if (i === 2 && column === row.score)
           tdTable.setAttribute("class", "has-background-primary-light");
         //Change formatting of "Zmena" column.
-        if (column.key === row.last_round_score && row.last_round_score > 0)
+        if (column === row.last_round_score && row.last_round_score > 0)
           tdTable.setAttribute(
             "class",
             "has-text-success has-text-weight-bold"
           );
         //Change formatting of "Pozícia" column. In addition, it will add priZe for first 8 places.
-        if (column.key === index + 1) {
+        if (column === index + 1) {
           tdTable.setAttribute("class", "has-text-weight-bold");
           let prize;
           //Switch case NOOB CODE FOR ADDING PRIZES INTO COLUMN "POSITION". CHECK AND REFACTOR !!!!
@@ -259,16 +260,14 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
             default:
               prize = ``;
           }
-          tdTable.appendChild(document.createTextNode(column.key + prize));
+          tdTable.appendChild(document.createTextNode(column + prize));
         } else {
-          tdTable.appendChild(document.createTextNode(column.key));
+          tdTable.appendChild(document.createTextNode(column));
         }
       });
       tableBody.appendChild(tr);
     });
 
-    /////////////////////////////// REFACTOR THIS SHIT !!! ///////////////////////////////////////
-    /////////////// PAGING TABLE PART ///////////////
     //If buttons already exists, then skip, otherwise create buttons.
     if (tableBodyPages.childElementCount < 1) {
       matches.forEach((match, i) => {
@@ -309,7 +308,7 @@ async function tableScoreFinal(roundButtonValue, roundInnerText) {
       btn.children[0].classList.remove("is-current");
     });
 
-    //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button. If specific round button is pressed, highlight it.
+    //If "Tabuľka" is pressed, show Tabuľka body page and highlight highest number button. If specific round button is pressed, highlights it.
     if (roundButtonValue.id === "btn-table") {
       tablePageButtons[tablePageButtons.length - 1].children[0].classList.add(
         "is-current"
@@ -346,22 +345,17 @@ function createUserTable(userName, userID, userNameTitle, userTable, self) {
       //For each loop, for each match create row in table & insert values.
       data.forEach((row) => {
         let tr = document.createElement("tr");
-        let tableColumns = [
-          { key: row.match },
-          { key: row.start },
-          { key: row.tip_name },
-          { key: row.score },
-        ];
+        let tableColumns = [row.match, row.start, row.tip_name, row.score];
 
-        //Loop for pasting tds and its values into table.
+        //Loop for each column (tableColumns) pasting tds and its values into table.
         tableColumns.forEach((column) => {
           let rowColumn = document.createElement("td");
-          rowColumn.appendChild(document.createTextNode(column.key));
+          rowColumn.appendChild(document.createTextNode(column));
           //Change formatting of "Dátum" column.
-          if (column.key === row.start)
+          if (column === row.start)
             rowColumn.setAttribute("class", "has-background-primary-light");
           //Change formatting of "Body" column.
-          if (column.key === row.score && row.score > 0)
+          if (column === row.score && row.score > 0)
             rowColumn.setAttribute(
               "class",
               "has-text-success has-text-weight-bold"
@@ -577,11 +571,11 @@ async function betting() {
     });
 
     //Append child title and match info text.
-    infoElem.appendChild(document.createTextNode(`\u00A0 ${match}`));
+    infoElem.appendChild(document.createTextNode(match));
     betBodyInfo.appendChild(infoElem);
     infoElem.setAttribute("class", "has-text-weight-bold");
     //Append child title and points info text.
-    pointsElem.appendChild(document.createTextNode("\u00A0 Hrá sa o "));
+    pointsElem.appendChild(document.createTextNode(" Hrá sa o "));
     strong.setAttribute("class", "has-text-weight-bold");
     strong.appendChild(document.createTextNode(points));
     pointsElem.appendChild(strong);
@@ -590,9 +584,9 @@ async function betting() {
     //Append child title and time info text.
     timeElem.appendChild(
       document.createTextNode(
-        `\u00A0 Zápas začína o ${days + " " + dddd}, ${hours + " " + hhhh}, ${
+        `Zápas začína o ${days + " " + dddd}, ${hours + " " + hhhh}, ${
           minutes + " " + mmmm
-        }`
+        }.`
       )
     );
     betBodyTime.appendChild(timeElem);
@@ -692,6 +686,7 @@ modals.forEach((modal) => {
   modal.addEventListener("keydown", function (btn) {
     if (btn.keyCode === 13) {
       btn.preventDefault();
+      //Not sure about this approach...
       if (modal.id === "modal-login") btnLoginLogin.click();
       if (modal.id === "modal-change") btnChangeChange.click();
       if (modal.id === "modal-registration") btnRegReg.click();
@@ -722,6 +717,10 @@ btnLoginLogin.addEventListener("click", logIN);
 btnRegReg.addEventListener("click", registration);
 btnLogOut.addEventListener("click", logOUT);
 btnChangeChange.addEventListener("click", passwordChange);
+btnNavbarAccount.addEventListener("click", function () {
+  navbarMenu.classList.toggle("is-active");
+  btnNavbarBurger.classList.toggle("is-active");
+});
 bodyUserOtherBack.addEventListener("click", function () {
   bodyUserOther.classList.add("is-hidden");
   bodyTable.classList.remove("is-hidden");
@@ -740,7 +739,6 @@ loginHidePwd.addEventListener("click", function () {
 });
 
 //Listener for password reset buttons.
-
 btnNavbarBurger.addEventListener("click", () => {
   navbarMenu.classList.toggle("is-active");
   btnNavbarBurger.classList.toggle("is-active");
